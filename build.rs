@@ -4,7 +4,12 @@ use std::process::Command;
 python thirdparty/USD/build_scripts/build_usd.py --build-monolithic --no-tests --no-examples --no-tutorials --no-tools --no-docs --no-python --no-imaging --no-ptex --no-openvdb --no-usdview --no-embree --no-prman --no-openimageio --no-opencolorio --no-alembic --no-hdf5 --no-draco --no-materialx ./
 */
 fn main() {
-    let output = Command::new("python")
+    let out_dir = std::env::var("OUT_DIR").unwrap();
+
+    println!("Downloading and building USD c++ shared library");
+    
+    // Run the command to build the python c++ library
+    Command::new("python")
         .arg("thirdparty/USD/build_scripts/build_usd.py")
         .arg("--build-monolithic")
         .arg("--no-tests")
@@ -25,9 +30,8 @@ fn main() {
         .arg("--no-hdf5")
         .arg("--no-draco")
         .arg("--no-materialx")
-        .arg("./")
-        .output()
-        .expect("Failed to execute command");
+        .arg(out_dir)
+        .status().unwrap();
 
     //assert!(false);
 }
