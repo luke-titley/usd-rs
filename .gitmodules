@@ -1,0 +1,3 @@
+[submodule "thirdparty/USD"]
+	path = thirdparty/USD
+	url = https://github.com/PixarAnimationStudios/USD.git
