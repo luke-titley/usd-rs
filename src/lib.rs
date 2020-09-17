@@ -16,6 +16,15 @@ struct TfRefPtr {
     ref_base: *mut TfRefBase,
 }
 
+impl std::clone::Clone for TfRefPtr {
+    fn clone(&self) -> Self {
+        let new_ref_base = unsafe { self.ref_base.clone() };
+        Self {
+            ref_base: new_ref_base,
+        }
+    }
+}
+
 // We represent the usd stage as a reference directly.
 pub struct Stage {
     this: TfRefPtr,
@@ -32,6 +41,15 @@ impl Stage {
         };
 
         Self { this }
+    }
+
+    pub fn export(&self) {
+        let data = self.this.clone();
+        unsafe {
+            cpp!([data as "pxr::UsdStageRefPtr"] {
+                data->Export("test_out.usda");
+            })
+        }
     }
 }
 
@@ -53,5 +71,6 @@ mod tests {
     #[test]
     fn test_stage() {
         let stage = Stage::create_in_memory();
+        stage.export();
     }
 }

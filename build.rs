@@ -58,11 +58,14 @@ fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
     // The lib directory
     let mut lib_dir = std::path::PathBuf::new();
     lib_dir.push(&result_dir);
+    lib_dir.push("lib");
+    /*
     lib_dir.push("build");
     lib_dir.push("USD");
     lib_dir.push("pxr");
+    */
 
-    let lib = std::path::PathBuf::from("usd_m");
+    let lib = std::path::PathBuf::from("usd_ms");
 
     println!("{:?} {:?} {:?}", include_dir, lib_dir, lib);
 
