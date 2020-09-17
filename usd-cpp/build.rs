@@ -54,7 +54,6 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     println!("Downloading dependencies and building USD c++ library");
     // Run the command to build the python c++ library
-    /*
     let result = Command::new("python")
         .arg(script_dir)
         .arg("--build-monolithic")
@@ -82,9 +81,11 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
         .unwrap();
 
     assert!(result.success());
-    */
 
     let lib = std::path::PathBuf::from("usd_ms");
+
+    println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
+    println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
 
     [include_dir, lib_dir, lib]
 }
