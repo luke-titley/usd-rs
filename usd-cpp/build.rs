@@ -54,6 +54,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     println!("Downloading dependencies and building USD c++ library");
     // Run the command to build the python c++ library
+    /*
     let result = Command::new("python")
         .arg(script_dir)
         .arg("--build-monolithic")
@@ -81,6 +82,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
         .unwrap();
 
     assert!(result.success());
+    */
 
     let lib = std::path::PathBuf::from("usd_ms");
 
@@ -91,7 +93,6 @@ fn write_lib_info(info: [std::path::PathBuf; 3]) {
 
     // Make sure the source directory exists
     let src_path = std::path::PathBuf::from("src");
-    std::fs::create_dir(src_path)
     let mut lib_path = src_path.clone();
     lib_path.push("lib.rs");
 

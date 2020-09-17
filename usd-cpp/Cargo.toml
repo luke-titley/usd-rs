@@ -1,5 +1,5 @@
 [package]
-name = "usd-cpp"
+name = "usdcpp"
 version = "0.1.0"
 authors = ["Luke Titley <from+usd_rs@luketitley.com>"]
 edition = "2018"

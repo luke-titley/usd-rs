@@ -10,4 +10,5 @@ edition = "2018"
 cpp = "0.5"
 
 [build-dependencies]
+usd-cpp = {path="../usd-cpp"}
 cpp_build = "0.5"
