@@ -52,37 +52,35 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     lib_dir.push("pxr");
     */
 
-    if !lib_dir.as_path().exists() {
-        println!("Downloading dependencies and building USD c++ library");
-        // Run the command to build the python c++ library
-        let result = Command::new("python")
-            .arg(script_dir)
-            .arg("--build-monolithic")
-            .arg("--no-tests")
-            .arg("--no-examples")
-            .arg("--no-tutorials")
-            .arg("--no-tools")
-            .arg("--no-docs")
-            .arg("--no-python")
-            .arg("--no-imaging")
-            .arg("--no-ptex")
-            .arg("--no-openvdb")
-            .arg("--no-usdview")
-            .arg("--no-embree")
-            .arg("--no-prman")
-            .arg("--no-openimageio")
-            .arg("--no-opencolorio")
-            .arg("--no-alembic")
-            .arg("--no-hdf5")
-            .arg("--no-draco")
-            .arg("--no-materialx")
-            .arg(cpp_out_dir)
-            .current_dir(out_dir)
-            .status()
-            .unwrap();
+    println!("Downloading dependencies and building USD c++ library");
+    // Run the command to build the python c++ library
+    let result = Command::new("python")
+        .arg(script_dir)
+        .arg("--build-monolithic")
+        .arg("--no-tests")
+        .arg("--no-examples")
+        .arg("--no-tutorials")
+        .arg("--no-tools")
+        .arg("--no-docs")
+        .arg("--no-python")
+        .arg("--no-imaging")
+        .arg("--no-ptex")
+        .arg("--no-openvdb")
+        .arg("--no-usdview")
+        .arg("--no-embree")
+        .arg("--no-prman")
+        .arg("--no-openimageio")
+        .arg("--no-opencolorio")
+        .arg("--no-alembic")
+        .arg("--no-hdf5")
+        .arg("--no-draco")
+        .arg("--no-materialx")
+        .arg(cpp_out_dir)
+        .current_dir(out_dir)
+        .status()
+        .unwrap();
 
-        assert!(result.success());
-    }
+    assert!(result.success());
 
     let lib = std::path::PathBuf::from("usd_ms");
 
@@ -90,7 +88,11 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 }
 
 fn write_lib_info(info: [std::path::PathBuf; 3]) {
-    let mut lib_path = std::path::PathBuf::from("src");
+
+    // Make sure the source directory exists
+    let src_path = std::path::PathBuf::from("src");
+    std::fs::create_dir(src_path)
+    let mut lib_path = src_path.clone();
     lib_path.push("lib.rs");
 
     write!(
