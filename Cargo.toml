@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 
 [build-dependencies]
-bindgen = "0.55.1"
+bindgen = { path = "thirdparty/bindgen" }

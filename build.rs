@@ -71,7 +71,9 @@ fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
     include_dir
 }
 
-fn generate_bindings(out_dir: &str) {
+fn generate_bindings(out_dir: &str, include_dir : &std::path::PathBuf) {
+    let include = format!("-I{}", include_dir.to_str().unwrap());
+
     let mut bindings_path = std::path::PathBuf::from(out_dir);
     bindings_path.push("bindings.rs");
 
@@ -82,6 +84,10 @@ fn generate_bindings(out_dir: &str) {
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(std::boxed::Box::new(bindgen::CargoCallbacks))
+        .clang_arg(include)
+        .clang_arg("-std=c++14")
+        .clang_arg("-isysroot/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk")
+        .clang_arg("-mmacosx-version-min=10.15")
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
@@ -105,5 +111,5 @@ fn main() {
     let cpp_include = build_cpp_usd("./target/rls/debug/build/usd-rs-46764c5de604bf3c/out");
 
     // Generating the wrapper library
-    generate_bindings(out_dir.as_str())
+    generate_bindings(out_dir.as_str(), &cpp_include)
 }
