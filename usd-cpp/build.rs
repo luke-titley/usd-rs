@@ -1,3 +1,4 @@
+use std::io::prelude::*;
 use std::process::Command;
 
 /*
@@ -24,7 +25,7 @@ python thirdparty/USD/build_scripts/build_usd.py
 ./
 */
 
-fn build_cpp_usd(out_dir: &std::path::PathBuf) {
+fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // The script directory
     let mut script_dir = std::path::PathBuf::from(std::env::current_dir().unwrap());
     script_dir.push("thirdparty");
@@ -41,6 +42,10 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) {
     let mut lib_dir = cpp_out_dir.clone();
     lib_dir.push("lib");
 
+    // The include directory
+    let mut include_dir = cpp_out_dir.clone();
+    include_dir.push("include");
+
     /*
     lib_dir.push("build");
     lib_dir.push("USD");
@@ -48,43 +53,63 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) {
     */
 
     if !lib_dir.as_path().exists() {
-        println!("Downloading dependencies and building USD c++ library");
-        // Run the command to build the python c++ library
-        let result = Command::new("python")
-            .arg(script_dir)
-            .arg("--build-monolithic")
-            .arg("--no-tests")
-            .arg("--no-examples")
-            .arg("--no-tutorials")
-            .arg("--no-tools")
-            .arg("--no-docs")
-            .arg("--no-python")
-            .arg("--no-imaging")
-            .arg("--no-ptex")
-            .arg("--no-openvdb")
-            .arg("--no-usdview")
-            .arg("--no-embree")
-            .arg("--no-prman")
-            .arg("--no-openimageio")
-            .arg("--no-opencolorio")
-            .arg("--no-alembic")
-            .arg("--no-hdf5")
-            .arg("--no-draco")
-            .arg("--no-materialx")
-            .arg(cpp_out_dir)
-            .current_dir(out_dir)
-            .status()
-            .unwrap();
+        /*
+                println!("Downloading dependencies and building USD c++ library");
+                // Run the command to build the python c++ library
+                let result = Command::new("python")
+                    .arg(script_dir)
+                    .arg("--build-monolithic")
+                    .arg("--no-tests")
+                    .arg("--no-examples")
+                    .arg("--no-tutorials")
+                    .arg("--no-tools")
+                    .arg("--no-docs")
+                    .arg("--no-python")
+                    .arg("--no-imaging")
+                    .arg("--no-ptex")
+                    .arg("--no-openvdb")
+                    .arg("--no-usdview")
+                    .arg("--no-embree")
+                    .arg("--no-prman")
+                    .arg("--no-openimageio")
+                    .arg("--no-opencolorio")
+                    .arg("--no-alembic")
+                    .arg("--no-hdf5")
+                    .arg("--no-draco")
+                    .arg("--no-materialx")
+                    .arg(cpp_out_dir)
+                    .current_dir(out_dir)
+                    .status()
+                    .unwrap();
 
-        assert!(result.success());
+                assert!(result.success());
+        */
     }
 
     let lib = std::path::PathBuf::from("usd_ms");
 
-    println!("{:?} {:?}", lib_dir, lib);
+    [include_dir, lib_dir, lib]
 
-    println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
-    println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
+    //println!("{:?} {:?}", lib_dir, lib);
+    //println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
+    //println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
+}
+
+fn write_lib_info(info: [std::path::PathBuf; 3]) {
+    let mut lib_path = std::path::PathBuf::from("src");
+    lib_path.push("lib.rs");
+
+    write!(
+        std::fs::File::create(lib_path).unwrap(),
+        "\
+pub const INCLUDE : &str = \"{}\"; \n\
+pub const LIBS : &str = \"{}\"; \n\
+pub const LIB : &str = \"{}\"; \n\
+",
+        info[0].to_str().unwrap(),
+        info[1].to_str().unwrap(),
+        info[2].to_str().unwrap(),
+    );
 }
 
 fn main() {
@@ -95,5 +120,5 @@ fn main() {
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
 
     // Build the usd cpp library
-    build_cpp_usd(&out_dir);
+    write_lib_info(build_cpp_usd(&out_dir));
 }
