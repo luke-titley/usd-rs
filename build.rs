@@ -88,6 +88,9 @@ fn generate_bindings(out_dir: &str, include_dir : &std::path::PathBuf) {
         .clang_arg("-std=c++14")
         .clang_arg("-isysroot/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk")
         .clang_arg("-mmacosx-version-min=10.15")
+        .whitelist_type(".*UsdStage")
+        .whitelist_function("CreateNew")
+        .whitelist_recursively(false)
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
