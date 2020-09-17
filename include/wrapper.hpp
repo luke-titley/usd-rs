@@ -3,8 +3,6 @@
 class Test
 {
 public:
-    int hello() {
-        return 24;
-    }
+    Test();
+    int hello() const;
 };
-

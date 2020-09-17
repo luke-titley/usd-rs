@@ -4,7 +4,7 @@ use std::process::Command;
 python thirdparty/USD/build_scripts/build_usd.py --build-monolithic --no-tests --no-examples --no-tutorials --no-tools --no-docs --no-python --no-imaging --no-ptex --no-openvdb --no-usdview --no-embree --no-prman --no-openimageio --no-opencolorio --no-alembic --no-hdf5 --no-draco --no-materialx ./
 */
 
-fn build_cpp_usd(out_dir: &str) -> (std::path::PathBuf, std::path::PathBuf) {
+fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
     // The script directory
     let mut script_dir = std::path::PathBuf::from(std::env::current_dir().unwrap());
     script_dir.push("thirdparty");
@@ -60,11 +60,15 @@ fn build_cpp_usd(out_dir: &str) -> (std::path::PathBuf, std::path::PathBuf) {
     lib_dir.push("build");
     lib_dir.push("USD");
     lib_dir.push("pxr");
-    lib_dir.push("libusd_m.a");
 
-    println!("{:?} {:?}", include_dir, lib_dir);
+    let lib = std::path::PathBuf::from("usd_m");
 
-    (include_dir, lib_dir)
+    println!("{:?} {:?} {:?}", include_dir, lib_dir, lib);
+
+    println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
+    println!("cargo:rustc-link-lib=dylib={}", lib.to_str().unwrap());
+
+    include_dir
 }
 
 fn generate_bindings(out_dir: &str) {
@@ -97,7 +101,8 @@ fn main() {
     let out_dir = std::env::var("OUT_DIR").unwrap();
 
     // Build the usd cpp library
-    let (cpp_include, cpp_lib) = build_cpp_usd(out_dir.as_str());
+    //let cpp_include = build_cpp_usd(out_dir.as_str());
+    let cpp_include = build_cpp_usd("./target/rls/debug/build/usd-rs-46764c5de604bf3c/out");
 
     // Generating the wrapper library
     generate_bindings(out_dir.as_str())
