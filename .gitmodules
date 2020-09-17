@@ -4,3 +4,6 @@
 [submodule "thirdparty/bindgen"]
 	path = thirdparty/bindgen
 	url = git@github.com:luke-titley/rust-bindgen.git
+[submodule "thirdparty/rust-cpp"]
+	path = thirdparty/rust-cpp
+	url = git@github.com:luke-titley/rust-cpp.git
