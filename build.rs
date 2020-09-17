@@ -18,6 +18,7 @@ fn build_cpp_usd(out_dir: &str) -> (std::path::PathBuf, std::path::PathBuf) {
     result_dir.push("result");
 
     /*
+    println!("Downloading and building USD c++ shared library");
     // Run the command to build the python c++ library
     let result = Command::new("python")
         .arg(script_dir)
@@ -61,18 +62,21 @@ fn build_cpp_usd(out_dir: &str) -> (std::path::PathBuf, std::path::PathBuf) {
     lib_dir.push("pxr");
     lib_dir.push("libusd_m.a");
 
+    println!("{:?} {:?}", include_dir, lib_dir);
+
     (include_dir, lib_dir)
 }
 
 fn main() {
     // Only run this build job if the USD source directory has changed
     println!("cargo:rerun-if-changed=thirdparty/USD");
+    println!("cargo:rerun-if-changed=include/wrapper.h");
 
+    // The out directory of the build
     let out_dir = std::env::var("OUT_DIR").unwrap();
 
+    // Build the usd cpp library
     let (cpp_include, cpp_lib) = build_cpp_usd(out_dir.as_str());
 
-    println!("{:?} {:?}", cpp_include, cpp_lib);
-
-    println!("Downloading and building USD c++ shared library");
+    // Generating the wrapper library
 }
