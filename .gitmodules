@@ -1,6 +1,3 @@
 [submodule "thirdparty/USD"]
 	path = thirdparty/USD
 	url = https://github.com/PixarAnimationStudios/USD.git
-[submodule "thirdparty/bindgen"]
-	path = thirdparty/bindgen
-	url = https://github.com/rust-lang/rust-bindgen.git
