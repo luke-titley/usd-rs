@@ -14,12 +14,28 @@ fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
     script_dir.push("build_usd.py");
 
     // The result directory
-    let mut result_dir = std::path::PathBuf::new();
-    result_dir.push(&out_dir);
-    result_dir.push("result");
+    let mut cpp_out_dir = std::path::PathBuf::new();
+    cpp_out_dir.push(&out_dir);
+    cpp_out_dir.push("cpp");
+
+
+    // The include directory
+    let mut include_dir = cpp_out_dir.clone();
+    include_dir.push("include");
+
+    // The lib directory
+    let mut lib_dir = cpp_out_dir.clone();
+    lib_dir.push("lib");
 
     /*
-    println!("Downloading and building USD c++ shared library");
+    lib_dir.push("build");
+    lib_dir.push("USD");
+    lib_dir.push("pxr");
+    */
+
+    if !lib_dir.as_path().exists() {
+        /*
+    println!("Downloading dependencies and building USD c++ library");
     // Run the command to build the python c++ library
     let result = Command::new("python")
         .arg(script_dir)
@@ -49,21 +65,7 @@ fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
 
     assert!(result.success());
     */
-
-    // The include directory
-    let mut include_dir = std::path::PathBuf::new();
-    include_dir.push(&result_dir);
-    include_dir.push("include");
-
-    // The lib directory
-    let mut lib_dir = std::path::PathBuf::new();
-    lib_dir.push(&result_dir);
-    lib_dir.push("lib");
-    /*
-    lib_dir.push("build");
-    lib_dir.push("USD");
-    lib_dir.push("pxr");
-    */
+    }
 
     let lib = std::path::PathBuf::from("usd_ms");
 

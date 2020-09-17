@@ -1,15 +1,9 @@
-[package]
-name = "usd-rs"
-version = "0.1.0"
-authors = ["Luke Titley <luke@titley.com>"]
-edition = "2018"
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+members = [
+    "usd-cpp",
+    "usd-rs",
+]
 
-[dependencies]
-#cpp = "0.5"
-cpp = { path = "thirdparty/rust-cpp/cpp" }
-
-[build-dependencies]
-#bindgen = { path = "thirdparty/bindgen" }
-cpp_build = { path = "thirdparty/rust-cpp/cpp_build" }
+exclude = [
+]
