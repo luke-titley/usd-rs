@@ -1,0 +1,3 @@
+[submodule "usd-cpp/thirdparty/USD"]
+	path = usd-cpp/thirdparty/USD
+	url = https://github.com/PixarAnimationStudios/USD.git
