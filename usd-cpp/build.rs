@@ -2,7 +2,27 @@ use std::process::Command;
 extern crate cpp_build;
 
 /*
-python thirdparty/USD/build_scripts/build_usd.py --build-monolithic --no-tests --no-examples --no-tutorials --no-tools --no-docs --no-python --no-imaging --no-ptex --no-openvdb --no-usdview --no-embree --no-prman --no-openimageio --no-opencolorio --no-alembic --no-hdf5 --no-draco --no-materialx ./
+python thirdparty/USD/build_scripts/build_usd.py
+--build-monolithic
+--no-tests
+--no-examples
+--no-tutorials
+--no-tools
+--no-docs
+--no-python
+--no-imaging
+--no-ptex
+--no-openvdb
+--no-usdview
+--no-embree
+--no-prman
+--no-openimageio
+--no-opencolorio
+--no-alembic
+--no-hdf5
+--no-draco
+--no-materialx
+./
 */
 
 fn build_cpp_usd(out_dir: &std::path::PathBuf) {
@@ -29,35 +49,35 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) {
     */
 
     if !lib_dir.as_path().exists() {
-    println!("Downloading dependencies and building USD c++ library");
-    // Run the command to build the python c++ library
-    let result = Command::new("python")
-        .arg(script_dir)
-        .arg("--build-monolithic")
-        .arg("--no-tests")
-        .arg("--no-examples")
-        .arg("--no-tutorials")
-        .arg("--no-tools")
-        .arg("--no-docs")
-        .arg("--no-python")
-        .arg("--no-imaging")
-        .arg("--no-ptex")
-        .arg("--no-openvdb")
-        .arg("--no-usdview")
-        .arg("--no-embree")
-        .arg("--no-prman")
-        .arg("--no-openimageio")
-        .arg("--no-opencolorio")
-        .arg("--no-alembic")
-        .arg("--no-hdf5")
-        .arg("--no-draco")
-        .arg("--no-materialx")
-        .arg(result_dir)
-        .current_dir(out_dir)
-        .status()
-        .unwrap();
+        println!("Downloading dependencies and building USD c++ library");
+        // Run the command to build the python c++ library
+        let result = Command::new("python")
+            .arg(script_dir)
+            .arg("--build-monolithic")
+            .arg("--no-tests")
+            .arg("--no-examples")
+            .arg("--no-tutorials")
+            .arg("--no-tools")
+            .arg("--no-docs")
+            .arg("--no-python")
+            .arg("--no-imaging")
+            .arg("--no-ptex")
+            .arg("--no-openvdb")
+            .arg("--no-usdview")
+            .arg("--no-embree")
+            .arg("--no-prman")
+            .arg("--no-openimageio")
+            .arg("--no-opencolorio")
+            .arg("--no-alembic")
+            .arg("--no-hdf5")
+            .arg("--no-draco")
+            .arg("--no-materialx")
+            .arg(result_dir)
+            .current_dir(out_dir)
+            .status()
+            .unwrap();
 
-    assert!(result.success());
+        assert!(result.success());
     }
 
     let lib = std::path::PathBuf::from("usd_ms");
