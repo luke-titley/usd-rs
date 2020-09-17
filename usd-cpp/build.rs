@@ -1,5 +1,4 @@
 use std::process::Command;
-extern crate cpp_build;
 
 /*
 python thirdparty/USD/build_scripts/build_usd.py
@@ -72,7 +71,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) {
             .arg("--no-hdf5")
             .arg("--no-draco")
             .arg("--no-materialx")
-            .arg(result_dir)
+            .arg(cpp_out_dir)
             .current_dir(out_dir)
             .status()
             .unwrap();
@@ -82,7 +81,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) {
 
     let lib = std::path::PathBuf::from("usd_ms");
 
-    println!("{:?} {:?} {:?}", include_dir, lib_dir, lib);
+    println!("{:?} {:?}", lib_dir, lib);
 
     println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
     println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
@@ -96,5 +95,5 @@ fn main() {
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
 
     // Build the usd cpp library
-    build_cpp_usd(out_dir);
+    build_cpp_usd(&out_dir);
 }
