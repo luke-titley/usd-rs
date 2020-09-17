@@ -67,10 +67,31 @@ fn build_cpp_usd(out_dir: &str) -> (std::path::PathBuf, std::path::PathBuf) {
     (include_dir, lib_dir)
 }
 
+fn generate_bindings(out_dir: &str) {
+    let mut bindings_path = std::path::PathBuf::from(out_dir);
+    bindings_path.push("bindings.rs");
+
+    let bindings = bindgen::Builder::default()
+        // The input header we would like to generate
+        // bindings for.
+        .header("include/wrapper.hpp")
+        // Tell cargo to invalidate the built crate whenever any of the
+        // included header files changed.
+        .parse_callbacks(std::boxed::Box::new(bindgen::CargoCallbacks))
+        // Finish the builder and generate the bindings.
+        .generate()
+        // Unwrap the Result and panic on failure.
+        .expect("Unable to generate bindings");
+
+    bindings
+        .write_to_file(bindings_path.as_path())
+        .expect("Couldn't write bindings!");
+}
+
 fn main() {
     // Only run this build job if the USD source directory has changed
     println!("cargo:rerun-if-changed=thirdparty/USD");
-    println!("cargo:rerun-if-changed=include/wrapper.h");
+    println!("cargo:rerun-if-changed=include/wrapper.hpp");
 
     // The out directory of the build
     let out_dir = std::env::var("OUT_DIR").unwrap();
@@ -79,4 +100,5 @@ fn main() {
     let (cpp_include, cpp_lib) = build_cpp_usd(out_dir.as_str());
 
     // Generating the wrapper library
+    generate_bindings(out_dir.as_str())
 }
