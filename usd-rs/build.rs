@@ -1,19 +1,16 @@
-use std::process::Command;
-extern crate cpp_build;
-
 fn main() {
-    // Only run this build job if the USD source directory has changed
-    println!("cargo:rerun-if-changed=thirdparty/USD");
-    println!("cargo:rerun-if-changed=src/lib.rs");
+    // Explicitly link to the usd cpp library. This should propagate upwards
+    // to other libraries
+    /*
+    println!("cargo:rustc-link-lib={}", usdcpp::LIB);
+    println!("cargo:rustc-link-search={}", usdcpp::LIBS);
+    */
 
     // The out directory of the build
     let out_dir = std::env::var("OUT_DIR").unwrap();
 
-    // Generating the wrapper library
-    let include = format!("-I{}", include_dir.to_str().unwrap());
-
     cpp_build::Config::new()
-        .include(include_dir.to_str().unwrap())
+        .include(usdcpp::INCLUDE)
         .flag("-std=c++14")
         .build("src/lib.rs");
 }
