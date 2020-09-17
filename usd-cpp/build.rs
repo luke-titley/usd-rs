@@ -53,46 +53,40 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     */
 
     if !lib_dir.as_path().exists() {
-        /*
-                println!("Downloading dependencies and building USD c++ library");
-                // Run the command to build the python c++ library
-                let result = Command::new("python")
-                    .arg(script_dir)
-                    .arg("--build-monolithic")
-                    .arg("--no-tests")
-                    .arg("--no-examples")
-                    .arg("--no-tutorials")
-                    .arg("--no-tools")
-                    .arg("--no-docs")
-                    .arg("--no-python")
-                    .arg("--no-imaging")
-                    .arg("--no-ptex")
-                    .arg("--no-openvdb")
-                    .arg("--no-usdview")
-                    .arg("--no-embree")
-                    .arg("--no-prman")
-                    .arg("--no-openimageio")
-                    .arg("--no-opencolorio")
-                    .arg("--no-alembic")
-                    .arg("--no-hdf5")
-                    .arg("--no-draco")
-                    .arg("--no-materialx")
-                    .arg(cpp_out_dir)
-                    .current_dir(out_dir)
-                    .status()
-                    .unwrap();
+        println!("Downloading dependencies and building USD c++ library");
+        // Run the command to build the python c++ library
+        let result = Command::new("python")
+            .arg(script_dir)
+            .arg("--build-monolithic")
+            .arg("--no-tests")
+            .arg("--no-examples")
+            .arg("--no-tutorials")
+            .arg("--no-tools")
+            .arg("--no-docs")
+            .arg("--no-python")
+            .arg("--no-imaging")
+            .arg("--no-ptex")
+            .arg("--no-openvdb")
+            .arg("--no-usdview")
+            .arg("--no-embree")
+            .arg("--no-prman")
+            .arg("--no-openimageio")
+            .arg("--no-opencolorio")
+            .arg("--no-alembic")
+            .arg("--no-hdf5")
+            .arg("--no-draco")
+            .arg("--no-materialx")
+            .arg(cpp_out_dir)
+            .current_dir(out_dir)
+            .status()
+            .unwrap();
 
-                assert!(result.success());
-        */
+        assert!(result.success());
     }
 
     let lib = std::path::PathBuf::from("usd_ms");
 
     [include_dir, lib_dir, lib]
-
-    //println!("{:?} {:?}", lib_dir, lib);
-    //println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
-    //println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
 }
 
 fn write_lib_info(info: [std::path::PathBuf; 3]) {
