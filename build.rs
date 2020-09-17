@@ -1,4 +1,5 @@
 use std::process::Command;
+extern crate cpp_build;
 
 /*
 python thirdparty/USD/build_scripts/build_usd.py --build-monolithic --no-tests --no-examples --no-tutorials --no-tools --no-docs --no-python --no-imaging --no-ptex --no-openvdb --no-usdview --no-embree --no-prman --no-openimageio --no-opencolorio --no-alembic --no-hdf5 --no-draco --no-materialx ./
@@ -66,14 +67,20 @@ fn build_cpp_usd(out_dir: &str) -> std::path::PathBuf {
     println!("{:?} {:?} {:?}", include_dir, lib_dir, lib);
 
     println!("cargo:rustc-link-search={}", lib_dir.to_str().unwrap());
-    println!("cargo:rustc-link-lib=dylib={}", lib.to_str().unwrap());
+    println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
 
     include_dir
 }
 
-fn generate_bindings(out_dir: &str, include_dir : &std::path::PathBuf) {
+fn generate_bindings(out_dir: &str, include_dir: &std::path::PathBuf) {
     let include = format!("-I{}", include_dir.to_str().unwrap());
 
+    cpp_build::Config::new()
+        .include(include_dir.to_str().unwrap())
+        .flag("-std=c++14")
+        .build("src/lib.rs");
+
+    /*
     let mut bindings_path = std::path::PathBuf::from(out_dir);
     bindings_path.push("bindings.rs");
 
@@ -99,12 +106,13 @@ fn generate_bindings(out_dir: &str, include_dir : &std::path::PathBuf) {
     bindings
         .write_to_file(bindings_path.as_path())
         .expect("Couldn't write bindings!");
+        */
 }
 
 fn main() {
     // Only run this build job if the USD source directory has changed
     println!("cargo:rerun-if-changed=thirdparty/USD");
-    println!("cargo:rerun-if-changed=include/wrapper.hpp");
+    println!("cargo:rerun-if-changed=src/lib.rs");
 
     // The out directory of the build
     let out_dir = std::env::var("OUT_DIR").unwrap();
