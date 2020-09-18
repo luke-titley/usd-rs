@@ -37,15 +37,15 @@ pub enum InitialLoadSet {
 
 //------------------------------------------------------------------------------
 pub struct Descriptor<'a> {
-    _identifier : &'a str,
-    _load : Option<InitialLoadSet>,
+    identifier: &'a str,
+    _load: Option<InitialLoadSet>,
 }
 
 impl<'a> From<&'a str> for Descriptor<'a> {
-    fn from(identifier : &'a str) -> Self {
+    fn from(identifier: &'a str) -> Self {
         Self {
-            _identifier : identifier,
-            _load : None,
+            identifier,
+            _load: None,
             // TODO : session_layer
             // TODO : path_resolver_context
         }
@@ -54,22 +54,18 @@ impl<'a> From<&'a str> for Descriptor<'a> {
 
 //------------------------------------------------------------------------------
 pub struct InMemoryDescriptor {
-    _load : Option<InitialLoadSet>,
+    _load: Option<InitialLoadSet>,
 }
 
 impl From<InitialLoadSet> for InMemoryDescriptor {
-    fn from(load : InitialLoadSet) -> Self {
-        Self {
-            _load : Some(load),
-        }
+    fn from(load: InitialLoadSet) -> Self {
+        Self { _load: Some(load) }
     }
 }
 
 impl Default for InMemoryDescriptor {
     fn default() -> Self {
-        Self {
-            _load : None,
-        }
+        Self { _load: None }
     }
 }
 
@@ -123,9 +119,22 @@ pub struct Stage {
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_new<'a>(_desc : Descriptor<'a>){}
+    pub fn create_new<'a>(desc: Descriptor<'a>) -> Self {
+        let identifier = std::ffi::CString::new(desc.identifier)
+            .expect("Unable to convert identifier to CString");
 
-    pub fn create_in_memory(_desc : InMemoryDescriptor) -> Self {
+        let identifier_str = identifier.as_ptr() as *const std::os::raw::c_char;
+
+        let this = unsafe {
+            cpp!([identifier_str as "const char *"] -> TfRefPtr as "pxr::UsdStageRefPtr" {
+                return pxr::UsdStage::CreateNew(std::string(identifier_str));
+            })
+        };
+
+        Self { this }
+    }
+
+    pub fn create_in_memory(_desc: InMemoryDescriptor) -> Self {
         let this = unsafe {
             cpp!([] -> TfRefPtr as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
@@ -133,6 +142,15 @@ impl Stage {
         };
 
         Self { this }
+    }
+
+    pub fn save(&self) {
+        let data = self.this.clone();
+        unsafe {
+            cpp!([data as "pxr::UsdStageRefPtr"] {
+                data->Save();
+            })
+        }
     }
 
     pub fn export(&self) {
