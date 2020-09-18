@@ -2,12 +2,52 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
-//! This contains everything you need for working with a usd stage, the main
-//! point of entry into the usd library.
-use crate::pxr::sdf;
-use crate::pxr::tf;
+//! The outermost container for scene description, which owns and presents
+//! composed prims as a scenegraph, following the composition recipe recursively
+//! described in its associated "root layer".
+//!
+//! USD derives its persistent-storage scalability by combining and reusing
+//! simple compositions into richer aggregates using referencing and layering
+//! with sparse overrides. Ultimately, every composition (i.e. "scene") is
+//! identifiable by its root layer, i.e. the .usd file, and a scene is
+//! instantiated in an application on a UsdStage that presents a composed view
+//! of the scene's root layer. Each simple composition referenced into a larger
+//! composition could be presented on its own UsdStage, at the same (or not)
+//! time that it is participating in the larger composition on its own UsdStage;
+//! all of the underlying layers will be shared by the two stages, while each
+//! maintains its own scenegraph of composed prims.
+//!
+//! A UsdStage has sole ownership over the UsdPrim 's with which it is
+//! populated, and retains shared ownership (with other stages and direct
+//! clients of SdfLayer's, via the Sdf_LayerRegistry that underlies all SdfLayer
+//! creation methods) of layers. It provides roughly five categories of API that
+//! address different aspects of scene management:
 
-use cpp::cpp;
+//! - Stage lifetime management methods for constructing and initially populating
+//! a UsdStage from an existing layer file, or one that will be created as a
+//! result, in memory or on the filesystem.
+//! - Load/unload working set management methods that allow you to specify which
+//! payloads should be included and excluded from the stage's composition.
+//! - Variant management methods to manage policy for which variant to use when
+//! composing prims that provide a named variant set, but do not specify a
+//! selection.
+//! - Prim access, creation, and mutation methods that allow you to find, create,
+//! or remove a prim identified by a path on the stage. This group also provides
+//! methods for efficiently traversing the prims on the stage.
+//! - Layers and EditTargets methods provide access to the layers in the stage's
+//! root LayerStack (i.e. the root layer and all of its recursive sublayers),
+//! and the ability to set a UsdEditTarget into which all subsequent mutations
+//! to objects associated with the stage (e.g. prims, properties, etc) will go.
+//! - Serialization methods for "flattening" a composition (to varying degrees),
+//! and exporting a completely flattened view of the stage to a string or file.
+//! These methods can be very useful for targetted asset optimization and
+//! debugging, though care should be exercized with large scenes, as flattening
+//! defeats some of the benefits of referenced scene description, and may
+//! produce very large results, especially in file formats that do not support
+//! data de-duplication, like the usda ASCII format!
+
+//------------------------------------------------------------------------------
+use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -15,23 +55,10 @@ cpp! {{
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/usd/usd/stage.h"
     #pragma GCC diagnostic pop
-
-    // Ensure the size and alignment of the c++ type matches the rust type
-    static_assert(sizeof(pxr::UsdStageRefPtr) == 8, "pxr::UsdStageRefPtr size does not match");
-    static_assert(alignof(pxr::UsdStageRefPtr) == 8, "pxr::UsdStageRefPtr alignment does not match");
 }}
-static_assertions::const_assert_eq!(std::mem::size_of::<Stage>(), 8); // Stage size does not match
-static_assertions::const_assert_eq!(std::mem::align_of::<Stage>(), 8); // Stage alignement does not match
 
-//------------------------------------------------------------------------------
-type TfRefBase = core::ffi::c_void;
-
-// This is really just a typedef.
-#[derive(Clone)]
-#[repr(C)]
-struct TfRefPtr {
-    ref_base: *mut TfRefBase,
-}
+use crate::pxr::sdf;
+use crate::pxr::tf;
 
 //------------------------------------------------------------------------------
 #[repr(C)]
@@ -78,52 +105,7 @@ impl Default for InMemoryDescriptor {
 }
 
 //------------------------------------------------------------------------------
-/// The outermost container for scene description, which owns and presents
-/// composed prims as a scenegraph, following the composition recipe recursively
-/// described in its associated "root layer".
-///
-/// USD derives its persistent-storage scalability by combining and reusing
-/// simple compositions into richer aggregates using referencing and layering
-/// with sparse overrides. Ultimately, every composition (i.e. "scene") is
-/// identifiable by its root layer, i.e. the .usd file, and a scene is
-/// instantiated in an application on a UsdStage that presents a composed view
-/// of the scene's root layer. Each simple composition referenced into a larger
-/// composition could be presented on its own UsdStage, at the same (or not)
-/// time that it is participating in the larger composition on its own UsdStage;
-/// all of the underlying layers will be shared by the two stages, while each
-/// maintains its own scenegraph of composed prims.
-///
-/// A UsdStage has sole ownership over the UsdPrim 's with which it is
-/// populated, and retains shared ownership (with other stages and direct
-/// clients of SdfLayer's, via the Sdf_LayerRegistry that underlies all SdfLayer
-/// creation methods) of layers. It provides roughly five categories of API that
-/// address different aspects of scene management:
-
-/// - Stage lifetime management methods for constructing and initially populating
-/// a UsdStage from an existing layer file, or one that will be created as a
-/// result, in memory or on the filesystem.
-/// - Load/unload working set management methods that allow you to specify which
-/// payloads should be included and excluded from the stage's composition.
-/// - Variant management methods to manage policy for which variant to use when
-/// composing prims that provide a named variant set, but do not specify a
-/// selection.
-/// - Prim access, creation, and mutation methods that allow you to find, create,
-/// or remove a prim identified by a path on the stage. This group also provides
-/// methods for efficiently traversing the prims on the stage.
-/// - Layers and EditTargets methods provide access to the layers in the stage's
-/// root LayerStack (i.e. the root layer and all of its recursive sublayers),
-/// and the ability to set a UsdEditTarget into which all subsequent mutations
-/// to objects associated with the stage (e.g. prims, properties, etc) will go.
-/// - Serialization methods for "flattening" a composition (to varying degrees),
-/// and exporting a completely flattened view of the stage to a string or file.
-/// These methods can be very useful for targetted asset optimization and
-/// debugging, though care should be exercized with large scenes, as flattening
-/// defeats some of the benefits of referenced scene description, and may
-/// produce very large results, especially in file formats that do not support
-/// data de-duplication, like the usda ASCII format!
-pub struct Stage {
-    this: TfRefPtr,
-}
+cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 
 //------------------------------------------------------------------------------
 impl Stage {
@@ -133,41 +115,35 @@ impl Stage {
 
         let identifier_str = identifier.as_ptr() as *const std::os::raw::c_char;
 
-        let this = unsafe {
-            cpp!([identifier_str as "const char *"] -> TfRefPtr as "pxr::UsdStageRefPtr" {
+        unsafe {
+            cpp!([identifier_str as "const char *"] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateNew(std::string(identifier_str));
             })
-        };
-
-        Self { this }
+        }
     }
 
     pub fn create_in_memory(_desc: InMemoryDescriptor) -> Self {
-        let this = unsafe {
-            cpp!([] -> TfRefPtr as "pxr::UsdStageRefPtr" {
+        unsafe {
+            cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
             })
-        };
-
-        Self { this }
+        }
     }
 
     pub fn save(&self) {
-        let data = self.this.clone();
         unsafe {
-            cpp!([data as "pxr::UsdStageRefPtr"] {
-                data->Save();
+            cpp!([self as "const pxr::UsdStageRefPtr *"] {
+                (*self)->Save();
             })
-        }
+        };
     }
 
     pub fn export(&self) {
-        let data = self.this.clone();
         unsafe {
-            cpp!([data as "pxr::UsdStageRefPtr"] {
-                data->Export("test_out.usda");
+            cpp!([self as "const pxr::UsdStageRefPtr *"] {
+                (*self)->Export("test_out.usda");
             })
-        }
+        };
     }
 
     pub fn define_prim(_path: &sdf::Path, _type_name: tf::Token) {}

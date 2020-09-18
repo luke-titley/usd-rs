@@ -2,7 +2,6 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
-
 //! Token for efficient comparison, assignment, and hashing of known strings.
 //!
 //! A TfToken is a handle for a registered string, and can be compared,
@@ -45,6 +44,5 @@ cpp! {{
     #include "pxr/base/tf/token.h"
     #pragma GCC diagnostic pop
 }}
-
 
 cpp_class!(pub unsafe struct Token as "pxr::TfToken");
