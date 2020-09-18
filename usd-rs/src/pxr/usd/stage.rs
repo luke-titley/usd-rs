@@ -14,13 +14,19 @@ cpp! {{
     #include "pxr/usd/usd/stage.h"
     #pragma GCC diagnostic pop
 
+    // Ensure the size and alignment of the c++ type matches the rust type
+    static_assert(sizeof(pxr::UsdStageRefPtr) == 8, "pxr::UsdStageRefPtr size does not match");
+    static_assert(alignof(pxr::UsdStageRefPtr) == 8, "pxr::UsdStageRefPtr alignment does not match");
 }}
+static_assertions::const_assert_eq!(std::mem::size_of::<Stage>(), 8); // Stage size does not match
+static_assertions::const_assert_eq!(std::mem::align_of::<Stage>(), 8); // Stage alignement does not match
 
 //------------------------------------------------------------------------------
 type TfRefBase = core::ffi::c_void;
 
 // This is really just a typedef.
 #[derive(Clone)]
+#[repr(C)]
 struct TfRefPtr {
     ref_base: *mut TfRefBase,
 }

@@ -16,6 +16,7 @@ crate-type = ["dylib"]
 [dependencies]
 usd-cpp = {path="../usd-cpp", version="0.1.0"} # We need this for the libs at link time
 cpp = "0.5"
+static_assertions = "1.1.0"
 
 [build-dependencies]
 usd-cpp = {path="../usd-cpp", version="0.1.0"} # We need this for the headers at build time
