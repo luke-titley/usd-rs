@@ -24,6 +24,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     
     println!("Downloading dependencies and building USD c++ library");
 
+    /*
     // Run the command to build the python c++ library
     let result = Command::new("python")
         .arg(script_dir)
@@ -52,6 +53,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
         .unwrap();
 
     assert!(result.success());
+    */
 
     let lib = std::path::PathBuf::from("usd_ms");
 
@@ -61,15 +63,14 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     [include_dir, lib_dir, lib]
 }
 
-fn write_lib_info(info: [std::path::PathBuf; 3]) {
+fn write_lib_info(out_dir: &std::path::PathBuf, info: [std::path::PathBuf; 3]) {
 
     // Make sure the source directory exists
-    let src_path = std::path::PathBuf::from("src");
-    let mut lib_path = src_path.clone();
-    lib_path.push("lib.rs");
+    let mut locations_path = out_dir.clone();
+    locations_path.push("locations.rs");
 
     write!(
-        std::fs::File::create(lib_path).unwrap(),
+        std::fs::File::create(locations_path).unwrap(),
         "\
 pub const INCLUDE : &str = \"{}\"; \n\
 pub const LIBS : &str = \"{}\"; \n\
@@ -91,5 +92,5 @@ fn main() {
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
 
     // Build the usd cpp library
-    write_lib_info(build_cpp_usd(&out_dir));
+    write_lib_info(&out_dir, build_cpp_usd(&out_dir));
 }
