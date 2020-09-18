@@ -20,17 +20,9 @@ cpp! {{
 type TfRefBase = core::ffi::c_void;
 
 // This is really just a typedef.
+#[derive(Clone)]
 struct TfRefPtr {
     ref_base: *mut TfRefBase,
-}
-
-impl std::clone::Clone for TfRefPtr {
-    fn clone(&self) -> Self {
-        let new_ref_base = unsafe { self.ref_base.clone() };
-        Self {
-            ref_base: new_ref_base,
-        }
-    }
 }
 
 //------------------------------------------------------------------------------
@@ -97,8 +89,7 @@ pub struct Stage {
     this: TfRefPtr,
 }
 
-type void = core::ffi::c_void;
-
+//------------------------------------------------------------------------------
 impl Stage {
     pub fn create_in_memory(load: InitialLoadSet) -> Self {
         let this = unsafe {
