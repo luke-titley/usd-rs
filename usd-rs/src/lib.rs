@@ -1,6 +1,5 @@
 use cpp::cpp;
 
-/*
 cpp! {{
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -75,4 +74,3 @@ mod tests {
         stage.export();
     }
 }
-*/

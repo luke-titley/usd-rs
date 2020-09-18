@@ -40,18 +40,17 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     // The lib directory
     let mut lib_dir = cpp_out_dir.clone();
-    lib_dir.push("lib");
-
-    // The include directory
-    let mut include_dir = cpp_out_dir.clone();
-    include_dir.push("include");
-
     /*
     lib_dir.push("build");
     lib_dir.push("USD");
     lib_dir.push("pxr");
     */
+    lib_dir.push("lib");
 
+    // The include directory
+    let mut include_dir = cpp_out_dir.clone();
+    include_dir.push("include");
+    
     println!("Downloading dependencies and building USD c++ library");
     // Run the command to build the python c++ library
     let result = Command::new("python")
