@@ -168,6 +168,5 @@ impl Stage {
         }
     }
 
-    pub fn define_prim() {
-    }
+    pub fn define_prim() {}
 }
