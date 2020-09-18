@@ -1,7 +1,7 @@
 [package]
 name = "usd-cpp"
 version = "0.1.0"
-authors = ["Luke Titley <from+usd_rs@luketitley.com>"]
+authors = ["Luke Titley <from+crates_io@luketitley.com>"]
 edition = "2018"
 license = "Apache-2.0"
 description = "Downloads and builds the cpp shared libraries for USD, see usd-rs"
