@@ -48,7 +48,7 @@ cpp! {{
 cpp_class!(pub unsafe struct Token as "pxr::TfToken");
 
 impl From<&str> for Token {
-    fn from(value : &str) -> Self {
+    fn from(value: &str) -> Self {
         let value = std::ffi::CString::new(value)
             .expect("Unable to convert token value str to CString");
 
