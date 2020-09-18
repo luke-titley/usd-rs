@@ -3,6 +3,7 @@
 members = [
     "usd-cpp",
     "usd-rs",
+    "usd-test",
 ]
 
 exclude = [
