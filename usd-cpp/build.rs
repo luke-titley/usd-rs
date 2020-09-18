@@ -1,30 +1,6 @@
 use std::io::prelude::*;
 use std::process::Command;
 
-/*
-python thirdparty/USD/build_scripts/build_usd.py
---build-monolithic
---no-tests
---no-examples
---no-tutorials
---no-tools
---no-docs
---no-python
---no-imaging
---no-ptex
---no-openvdb
---no-usdview
---no-embree
---no-prman
---no-openimageio
---no-opencolorio
---no-alembic
---no-hdf5
---no-draco
---no-materialx
-./
-*/
-
 fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // The script directory
     let mut script_dir = std::path::PathBuf::from(std::env::current_dir().unwrap());
@@ -40,11 +16,6 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     // The lib directory
     let mut lib_dir = cpp_out_dir.clone();
-    /*
-    lib_dir.push("build");
-    lib_dir.push("USD");
-    lib_dir.push("pxr");
-    */
     lib_dir.push("lib");
 
     // The include directory
@@ -52,6 +23,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     include_dir.push("include");
     
     println!("Downloading dependencies and building USD c++ library");
+
     // Run the command to build the python c++ library
     let result = Command::new("python")
         .arg(script_dir)
@@ -111,7 +83,9 @@ pub const LIB : &str = \"{}\"; \n\
 
 fn main() {
     // Only run this build job if the USD source directory has changed
-    println!("cargo:rerun-if-changed=thirdparty/USD");
+    let mut thirdparty_usd = std::path::PathBuf::from("thirdparty");
+    thirdparty_usd.push("USD");
+    println!("cargo:rerun-if-changed={}", thirdparty_usd.to_str().unwrap());
 
     // The out directory of the build
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
