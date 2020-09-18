@@ -1,10 +1,13 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+#[cfg(test)]
+mod tests {
+    use crate::pxr::usd::stage::*;
 
-mod stage;
-
-mod test_stage;
-
-//------------------------------------------------------------------------------
-pub use stage::Stage;
+    #[test]
+    fn test_stage() {
+        let stage = Stage::create_in_memory(InMemoryDescriptor::default());
+        stage.export();
+    }
+}

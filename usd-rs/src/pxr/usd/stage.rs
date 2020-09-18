@@ -35,9 +35,41 @@ pub enum InitialLoadSet {
     LoadNone = 1,
 }
 
-impl Default for InitialLoadSet {
+//------------------------------------------------------------------------------
+pub struct Descriptor<'a> {
+    _identifier : &'a str,
+    _load : Option<InitialLoadSet>,
+}
+
+impl<'a> From<&'a str> for Descriptor<'a> {
+    fn from(identifier : &'a str) -> Self {
+        Self {
+            _identifier : identifier,
+            _load : None,
+            // TODO : session_layer
+            // TODO : path_resolver_context
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+pub struct InMemoryDescriptor {
+    _load : Option<InitialLoadSet>,
+}
+
+impl From<InitialLoadSet> for InMemoryDescriptor {
+    fn from(load : InitialLoadSet) -> Self {
+        Self {
+            _load : Some(load),
+        }
+    }
+}
+
+impl Default for InMemoryDescriptor {
     fn default() -> Self {
-        InitialLoadSet::LoadAll
+        Self {
+            _load : None,
+        }
     }
 }
 
@@ -91,10 +123,12 @@ pub struct Stage {
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_in_memory(load: InitialLoadSet) -> Self {
+    pub fn create_new<'a>(_desc : Descriptor<'a>){}
+
+    pub fn create_in_memory(_desc : InMemoryDescriptor) -> Self {
         let this = unsafe {
-            cpp!([load as "pxr::UsdStage::InitialLoadSet"] -> TfRefPtr as "pxr::UsdStageRefPtr" {
-                return pxr::UsdStage::CreateInMemory(load);
+            cpp!([] -> TfRefPtr as "pxr::UsdStageRefPtr" {
+                return pxr::UsdStage::CreateInMemory();
             })
         };
 
@@ -108,16 +142,5 @@ impl Stage {
                 data->Export("test_out.usda");
             })
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_stage() {
-        let stage = Stage::create_in_memory(InitialLoadSet::default());
-        stage.export();
     }
 }
