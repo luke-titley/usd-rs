@@ -1,6 +1,9 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+use super::value_type_name::ValueTypeName;
+use crate::pxr::tf;
+
 use cpp::*;
 
 cpp! {{
@@ -22,6 +25,15 @@ impl Schema {
         unsafe {
             cpp!([] -> & Schema as "const pxr::SdfSchema*" {
                 return &pxr::SdfSchema::GetInstance();
+            })
+        }
+    }
+
+    pub fn find_type(&self, type_name: &tf::Token) -> ValueTypeName {
+        unsafe {
+            cpp!([self as "const pxr::SdfSchema*", type_name as "pxr::TfToken*"]
+                -> ValueTypeName as "pxr::SdfValueTypeName" {
+                return self->FindType(*type_name);
             })
         }
     }
