@@ -1,6 +1,23 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+use super::pointer_and_bits::PointerAndBits;
+
+use cpp::cpp;
+
+cpp! {{
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-parameter"
+    #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #include "pxr/base/tf/token.h"
+    #pragma GCC diagnostic pop
+
+    // Ensure the size and alignment of the c++ type matches the rust type
+    static_assert(sizeof(pxr::TfToken) == 8, "pxr::TfToken size does not match");
+    static_assert(alignof(pxr::TfToken) == 8, "pxr::TfToken alignment does not match");
+}}
+static_assertions::const_assert_eq!(std::mem::size_of::<Token>(), 8); // Token size does not match
+static_assertions::const_assert_eq!(std::mem::align_of::<Token>(), 8); // Token alignement does not match
 
 /// Token for efficient comparison, assignment, and hashing of known strings.
 ///
@@ -35,10 +52,13 @@
 /// use the explicit TfToken constructors). However, auto conversion from
 /// TfToken to string and char* is provided.
 ///
-pub struct Token {}
+pub struct Token {
+    _rep: PointerAndBits,
+}
 
-impl Token {
-    pub fn new() -> Self {
-        Self {}
+/*
+impl Default for Token {
+    fn default() -> Self {
     }
 }
+*/

@@ -4,6 +4,8 @@
 
 //! This contains everything you need for working with a usd stage, the main
 //! point of entry into the usd library.
+use crate::sdf;
+use crate::tf;
 
 use cpp::cpp;
 
@@ -168,5 +170,5 @@ impl Stage {
         }
     }
 
-    pub fn define_prim() {}
+    pub fn define_prim(path: &sdf::Path, type_name: tf::Token) {}
 }
