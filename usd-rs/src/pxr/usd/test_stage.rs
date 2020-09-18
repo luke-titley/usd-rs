@@ -7,10 +7,8 @@ mod tests {
 
     #[test]
     fn test_new() {
-        /*
         let stage = Stage::create_new(Descriptor::from("test.usda"));
         stage.save();
-        */
     }
 
     #[test]
