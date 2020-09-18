@@ -24,7 +24,6 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     
     println!("Downloading dependencies and building USD c++ library");
 
-    /*
     // Run the command to build the python c++ library
     let result = Command::new("python")
         .arg(script_dir)
@@ -53,7 +52,6 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
         .unwrap();
 
     assert!(result.success());
-    */
 
     let lib = std::path::PathBuf::from("usd_ms");
 
