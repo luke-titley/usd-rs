@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+#[cfg(test)]
+mod tests {
+    use crate::pxr::sdf::*;
 
-mod attribute;
-mod prim;
-mod stage;
-mod test_stage;
-
-//------------------------------------------------------------------------------
-pub use attribute::*;
-pub use prim::*;
-pub use stage::*;
+    #[test]
+    fn test_get_instance() {
+        Schema::get_instance();
+        //Path::from("/root/world/stuff");
+    }
+}

@@ -74,8 +74,8 @@ pub enum InitialLoadSet {
 
 //------------------------------------------------------------------------------
 pub struct Descriptor<'a> {
-    identifier: &'a str,
-    _load: Option<InitialLoadSet>,
+    pub identifier: &'a str,
+    pub _load: Option<InitialLoadSet>,
 }
 
 impl<'a> From<&'a str> for Descriptor<'a> {
@@ -91,7 +91,7 @@ impl<'a> From<&'a str> for Descriptor<'a> {
 
 //------------------------------------------------------------------------------
 pub struct InMemoryDescriptor {
-    _load: Option<InitialLoadSet>,
+    pub _load: Option<InitialLoadSet>,
 }
 
 impl From<InitialLoadSet> for InMemoryDescriptor {

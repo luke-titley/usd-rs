@@ -3,6 +3,8 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+use crate::pxr::sdf;
+use crate::pxr::tf;
 use cpp::*;
 
 cpp! {{
@@ -14,4 +16,15 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
+pub struct AttributeDescriptor<'a> {
+    pub name: tf::Token,
+    pub _type_name: Option<&'a sdf::ValueTypeName>,
+    //variability: Option<sdf::Variability>, // TODO
+}
+
+//------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
+
+impl Prim {
+    pub fn create_attribute(&self, _desc: AttributeDescriptor) {}
+}
