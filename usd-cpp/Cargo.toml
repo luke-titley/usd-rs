@@ -10,7 +10,7 @@ exclude = [
     "*testenv*",
     "*.exr",
     "*.usdc",
-    "thirdparty/USD/extras",
+    #"thirdparty/USD/extras",
 ]
 
 [lib]
