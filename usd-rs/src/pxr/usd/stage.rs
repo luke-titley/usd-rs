@@ -60,6 +60,8 @@ cpp! {{
 use crate::pxr::sdf;
 use crate::pxr::tf;
 
+use crate::pxr::usd::prim::Prim;
+
 //------------------------------------------------------------------------------
 #[repr(C)]
 /// Specifies the initial set of prims to load when opening a UsdStage
@@ -146,5 +148,13 @@ impl Stage {
         };
     }
 
-    pub fn define_prim(_path: &sdf::Path, _type_name: tf::Token) {}
+    pub fn define_prim(&self, path: &sdf::Path, type_name: &tf::Token) -> Prim {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                  path as "const pxr::SdfPath *",
+                  type_name as "const pxr::TfToken *"] -> Prim as "pxr::UsdPrim" {
+                return (*self)->DefinePrim(*path, *type_name);
+            })
+        }
+    }
 }

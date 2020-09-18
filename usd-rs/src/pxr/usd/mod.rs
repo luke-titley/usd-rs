@@ -2,6 +2,7 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
+mod prim;
 mod stage;
 mod test_stage;
 
