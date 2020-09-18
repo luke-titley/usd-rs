@@ -73,12 +73,12 @@ pub enum InitialLoadSet {
 }
 
 //------------------------------------------------------------------------------
-pub struct Descriptor<'a> {
+pub struct StageDescriptor<'a> {
     pub identifier: &'a str,
     pub _load: Option<InitialLoadSet>,
 }
 
-impl<'a> From<&'a str> for Descriptor<'a> {
+impl<'a> From<&'a str> for StageDescriptor<'a> {
     fn from(identifier: &'a str) -> Self {
         Self {
             identifier,
@@ -90,17 +90,17 @@ impl<'a> From<&'a str> for Descriptor<'a> {
 }
 
 //------------------------------------------------------------------------------
-pub struct InMemoryDescriptor {
+pub struct StageInMemoryDescriptor {
     pub _load: Option<InitialLoadSet>,
 }
 
-impl From<InitialLoadSet> for InMemoryDescriptor {
+impl From<InitialLoadSet> for StageInMemoryDescriptor {
     fn from(load: InitialLoadSet) -> Self {
         Self { _load: Some(load) }
     }
 }
 
-impl Default for InMemoryDescriptor {
+impl Default for StageInMemoryDescriptor {
     fn default() -> Self {
         Self { _load: None }
     }
@@ -111,7 +111,7 @@ cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_new<'a>(desc: Descriptor<'a>) -> Self {
+    pub fn create_new<'a>(desc: StageDescriptor<'a>) -> Self {
         let identifier = std::ffi::CString::new(desc.identifier)
             .expect("Unable to convert identifier to CString");
 
@@ -124,7 +124,7 @@ impl Stage {
         }
     }
 
-    pub fn create_in_memory(_desc: InMemoryDescriptor) -> Self {
+    pub fn create_in_memory(_desc: StageInMemoryDescriptor) -> Self {
         unsafe {
             cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();

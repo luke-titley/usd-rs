@@ -3,8 +3,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-use crate::pxr::sdf;
-use crate::pxr::tf;
+//use crate::pxr::sdf;
 use crate::pxr::usd::attribute::*;
 use cpp::*;
 
@@ -15,13 +14,6 @@ cpp! {{
     #include "pxr/usd/usd/prim.h"
     #pragma GCC diagnostic pop
 }}
-
-//------------------------------------------------------------------------------
-pub struct AttributeDescriptor {
-    pub name: tf::Token,
-    pub type_name: sdf::ValueTypeName,
-    //variability: Option<sdf::Variability>, // TODO
-}
 
 //------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
