@@ -6,6 +6,10 @@ edition = "2018"
 license = "Apache-2.0"
 description = "Downloads and builds the cpp shared libraries for USD, see usd-rs"
 repository = "https://github.com/luke-titley/usd-rs"
+exclude = [
+    "*testenv*",
+    "thirdparty/USD/extras",
+]
 
 [lib]
 crate-type = ["dylib"]
