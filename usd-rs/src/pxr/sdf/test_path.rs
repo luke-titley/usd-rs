@@ -3,11 +3,10 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
-    /*
-    use crate::pxr::usd::stage::*;
+    use crate::pxr::sdf::path::*;
 
     #[test]
-    fn test_new() {
+    fn test_from_str() {
+        Path::from("/root/world/stuff");
     }
-    */
 }
