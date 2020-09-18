@@ -1,7 +1,7 @@
 [package]
 name = "usd"
 version = "0.1.0"
-authors = ["Luke Titley <luke@titley.com>"]
+authors = ["Luke Titley <from+usd_rs@luketitley.com>"]
 edition = "2018"
 
 [lib]
