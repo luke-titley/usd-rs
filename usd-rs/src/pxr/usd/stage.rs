@@ -167,4 +167,7 @@ impl Stage {
             })
         }
     }
+
+    pub fn define_prim() {
+    }
 }
