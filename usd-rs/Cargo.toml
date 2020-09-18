@@ -10,9 +10,9 @@ crate-type = ["dylib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-usd-cpp = {path="../usd-cpp"} # We need this for the libs to link against
+usd-cpp = {path="../usd-cpp", version="0.1.0"} # We need this for the libs at link time
 cpp = "0.5"
 
 [build-dependencies]
-usd-cpp = {path="../usd-cpp"} # We need this for the headers at build time
+usd-cpp = {path="../usd-cpp", version="0.1.0"} # We need this for the headers at build time
 cpp_build = "0.5"
