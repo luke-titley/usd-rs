@@ -5,3 +5,4 @@
 pub mod sdf;
 pub mod tf;
 pub mod usd;
+pub mod vt;
