@@ -62,10 +62,10 @@ mod tests {
         let attr = prim.create_attribute(AttributeDescriptor {
             name: tf::Token::from("lukes_attr"),
             type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from("int")),
+                .find_type(&tf::Token::from("uint")),
         });
 
-        attr.set(&vt::Value::default(), TimeCode::default());
+        attr.set(&vt::Value::from(&123u32), TimeCode::default());
 
         stage.save();
     }

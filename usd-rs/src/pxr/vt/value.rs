@@ -90,3 +90,33 @@ cpp! {{
 
 //------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct Value as "pxr::VtValue");
+
+impl From<&bool> for Value {
+    fn from(other : &bool) -> Self {
+        unsafe {
+            cpp!([other as "const bool *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl From<&u8> for Value {
+    fn from(other : &u8) -> Self {
+        unsafe {
+            cpp!([other as "const uint8_t *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl From<&u32> for Value {
+    fn from(other : &u32) -> Self {
+        unsafe {
+            cpp!([other as "const uint32_t *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
