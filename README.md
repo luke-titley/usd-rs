@@ -23,3 +23,10 @@ The USD library uses cmake, and obviously we are going to need a c++ compiler.
 
 Perhaps in the future, it might be possible to port a subset of build_usd.py to
 our build.rs and so remove the python dependency.
+
+# The method
+I'm using cpp crate for these bindings instead of cbindgen. At the time I tried out
+cbindgen (16/9/2020) it was unable to parse USD without panicking. On top of that, cbindgen
+produces a sys level crate which you use as a foundation for an ergonomic/safe hand written api.
+The cpp crate allows you to write your safe api directly on top of the cpp library, and so
+far it's been a good experience.
