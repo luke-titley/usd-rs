@@ -18,7 +18,7 @@ cpp! {{
 cpp_class!(pub unsafe struct TimeCode as "pxr::UsdTimeCode");
 
 impl From<f64> for TimeCode {
-    fn from(t : f64) -> Self {
+    fn from(t: f64) -> Self {
         unsafe {
             cpp!([t as "double"] -> TimeCode as "pxr::UsdTimeCode" {
                 return pxr::UsdTimeCode(t);

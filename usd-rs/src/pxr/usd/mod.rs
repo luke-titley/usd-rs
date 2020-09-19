@@ -5,8 +5,8 @@
 mod attribute;
 mod prim;
 mod stage;
-mod time_code;
 mod test_stage;
+mod time_code;
 
 //------------------------------------------------------------------------------
 pub use attribute::*;

@@ -5,8 +5,8 @@
 mod tests {
     use crate::pxr::sdf;
     use crate::pxr::tf;
-    use crate::pxr::usd;
-    use crate::pxr::usd::stage::*;
+    use crate::pxr::usd::*;
+    use crate::pxr::vt;
 
     #[test]
     fn test_new() {
@@ -41,11 +41,32 @@ mod tests {
             &tf::Token::default(),
         );
 
-        prim.create_attribute(usd::AttributeDescriptor {
+        prim.create_attribute(AttributeDescriptor {
             name: tf::Token::from("lukes_attr"),
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::from("int")),
         });
+
+        stage.save();
+    }
+
+    #[test]
+    fn test_set_attribute() {
+        let stage = Stage::create_new(StageDescriptor::from(
+            "test_attribute_prim.usda",
+        ));
+        let prim = stage.define_prim(
+            &sdf::Path::from("/root/world/test"),
+            &tf::Token::default(),
+        );
+
+        let attr = prim.create_attribute(AttributeDescriptor {
+            name: tf::Token::from("lukes_attr"),
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::from("int")),
+        });
+
+        attr.set(&vt::Value::default(), TimeCode::default());
 
         stage.save();
     }
