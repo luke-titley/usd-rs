@@ -52,9 +52,8 @@ mod tests {
 
     #[test]
     fn test_set_attribute() {
-        let stage = Stage::create_new(StageDescriptor::from(
-            "test_attribute_prim.usda",
-        ));
+        let stage =
+            Stage::create_new(StageDescriptor::from("set_attribute_prim.usda"));
         let prim = stage.define_prim(
             &sdf::Path::from("/root/world/test"),
             &tf::Token::default(),
