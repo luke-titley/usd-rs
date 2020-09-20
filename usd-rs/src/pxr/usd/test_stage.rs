@@ -62,10 +62,14 @@ mod tests {
         let attr = prim.create_attribute(AttributeDescriptor {
             name: tf::Token::from("lukes_attr"),
             type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from("uint")),
+                .find_type(&tf::Token::from("bool")),
         });
 
-        attr.set(&vt::Value::from(&123u32), TimeCode::default());
+        attr.set(&vt::Value::from(&true), TimeCode::default());
+
+        let mut value = vt::Value::default();
+        attr.get(&mut value, TimeCode::default());
+        println!("The attribute value is {}", value.as_ref());
 
         stage.save();
     }

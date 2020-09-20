@@ -92,7 +92,7 @@ cpp! {{
 cpp_class!(pub unsafe struct Value as "pxr::VtValue");
 
 impl From<&bool> for Value {
-    fn from(other : &bool) -> Self {
+    fn from(other: &bool) -> Self {
         unsafe {
             cpp!([other as "const bool *"] -> Value as "pxr::VtValue" {
                 return pxr::VtValue(*other);
@@ -101,6 +101,17 @@ impl From<&bool> for Value {
     }
 }
 
+impl AsRef<bool> for Value {
+    fn as_ref(&self) -> &bool {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> &bool as "const bool *" {
+                return &(self->Get<bool>());
+            })
+        }
+    }
+}
+
+/*
 impl From<&u8> for Value {
     fn from(other : &u8) -> Self {
         unsafe {
@@ -119,4 +130,4 @@ impl From<&u32> for Value {
             })
         }
     }
-}
+}*/
