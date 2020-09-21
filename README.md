@@ -37,8 +37,13 @@ produces a sys level crate which you use as a foundation for an ergonomic/safe h
 The cpp crate allows you to write your safe api directly on top of the cpp library, and so
 far it's been a good experience.
 
-# Why not cxx crate? 'https://github.com/dtolnay/cxx'
+# Why not [cxx](https://github.com/dtolnay/cxx) crate?
 I didn't know about it until I was a good way through.
+It's not finished yet.
+The cpp crate is really awesome and easy to use.
+Limitation of cpp crate is that it's difficult to manage c++ objects that are
+not relocatable. Thankfully, usd uses a lot of shared pointers, so it's not
+a big deal.
 
 # Adding a new basic type.
 The attribute types supported by USD are finite and rarely change. However
