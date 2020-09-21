@@ -316,7 +316,7 @@ cpp! {{
 // to reduce the number of times the conversions need to be done.
 
 #[repr(transparent)]
-pub struct String(std::ffi::CStr);
+pub struct String(pub std::ffi::CStr);
 
 impl From<&std::ffi::CStr> for &String {
     fn from(other : &std::ffi::CStr) -> Self {

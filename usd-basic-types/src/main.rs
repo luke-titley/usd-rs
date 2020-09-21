@@ -58,7 +58,7 @@ const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 29] = [
     ("Float", "f32", "float", None),
     ("Double", "f64", "double", None),
     ("TimeCode", "crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/usd/sdf/timeCode.h")),
-    // string, std::string // TODO,
+    // string, std::string // Implemented manually, below.
     ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")),
     // asset, SdfAssetPath // TODO
     ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h")),
@@ -176,7 +176,7 @@ cpp! {{{{
 // to reduce the number of times the conversions need to be done.
 
 #[repr(transparent)]
-pub struct String(std::ffi::CStr);
+pub struct String(pub std::ffi::CStr);
 
 impl From<&std::ffi::CStr> for &String {{
     fn from(other : &std::ffi::CStr) -> Self {{

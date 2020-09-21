@@ -31,6 +31,9 @@ produces a sys level crate which you use as a foundation for an ergonomic/safe h
 The cpp crate allows you to write your safe api directly on top of the cpp library, and so
 far it's been a good experience.
 
+# Why not cxx crate? 'https://github.com/dtolnay/cxx'
+I didn't know about it until I was a good way through.
+
 # Adding a new basic type.
 The attribute types supported by USD are finite and rarely change. However
 there are a lot of them, so we employ code generation to implement them. This is
