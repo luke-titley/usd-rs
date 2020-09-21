@@ -46,16 +46,39 @@
 /// other macros. So we have to perform the code generation of the AsRef and
 /// From trait implementations as a manual step. This isn't such a big deal
 /// as basic types are rarely added or removed.
-const BASIC_TYPES: [(&str, &str, Option<&str>); 9] = [
-    ("bool", "bool", None),
-    ("u8", "uint8_t", None),
-    ("i32", "int32_t", None),
-    ("u32", "uint32_t", None),
-    ("i64", "int64_t", None),
-    ("u64", "uint64_t", None),
-    ("f16", "pxr::GfHalf", Some("pxr/base/gf/half.h")),
-    ("f32", "float", None),
-    ("f64", "double", None),
+#[rustfmt::skip]
+const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 28] = [
+    ("Bool", "bool", "bool", None),
+    ("UChar", "u8", "uint8_t", None),
+    ("Int", "i32", "int32_t", None),
+    ("UInt", "u32", "uint32_t", None),
+    ("Int64", "i64", "int64_t", None),
+    ("UInt64", "u64", "uint64_t", None),
+    ("Half", "f16", "pxr::GfHalf", Some("pxr/base/gf/half.h")),
+    ("Float", "f32", "float", None),
+    ("Double", "f64", "double", None),
+    //("crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/base/sdf/timeCode.h")), // TODO
+    // std::string // TODO,
+    ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")), // TODO
+    // asset		SdfAssetPath	represents a resolvable path to another asset
+    ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h")),
+    ("Matrix3d", "[f64;3*3]", "pxr::GfMatrix3d", Some("pxr/base/gf/matrix3d.h")),
+    ("Matrix4d", "[f64;4*4]", "pxr::GfMatrix4d", Some("pxr/base/gf/matrix4d.h")),
+    ("Quatd", "[f64;4]", "pxr::GfQuatd", Some("pxr/base/gf/quatd.h")),
+    ("Quatf", "[f32;4]","pxr::GfQuatf", Some("pxr/base/gf/quatf.h")),
+    ("Quath", "[f16;4]", "pxr::GfQuath", Some("pxr/base/gf/quath.h")),
+    ("Vec2d", "[f64;2]", "pxr::GfVec2d", Some("pxr/base/gf/vec2d.h")),
+    ("Vec2f", "[f32;2]", "pxr::GfVec2f", Some("pxr/base/gf/vec2f.h")),
+    ("Vec2h", "[f16;2]", "pxr::GfVec2h", Some("pxr/base/gf/vec2h.h")),
+    ("Vec2i", "[i32;2]", "pxr::GfVec2i", Some("pxr/base/gf/vec2i.h")),
+    ("Vec3d", "[f64;3]", "pxr::GfVec3d", Some("pxr/base/gf/vec3d.h")),
+    ("Vec3f", "[f32;3]", "pxr::GfVec3f", Some("pxr/base/gf/vec3f.h")),
+    ("Vec3h", "[f16;3]", "pxr::GfVec3h", Some("pxr/base/gf/vec3h.h")),
+    ("Vec3i", "[i32;3]", "pxr::GfVec3i", Some("pxr/base/gf/vec3i.h")),
+    ("Vec4d", "[f64;4]", "pxr::GfVec4d", Some("pxr/base/gf/vec4d.h")),
+    ("Vec4f", "[f32;4]", "pxr::GfVec4f", Some("pxr/base/gf/vec4f.h")),
+    ("Vec4h", "[f16;4]", "pxr::GfVec4h", Some("pxr/base/gf/vec4h.h")),
+    ("Vec4i", "[i32;4]", "pxr::GfVec4i", Some("pxr/base/gf/vec4i.h")),
 ];
 
 /// Generate the code needed to get/set the basic types, using a vt::Value.
@@ -64,8 +87,15 @@ const BASIC_TYPES: [(&str, &str, Option<&str>); 9] = [
 fn generate_basic_types() {
     let headers: std::string::String = BASIC_TYPES
         .iter()
-        .filter(|(_, _, x)| x.is_some())
-        .map(|(_, _, x)| format!(r#"#include "{}"\n"#, x.unwrap()))
+        .filter(|(_, _, _, x)| x.is_some())
+        .map(|(_, _, _, x)| format!("    #include \"{}\"\n", x.unwrap()))
+        .collect();
+
+    let names: std::string::String = BASIC_TYPES
+        .iter()
+        .map(|(name, typ, _, x)| {
+            format!("pub struct {name}(pub {typ});\n", name = &name, typ = &typ)
+        })
         .collect();
 
     println!(
@@ -80,22 +110,26 @@ use cpp::*;
 
 use half::f16; // Half is not a standard rust type
 
+// To avoid a conflict between types, like vec4 and quat, we use named tuples.
+{names}
+
 cpp! {{{{
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/base/vt/value.h"
-    {headers}
+{headers}
     #pragma GCC diagnostic pop
 }}}}
 "#,
-        headers = &headers
+        headers = &headers,
+        names = &names,
     );
 
-    for (r, c, _) in BASIC_TYPES.iter() {
+    for (name, _, c, _) in BASIC_TYPES.iter() {
         println!(
-            r#"impl From<&{r}> for Value {{
-    fn from(other: &{r}) -> Self {{
+            r#"impl From<&{name}> for Value {{
+    fn from(other: &{name}) -> Self {{
         unsafe {{
             cpp!([other as "const {c} *"] -> Value as "pxr::VtValue" {{
                 return pxr::VtValue(*other);
@@ -104,16 +138,16 @@ cpp! {{{{
     }}
 }}
 
-impl AsRef<{r}> for Value {{
-    fn as_ref(&self) -> &{r} {{
+impl AsRef<{name}> for Value {{
+    fn as_ref(&self) -> &{name} {{
         unsafe {{
-            cpp!([self as "const pxr::VtValue *"] -> &{r} as "const {c} *" {{
+            cpp!([self as "const pxr::VtValue *"] -> &{name} as "const {c} *" {{
                 return &(self->Get<{c}>());
             }})
         }}
     }}
 }}"#,
-            r = r,
+            name = name,
             c = c
         );
     }
