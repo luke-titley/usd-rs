@@ -46,14 +46,14 @@
 /// other macros. So we have to perform the code generation of the AsRef and
 /// From trait implementations as a manual step. This isn't such a big deal
 /// as basic types are rarely added or removed.
-const BASIC_TYPES: [(&str, &str, Option<&str>); 8] = [
+const BASIC_TYPES: [(&str, &str, Option<&str>); 9] = [
     ("bool", "bool", None),
     ("u8", "uint8_t", None),
     ("i32", "int32_t", None),
     ("u32", "uint32_t", None),
     ("i64", "int64_t", None),
     ("u64", "uint64_t", None),
-    //("f16", "GfHalf", None),
+    ("f16", "pxr::GfHalf", Some("pxr/base/gf/half.h")),
     ("f32", "float", None),
     ("f64", "double", None),
 ];
@@ -62,6 +62,12 @@ const BASIC_TYPES: [(&str, &str, Option<&str>); 8] = [
 /// This is the code path that is used for getting the setting the values of
 /// an attribute.
 fn generate_basic_types() {
+    let headers: std::string::String = BASIC_TYPES
+        .iter()
+        .filter(|(_, _, x)| x.is_some())
+        .map(|(_, _, x)| format!(r#"#include "{}"\n"#, x.unwrap()))
+        .collect();
+
     println!(
         r#"//------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
@@ -79,9 +85,11 @@ cpp! {{{{
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/base/vt/value.h"
+    {headers}
     #pragma GCC diagnostic pop
 }}}}
-"#
+"#,
+        headers = &headers
     );
 
     for (r, c, _) in BASIC_TYPES.iter() {
