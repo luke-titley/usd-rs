@@ -30,3 +30,19 @@ cbindgen (16/9/2020) it was unable to parse USD without panicking. On top of tha
 produces a sys level crate which you use as a foundation for an ergonomic/safe hand written api.
 The cpp crate allows you to write your safe api directly on top of the cpp library, and so
 far it's been a good experience.
+
+# Adding a new basic type.
+The attribute types supported by USD are finite and rarely change. However
+there are a lot of them, so we employ code generation to implement them. This is
+handled by the usd-basic-types crate, which is an executable for generating all
+of the variants. We have to run this manually. All the types are listed in the
+BASIC_TYPES constant a the top of usd-basic-types/src/main.rs
+
+Add a new type to the constant BASIC_TYPES then run the below command.
+```rust
+cargo run --bin usd-basic-types > usd-rs/src/pxr/vt/basic_types.rs
+```
+
+## Why not use macros or build.rs?
+We rely on the cpp! macro from rust-cpp, we cannot use this macro inside of
+another macro.

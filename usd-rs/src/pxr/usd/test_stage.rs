@@ -6,7 +6,7 @@ mod tests {
     use crate::pxr::sdf;
     use crate::pxr::tf;
     use crate::pxr::usd::*;
-    use crate::pxr::vt;
+    //use crate::pxr::vt;
 
     #[test]
     fn test_new() {
@@ -59,17 +59,19 @@ mod tests {
             &tf::Token::default(),
         );
 
-        let attr = prim.create_attribute(AttributeDescriptor {
+        let _attr = prim.create_attribute(AttributeDescriptor {
             name: tf::Token::from("lukes_attr"),
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::from("bool")),
         });
 
+        /*
         attr.set(&vt::Value::from(&true), TimeCode::default());
 
         let mut value = vt::Value::default();
         attr.get(&mut value, TimeCode::default());
         println!("The attribute value is {}", value.as_ref());
+        */
 
         stage.save();
     }

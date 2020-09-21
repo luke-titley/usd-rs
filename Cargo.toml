@@ -4,6 +4,7 @@ members = [
     "usd-cpp",
     "usd-rs",
     "usd-examples",
+    "usd-basic-types"
 ]
 
 exclude = [
