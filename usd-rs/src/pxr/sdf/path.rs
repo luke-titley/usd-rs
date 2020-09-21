@@ -2,6 +2,7 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 use cpp::*;
+use std::ffi::CStr;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -13,11 +14,8 @@ cpp! {{
 
 cpp_class!(pub unsafe struct Path as "pxr::SdfPath");
 
-impl From<&str> for Path {
-    fn from(path: &str) -> Self {
-        let path = std::ffi::CString::new(path)
-            .expect("Unable to convert path to CString");
-
+impl From<&CStr> for Path {
+    fn from(path: &CStr) -> Self {
         let path_str = path.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {

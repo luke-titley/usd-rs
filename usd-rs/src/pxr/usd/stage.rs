@@ -74,12 +74,12 @@ pub enum InitialLoadSet {
 
 //------------------------------------------------------------------------------
 pub struct StageDescriptor<'a> {
-    pub identifier: &'a str,
+    pub identifier: &'a std::ffi::CStr,
     pub _load: Option<InitialLoadSet>,
 }
 
-impl<'a> From<&'a str> for StageDescriptor<'a> {
-    fn from(identifier: &'a str) -> Self {
+impl<'a> From<&'a std::ffi::CStr> for StageDescriptor<'a> {
+    fn from(identifier: &'a std::ffi::CStr) -> Self {
         Self {
             identifier,
             _load: None,
@@ -112,10 +112,8 @@ cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 //------------------------------------------------------------------------------
 impl Stage {
     pub fn create_new<'a>(desc: StageDescriptor<'a>) -> Self {
-        let identifier = std::ffi::CString::new(desc.identifier)
-            .expect("Unable to convert identifier to CString");
-
-        let identifier_str = identifier.as_ptr() as *const std::os::raw::c_char;
+        let identifier_str =
+            desc.identifier.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
             cpp!([identifier_str as "const char *"] -> Stage as "pxr::UsdStageRefPtr" {

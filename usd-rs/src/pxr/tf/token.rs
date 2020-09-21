@@ -35,8 +35,8 @@
 //! use the explicit TfToken constructors). However, auto conversion from
 //! TfToken to string and char* is provided.
 
-use std::ffi::CStr;
 use cpp::*;
+use std::ffi::CStr;
 
 cpp! {{
     #pragma GCC diagnostic push

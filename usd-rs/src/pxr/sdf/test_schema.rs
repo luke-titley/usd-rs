@@ -16,7 +16,9 @@ mod tests {
     #[test]
     fn test_find_type() {
         let schema = Schema::get_instance();
-        let _value_type_name = schema.find_type(&tf::Token::from(CString::new("int").unwrap().as_c_str()));
+        let _value_type_name = schema.find_type(&tf::Token::from(
+            CString::new("int").unwrap().as_c_str(),
+        ));
         //Path::from("/root/world/stuff");
     }
 }

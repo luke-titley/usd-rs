@@ -11,7 +11,9 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let stage = Stage::create_new(StageDescriptor::from("test.usda"));
+        let stage = Stage::create_new(StageDescriptor::from(
+            CString::new("test.usda").unwrap().as_c_str(),
+        ));
         stage.save();
     }
 
@@ -23,10 +25,12 @@ mod tests {
 
     #[test]
     fn test_define_prim() {
-        let stage =
-            Stage::create_new(StageDescriptor::from("define_prim.usda"));
+        let stage = Stage::create_new(StageDescriptor::from(
+            CString::new("define_prim.usda").unwrap().as_c_str(),
+        ));
+        let path = CString::new("/root/world/test").unwrap();
         stage.define_prim(
-            &sdf::Path::from("/root/world/test"),
+            &sdf::Path::from(path.as_c_str()),
             &tf::Token::default(),
         );
         stage.save();
@@ -35,17 +39,23 @@ mod tests {
     #[test]
     fn test_create_attribute() {
         let stage = Stage::create_new(StageDescriptor::from(
-            "create_attribute_prim.usda",
+            CString::new("create_attribute_prim.usda")
+                .unwrap()
+                .as_c_str(),
         ));
+        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from("/root/world/test"),
+            &sdf::Path::from(path.as_c_str()),
             &tf::Token::default(),
         );
 
         prim.create_attribute(AttributeDescriptor {
-            name: tf::Token::from(CString::new("lukes_attr").unwrap().as_c_str()),
-            type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from(CString::new("int").unwrap().as_c_str())),
+            name: tf::Token::from(
+                CString::new("lukes_attr").unwrap().as_c_str(),
+            ),
+            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
+                CString::new("int").unwrap().as_c_str(),
+            )),
         });
 
         stage.save();
@@ -53,26 +63,34 @@ mod tests {
 
     #[test]
     fn test_set_attribute() {
-        let stage =
-            Stage::create_new(StageDescriptor::from("set_attribute_prim.usda"));
+        let stage = Stage::create_new(StageDescriptor::from(
+            CString::new("set_attribute_prim.usda").unwrap().as_c_str(),
+        ));
+        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from("/root/world/test"),
+            &sdf::Path::from(path.as_c_str()),
             &tf::Token::default(),
         );
 
         let attr = prim.create_attribute(AttributeDescriptor {
-            name: tf::Token::from(CString::new("lukes_attr").unwrap().as_c_str()),
-            type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from(CString::new("bool").unwrap().as_c_str())),
+            name: tf::Token::from(
+                CString::new("lukes_attr").unwrap().as_c_str(),
+            ),
+            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
+                CString::new("bool").unwrap().as_c_str(),
+            )),
         });
 
-        attr.set(&vt::Value::from(<&vt::Bool>::from(&true)), TimeCode::default());
+        attr.set(
+            &vt::Value::from(<&vt::Bool>::from(&true)),
+            TimeCode::default(),
+        );
 
         let mut value = vt::Value::default();
         attr.get(&mut value, TimeCode::default());
 
-        let result : &vt::Bool = value.as_ref();
-        println!("The attribute value is {}", result.0 );
+        let result: &vt::Bool = value.as_ref();
+        println!("The attribute value is {}", result.0);
 
         stage.save();
     }
