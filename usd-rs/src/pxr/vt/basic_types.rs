@@ -19,6 +19,7 @@ pub struct UInt64(pub u64);
 pub struct Half(pub f16);
 pub struct Float(pub f32);
 pub struct Double(pub f64);
+pub struct TimeCode(pub crate::pxr::sdf::TimeCode);
 pub struct Token(pub crate::pxr::tf::Token);
 pub struct Matrix2d(pub [f64;2*3]);
 pub struct Matrix3d(pub [f64;3*3]);
@@ -46,6 +47,7 @@ cpp! {{
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/base/vt/value.h"
     #include "pxr/base/gf/half.h"
+    #include "pxr/usd/sdf/timeCode.h"
     #include "pxr/base/tf/token.h"
     #include "pxr/base/gf/matrix2d.h"
     #include "pxr/base/gf/matrix3d.h"
@@ -236,6 +238,25 @@ impl AsRef<Double> for Value {
         unsafe {
             cpp!([self as "const pxr::VtValue *"] -> &Double as "const double *" {
                 return &(self->Get<double>());
+            })
+        }
+    }
+}
+impl From<&TimeCode> for Value {
+    fn from(other: &TimeCode) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::SdfTimeCode *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<TimeCode> for Value {
+    fn as_ref(&self) -> &TimeCode {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> &TimeCode as "const pxr::SdfTimeCode *" {
+                return &(self->Get<pxr::SdfTimeCode>());
             })
         }
     }

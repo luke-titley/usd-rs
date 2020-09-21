@@ -47,7 +47,7 @@
 /// From trait implementations as a manual step. This isn't such a big deal
 /// as basic types are rarely added or removed.
 #[rustfmt::skip]
-const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 28] = [
+const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 29] = [
     ("Bool", "bool", "bool", None),
     ("UChar", "u8", "uint8_t", None),
     ("Int", "i32", "int32_t", None),
@@ -57,10 +57,10 @@ const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 28] = [
     ("Half", "f16", "pxr::GfHalf", Some("pxr/base/gf/half.h")),
     ("Float", "f32", "float", None),
     ("Double", "f64", "double", None),
-    //("crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/base/sdf/timeCode.h")), // TODO
-    // std::string // TODO,
-    ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")), // TODO
-    // asset		SdfAssetPath	represents a resolvable path to another asset
+    ("TimeCode", "crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/usd/sdf/timeCode.h")),
+    // string, std::string // TODO,
+    ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")),
+    // asset, SdfAssetPath // TODO
     ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h")),
     ("Matrix3d", "[f64;3*3]", "pxr::GfMatrix3d", Some("pxr/base/gf/matrix3d.h")),
     ("Matrix4d", "[f64;4*4]", "pxr::GfMatrix4d", Some("pxr/base/gf/matrix4d.h")),
