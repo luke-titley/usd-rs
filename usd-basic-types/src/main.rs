@@ -93,8 +93,20 @@ fn generate_basic_types() {
 
     let names: std::string::String = BASIC_TYPES
         .iter()
-        .map(|(name, typ, _, x)| {
-            format!("pub struct {name}(pub {typ});\n", name = &name, typ = &typ)
+        .map(|(name, typ, _, _)| {
+            format!(
+                "#[repr(transparent)]
+pub struct {name}(pub {typ});
+
+impl From<&{typ}> for &{name} {{
+    fn from(other : &{typ}) -> Self {{
+        unsafe {{ &*((other as *const {typ}) as *const {name}) }}
+    }}
+}}
+",
+                name = &name,
+                typ = &typ
+            )
         })
         .collect();
 
@@ -110,7 +122,13 @@ use cpp::*;
 
 use half::f16; // Half is not a standard rust type
 
-// To avoid a conflict between types, like vec4 and quat, we use named tuples.
+// To avoid a conflict between types, like vec4 and quat, we use tuple structs.
+// repr(transparent) ensures that the struct is exactly the same size in memory
+// as the type it is wrapping. This allows us to safely cast forwards and
+// backwards between the types.
+//
+// We provide a 'From<&T>' implementation for the tuple structs to
+// provide a means to do a zero copy transfer from rust over to c++.
 {names}
 
 cpp! {{{{

@@ -65,7 +65,7 @@ mod tests {
                 .find_type(&tf::Token::from("bool")),
         });
 
-        attr.set(&vt::Value::from(&vt::Bool(true)), TimeCode::default());
+        attr.set(&vt::Value::from(<&vt::Bool>::from(&true)), TimeCode::default());
 
         let mut value = vt::Value::default();
         attr.get(&mut value, TimeCode::default());

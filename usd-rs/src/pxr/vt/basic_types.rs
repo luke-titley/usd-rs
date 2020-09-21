@@ -10,35 +10,238 @@ use cpp::*;
 use half::f16; // Half is not a standard rust type
 
 // To avoid a conflict between types, like vec4 and quat, we use named tuples.
+#[repr(transparent)]
 pub struct Bool(pub bool);
+
+impl From<&bool> for &Bool {
+    fn from(other : &bool) -> Self {
+        unsafe { &*((other as *const bool) as *const Bool) }
+    }
+}
+#[repr(transparent)]
 pub struct UChar(pub u8);
+
+impl From<&u8> for &UChar {
+    fn from(other : &u8) -> Self {
+        unsafe { &*((other as *const u8) as *const UChar) }
+    }
+}
+#[repr(transparent)]
 pub struct Int(pub i32);
+
+impl From<&i32> for &Int {
+    fn from(other : &i32) -> Self {
+        unsafe { &*((other as *const i32) as *const Int) }
+    }
+}
+#[repr(transparent)]
 pub struct UInt(pub u32);
+
+impl From<&u32> for &UInt {
+    fn from(other : &u32) -> Self {
+        unsafe { &*((other as *const u32) as *const UInt) }
+    }
+}
+#[repr(transparent)]
 pub struct Int64(pub i64);
+
+impl From<&i64> for &Int64 {
+    fn from(other : &i64) -> Self {
+        unsafe { &*((other as *const i64) as *const Int64) }
+    }
+}
+#[repr(transparent)]
 pub struct UInt64(pub u64);
+
+impl From<&u64> for &UInt64 {
+    fn from(other : &u64) -> Self {
+        unsafe { &*((other as *const u64) as *const UInt64) }
+    }
+}
+#[repr(transparent)]
 pub struct Half(pub f16);
+
+impl From<&f16> for &Half {
+    fn from(other : &f16) -> Self {
+        unsafe { &*((other as *const f16) as *const Half) }
+    }
+}
+#[repr(transparent)]
 pub struct Float(pub f32);
+
+impl From<&f32> for &Float {
+    fn from(other : &f32) -> Self {
+        unsafe { &*((other as *const f32) as *const Float) }
+    }
+}
+#[repr(transparent)]
 pub struct Double(pub f64);
+
+impl From<&f64> for &Double {
+    fn from(other : &f64) -> Self {
+        unsafe { &*((other as *const f64) as *const Double) }
+    }
+}
+#[repr(transparent)]
 pub struct TimeCode(pub crate::pxr::sdf::TimeCode);
+
+impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
+    fn from(other : &crate::pxr::sdf::TimeCode) -> Self {
+        unsafe { &*((other as *const crate::pxr::sdf::TimeCode) as *const TimeCode) }
+    }
+}
+#[repr(transparent)]
 pub struct Token(pub crate::pxr::tf::Token);
+
+impl From<&crate::pxr::tf::Token> for &Token {
+    fn from(other : &crate::pxr::tf::Token) -> Self {
+        unsafe { &*((other as *const crate::pxr::tf::Token) as *const Token) }
+    }
+}
+#[repr(transparent)]
 pub struct Matrix2d(pub [f64;2*3]);
+
+impl From<&[f64;2*3]> for &Matrix2d {
+    fn from(other : &[f64;2*3]) -> Self {
+        unsafe { &*((other as *const [f64;2*3]) as *const Matrix2d) }
+    }
+}
+#[repr(transparent)]
 pub struct Matrix3d(pub [f64;3*3]);
+
+impl From<&[f64;3*3]> for &Matrix3d {
+    fn from(other : &[f64;3*3]) -> Self {
+        unsafe { &*((other as *const [f64;3*3]) as *const Matrix3d) }
+    }
+}
+#[repr(transparent)]
 pub struct Matrix4d(pub [f64;4*4]);
+
+impl From<&[f64;4*4]> for &Matrix4d {
+    fn from(other : &[f64;4*4]) -> Self {
+        unsafe { &*((other as *const [f64;4*4]) as *const Matrix4d) }
+    }
+}
+#[repr(transparent)]
 pub struct Quatd(pub [f64;4]);
+
+impl From<&[f64;4]> for &Quatd {
+    fn from(other : &[f64;4]) -> Self {
+        unsafe { &*((other as *const [f64;4]) as *const Quatd) }
+    }
+}
+#[repr(transparent)]
 pub struct Quatf(pub [f32;4]);
+
+impl From<&[f32;4]> for &Quatf {
+    fn from(other : &[f32;4]) -> Self {
+        unsafe { &*((other as *const [f32;4]) as *const Quatf) }
+    }
+}
+#[repr(transparent)]
 pub struct Quath(pub [f16;4]);
+
+impl From<&[f16;4]> for &Quath {
+    fn from(other : &[f16;4]) -> Self {
+        unsafe { &*((other as *const [f16;4]) as *const Quath) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec2d(pub [f64;2]);
+
+impl From<&[f64;2]> for &Vec2d {
+    fn from(other : &[f64;2]) -> Self {
+        unsafe { &*((other as *const [f64;2]) as *const Vec2d) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec2f(pub [f32;2]);
+
+impl From<&[f32;2]> for &Vec2f {
+    fn from(other : &[f32;2]) -> Self {
+        unsafe { &*((other as *const [f32;2]) as *const Vec2f) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec2h(pub [f16;2]);
+
+impl From<&[f16;2]> for &Vec2h {
+    fn from(other : &[f16;2]) -> Self {
+        unsafe { &*((other as *const [f16;2]) as *const Vec2h) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec2i(pub [i32;2]);
+
+impl From<&[i32;2]> for &Vec2i {
+    fn from(other : &[i32;2]) -> Self {
+        unsafe { &*((other as *const [i32;2]) as *const Vec2i) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec3d(pub [f64;3]);
+
+impl From<&[f64;3]> for &Vec3d {
+    fn from(other : &[f64;3]) -> Self {
+        unsafe { &*((other as *const [f64;3]) as *const Vec3d) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec3f(pub [f32;3]);
+
+impl From<&[f32;3]> for &Vec3f {
+    fn from(other : &[f32;3]) -> Self {
+        unsafe { &*((other as *const [f32;3]) as *const Vec3f) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec3h(pub [f16;3]);
+
+impl From<&[f16;3]> for &Vec3h {
+    fn from(other : &[f16;3]) -> Self {
+        unsafe { &*((other as *const [f16;3]) as *const Vec3h) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec3i(pub [i32;3]);
+
+impl From<&[i32;3]> for &Vec3i {
+    fn from(other : &[i32;3]) -> Self {
+        unsafe { &*((other as *const [i32;3]) as *const Vec3i) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec4d(pub [f64;4]);
+
+impl From<&[f64;4]> for &Vec4d {
+    fn from(other : &[f64;4]) -> Self {
+        unsafe { &*((other as *const [f64;4]) as *const Vec4d) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec4f(pub [f32;4]);
+
+impl From<&[f32;4]> for &Vec4f {
+    fn from(other : &[f32;4]) -> Self {
+        unsafe { &*((other as *const [f32;4]) as *const Vec4f) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec4h(pub [f16;4]);
+
+impl From<&[f16;4]> for &Vec4h {
+    fn from(other : &[f16;4]) -> Self {
+        unsafe { &*((other as *const [f16;4]) as *const Vec4h) }
+    }
+}
+#[repr(transparent)]
 pub struct Vec4i(pub [i32;4]);
+
+impl From<&[i32;4]> for &Vec4i {
+    fn from(other : &[i32;4]) -> Self {
+        unsafe { &*((other as *const [i32;4]) as *const Vec4i) }
+    }
+}
 
 
 cpp! {{
