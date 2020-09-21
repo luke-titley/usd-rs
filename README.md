@@ -2,6 +2,12 @@
 
 The very start of some rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
+# What works ?
+- You can create and save/export a stage.
+- You can define a prim and get/set attributes on it.
+  All types except (SdfAssetPath) for the moment.
+
+# The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
 - usd-rs is the actual bindings crate.
 - usd-examples will be examples.
