@@ -35,6 +35,7 @@
 //! use the explicit TfToken constructors). However, auto conversion from
 //! TfToken to string and char* is provided.
 
+use std::ffi::CStr;
 use cpp::*;
 
 cpp! {{
@@ -47,16 +48,13 @@ cpp! {{
 
 cpp_class!(pub unsafe struct Token as "pxr::TfToken");
 
-impl From<&str> for Token {
-    fn from(value: &str) -> Self {
-        let value = std::ffi::CString::new(value)
-            .expect("Unable to convert token value str to CString");
-
+impl From<&CStr> for Token {
+    fn from(value: &CStr) -> Self {
         let value_str = value.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
             cpp!([value_str as "const char *"] -> Token as "pxr::TfToken" {
-                return pxr::TfToken(std::string(value_str));
+                return pxr::TfToken(value_str);
             })
         }
     }

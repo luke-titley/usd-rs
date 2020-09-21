@@ -7,6 +7,7 @@ mod tests {
     use crate::pxr::tf;
     use crate::pxr::usd::*;
     use crate::pxr::vt;
+    use std::ffi::CString;
 
     #[test]
     fn test_new() {
@@ -42,9 +43,9 @@ mod tests {
         );
 
         prim.create_attribute(AttributeDescriptor {
-            name: tf::Token::from("lukes_attr"),
+            name: tf::Token::from(CString::new("lukes_attr").unwrap().as_c_str()),
             type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from("int")),
+                .find_type(&tf::Token::from(CString::new("int").unwrap().as_c_str())),
         });
 
         stage.save();
@@ -60,9 +61,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(AttributeDescriptor {
-            name: tf::Token::from("lukes_attr"),
+            name: tf::Token::from(CString::new("lukes_attr").unwrap().as_c_str()),
             type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::from("bool")),
+                .find_type(&tf::Token::from(CString::new("bool").unwrap().as_c_str())),
         });
 
         attr.set(&vt::Value::from(<&vt::Bool>::from(&true)), TimeCode::default());
