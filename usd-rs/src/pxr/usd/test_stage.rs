@@ -98,7 +98,9 @@ mod tests {
     #[test]
     fn test_set_string_attribute() {
         let stage = Stage::create_new(StageDescriptor::from(
-            CString::new("set_string_attribute_prim.usda").unwrap().as_c_str(),
+            CString::new("set_string_attribute_prim.usda")
+                .unwrap()
+                .as_c_str(),
         ));
         let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
@@ -116,7 +118,9 @@ mod tests {
         });
 
         attr.set(
-            &vt::Value::from(<&vt::String>::from(CString::new("this is a string").unwrap().as_c_str())),
+            &vt::Value::from(<&vt::String>::from(
+                CString::new("this is a string").unwrap().as_c_str(),
+            )),
             TimeCode::default(),
         );
 

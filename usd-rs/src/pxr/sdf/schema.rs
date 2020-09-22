@@ -18,7 +18,11 @@ cpp! {{
 // We dont care how big the Schema struct is, because we only ever use it as
 // a reference. It's a singleton so the memory is all internal to usd.
 #[repr(C, align(8))]
-pub struct Schema {}
+pub struct Schema {
+    // A private member stops users from being able to construct it without
+    // Schema get_instance
+    _priv: u8,
+}
 
 impl Schema {
     pub fn get_instance() -> &'static Schema {
