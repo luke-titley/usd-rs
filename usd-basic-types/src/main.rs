@@ -47,7 +47,7 @@
 /// From trait implementations as a manual step. This isn't such a big deal
 /// as basic types are rarely added or removed.
 #[rustfmt::skip]
-const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 29] = [
+const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 30] = [
     ("Bool", "bool", "bool", None),
     ("UChar", "u8", "uint8_t", None),
     ("Int", "i32", "int32_t", None),
@@ -60,7 +60,7 @@ const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 29] = [
     ("TimeCode", "crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/usd/sdf/timeCode.h")),
     // string, std::string // Implemented manually, below.
     ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")),
-    // asset, SdfAssetPath // TODO
+    ("Asset", "crate::pxr::sdf::AssetPath", "pxr::SdfAssetPath", Some("pxr/usd/sdf/assetPath.h")),
     ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h")),
     ("Matrix3d", "[f64;3*3]", "pxr::GfMatrix3d", Some("pxr/base/gf/matrix3d.h")),
     ("Matrix4d", "[f64;4*4]", "pxr::GfMatrix4d", Some("pxr/base/gf/matrix4d.h")),

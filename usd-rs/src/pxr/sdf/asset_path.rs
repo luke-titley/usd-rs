@@ -64,9 +64,10 @@ impl BoxAssetPath {
 //------------------------------------------------------------------------------
 impl Drop for BoxAssetPath {
     fn drop(&mut self) {
+        let asset_path = self._asset_path.clone();
         unsafe {
-            cpp!([self as "const pxr::SdfAssetPath*"] {
-                delete self;
+            cpp!([asset_path as "const pxr::SdfAssetPath*"] {
+                delete asset_path;
             })
         }
     }

@@ -132,4 +132,49 @@ mod tests {
 
         stage.save();
     }
+
+    #[test]
+    fn test_set_asset_path_attribute() {
+        let stage = Stage::create_new(StageDescriptor::from(
+            CString::new("set_asset_path_attribute_prim.usda")
+                .unwrap()
+                .as_c_str(),
+        ));
+        let path = CString::new("/root/world/test").unwrap();
+        let prim = stage.define_prim(
+            &sdf::Path::from(path.as_c_str()),
+            &tf::Token::default(),
+        );
+
+        let attr = prim.create_attribute(AttributeDescriptor {
+            name: tf::Token::from(
+                CString::new("lukes_attr").unwrap().as_c_str(),
+            ),
+            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
+                CString::new("asset").unwrap().as_c_str(),
+            )),
+        });
+
+        let path = CString::new("/root/show/asset.abc").unwrap();
+        attr.set(
+            &vt::Value::from(<&vt::Asset>::from(
+                sdf::BoxAssetPath::new(sdf::BoxAssetPathDescriptor {
+                    path: path.as_c_str(),
+                    resolved_path : None,
+                })
+                .as_ref(),
+            )),
+            TimeCode::default(),
+        );
+
+        /*
+        let mut value = vt::Value::default();
+        attr.get(&mut value, TimeCode::default());
+
+        let result: &vt::String = value.as_ref();
+        println!("The attribute value is {}", result.0.to_str().unwrap());
+        */
+
+        stage.save();
+    }
 }
