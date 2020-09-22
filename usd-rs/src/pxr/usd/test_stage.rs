@@ -158,7 +158,7 @@ mod tests {
         let path = CString::new("/root/show/asset.abc").unwrap();
         attr.set(
             &vt::Value::from(<&vt::Asset>::from(
-                sdf::BoxAssetPath::new(sdf::BoxAssetPathDescriptor {
+                sdf::AssetPath::new(sdf::AssetPathDescriptor {
                     path: path.as_c_str(),
                     resolved_path : None,
                 })

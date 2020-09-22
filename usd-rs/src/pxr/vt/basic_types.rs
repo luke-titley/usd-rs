@@ -105,11 +105,11 @@ impl From<&crate::pxr::tf::Token> for &Token {
     }
 }
 #[repr(transparent)]
-pub struct Asset(pub crate::pxr::sdf::AssetPath);
+pub struct Asset(pub crate::pxr::sdf::AsstPth);
 
-impl From<&crate::pxr::sdf::AssetPath> for &Asset {
-    fn from(other : &crate::pxr::sdf::AssetPath) -> Self {
-        unsafe { &*((other as *const crate::pxr::sdf::AssetPath) as *const Asset) }
+impl From<&crate::pxr::sdf::AsstPth> for &Asset {
+    fn from(other : &crate::pxr::sdf::AsstPth) -> Self {
+        unsafe { &*((other as *const crate::pxr::sdf::AsstPth) as *const Asset) }
     }
 }
 #[repr(transparent)]

@@ -14,31 +14,36 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-// Asset path can only be used accessed as a reference.
+/// This is a reference to an asset path.
+///
+/// &AsstPth is to AssetPath, as &str is to String.
+///
 #[repr(C, align(8))]
-pub struct AssetPath {
+pub struct AsstPth {
     // A private member stops users from being able to construct it without
     // Schema get_instance
     _priv: u8,
 }
 
 //------------------------------------------------------------------------------
-pub struct BoxAssetPathDescriptor<'a> {
+// AssetPathDescriptor
+//------------------------------------------------------------------------------
+pub struct AssetPathDescriptor<'a> {
     pub path: &'a CStr,
     pub resolved_path: Option<&'a CStr>,
 }
 
 //------------------------------------------------------------------------------
 #[repr(C, align(8))]
-pub struct BoxAssetPath {
-    _asset_path: *const AssetPath,
+pub struct AssetPath {
+    _asset_path: *const AsstPth,
 }
 
 //------------------------------------------------------------------------------
-impl BoxAssetPath {
-    pub fn new(desc: BoxAssetPathDescriptor) -> Self {
+impl AssetPath {
+    pub fn new(desc: AssetPathDescriptor) -> Self {
         match desc {
-            BoxAssetPathDescriptor {
+            AssetPathDescriptor {
                 path,
                 resolved_path: Some(resolved_path),
             } => unsafe {
@@ -46,14 +51,14 @@ impl BoxAssetPath {
                 let resolved_path =
                     resolved_path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *", resolved_path as "const char *"] -> BoxAssetPath as "const pxr::SdfAssetPath*" {
+                cpp!([path as "const char *", resolved_path as "const char *"] -> AssetPath as "const pxr::SdfAssetPath*" {
                     return new pxr::SdfAssetPath(std::string(path), std::string(resolved_path));
                 })
             },
-            BoxAssetPathDescriptor { path, .. } => unsafe {
+            AssetPathDescriptor { path, .. } => unsafe {
                 let path = path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *"] -> BoxAssetPath as "const pxr::SdfAssetPath*" {
+                cpp!([path as "const char *"] -> AssetPath as "const pxr::SdfAssetPath*" {
                     return new pxr::SdfAssetPath(std::string(path));
                 })
             },
@@ -62,7 +67,7 @@ impl BoxAssetPath {
 }
 
 //------------------------------------------------------------------------------
-impl Drop for BoxAssetPath {
+impl Drop for AssetPath {
     fn drop(&mut self) {
         let asset_path = self._asset_path.clone();
         unsafe {
@@ -74,8 +79,8 @@ impl Drop for BoxAssetPath {
 }
 
 //------------------------------------------------------------------------------
-impl AsRef<AssetPath> for BoxAssetPath {
-    fn as_ref(&self) -> &AssetPath {
+impl AsRef<AsstPth> for AssetPath {
+    fn as_ref(&self) -> &AsstPth {
         unsafe { &*(self._asset_path) }
     }
 }
