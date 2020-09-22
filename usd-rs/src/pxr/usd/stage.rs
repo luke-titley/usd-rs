@@ -72,6 +72,12 @@ pub enum InitialLoadSet {
     LoadNone = 1,
 }
 
+impl Default for InitialLoadSet {
+    fn default() -> Self {
+        InitialLoadSet::LoadAll
+    }
+}
+
 //------------------------------------------------------------------------------
 pub struct StageDescriptor<'a> {
     pub identifier: &'a std::ffi::CStr,
@@ -126,6 +132,18 @@ impl Stage {
         unsafe {
             cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
+            })
+        }
+    }
+
+    pub fn open<'a>(file_path: & std::ffi::CStr, load : InitialLoadSet) -> Self {
+        let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
+
+        unsafe {
+            cpp!([file_path as "const char *",
+                  load as "pxr::UsdStage::InitialLoadSet"] ->
+                        Stage as "pxr::UsdStageRefPtr" {
+                return pxr::UsdStage::Open(std::string(file_path), load);
             })
         }
     }
