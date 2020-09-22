@@ -31,9 +31,10 @@ pub struct AssetPathRefDescriptor<'a> {
 //------------------------------------------------------------------------------
 #[repr(C, align(8))]
 pub struct AssetPathRef {
-    _asset_path: *const std::ffi::c_void,
+    _asset_path: *const AssetPath,
 }
 
+//------------------------------------------------------------------------------
 impl AssetPathRef {
     pub fn new(desc: AssetPathRefDescriptor) -> Self {
         match desc {
@@ -57,5 +58,23 @@ impl AssetPathRef {
                 })
             },
         }
+    }
+}
+
+//------------------------------------------------------------------------------
+impl Drop for AssetPathRef {
+    fn drop(&mut self) {
+        unsafe {
+            cpp!([self as "const pxr::SdfAssetPath*"] {
+                delete self;
+            })
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+impl AsRef<AssetPath> for AssetPathRef {
+    fn as_ref(&self) -> &AssetPath {
+        unsafe { &*(self._asset_path) }
     }
 }
