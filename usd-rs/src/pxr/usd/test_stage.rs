@@ -160,7 +160,7 @@ mod tests {
             &vt::Value::from(<&vt::Asset>::from(
                 sdf::AssetPath::new(sdf::AssetPathDescriptor {
                     path: path.as_c_str(),
-                    resolved_path : None,
+                    resolved_path: None,
                 })
                 .as_ref(),
             )),
