@@ -171,7 +171,10 @@ mod tests {
         attr.get(&mut value, TimeCode::default());
 
         let result: &vt::Asset = value.as_ref();
-        println!("The attribute value is '{}'", result.0.get_asset_path().to_str().unwrap());
+        println!(
+            "The attribute value is '{}'",
+            result.0.get_asset_path().to_str().unwrap()
+        );
 
         stage.save();
     }
