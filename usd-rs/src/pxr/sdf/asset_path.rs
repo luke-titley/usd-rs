@@ -23,22 +23,22 @@ pub struct AssetPath {
 }
 
 //------------------------------------------------------------------------------
-pub struct AssetPathRefDescriptor<'a> {
+pub struct BoxAssetPathDescriptor<'a> {
     pub path: &'a CStr,
     pub resolved_path: Option<&'a CStr>,
 }
 
 //------------------------------------------------------------------------------
 #[repr(C, align(8))]
-pub struct AssetPathRef {
+pub struct BoxAssetPath {
     _asset_path: *const AssetPath,
 }
 
 //------------------------------------------------------------------------------
-impl AssetPathRef {
-    pub fn new(desc: AssetPathRefDescriptor) -> Self {
+impl BoxAssetPath {
+    pub fn new(desc: BoxAssetPathDescriptor) -> Self {
         match desc {
-            AssetPathRefDescriptor {
+            BoxAssetPathDescriptor {
                 path,
                 resolved_path: Some(resolved_path),
             } => unsafe {
@@ -46,14 +46,14 @@ impl AssetPathRef {
                 let resolved_path =
                     resolved_path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *", resolved_path as "const char *"] -> AssetPathRef as "const pxr::SdfAssetPath*" {
+                cpp!([path as "const char *", resolved_path as "const char *"] -> BoxAssetPath as "const pxr::SdfAssetPath*" {
                     return new pxr::SdfAssetPath(std::string(path), std::string(resolved_path));
                 })
             },
-            AssetPathRefDescriptor { path, .. } => unsafe {
+            BoxAssetPathDescriptor { path, .. } => unsafe {
                 let path = path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *"] -> AssetPathRef as "const pxr::SdfAssetPath*" {
+                cpp!([path as "const char *"] -> BoxAssetPath as "const pxr::SdfAssetPath*" {
                     return new pxr::SdfAssetPath(std::string(path));
                 })
             },
@@ -62,7 +62,7 @@ impl AssetPathRef {
 }
 
 //------------------------------------------------------------------------------
-impl Drop for AssetPathRef {
+impl Drop for BoxAssetPath {
     fn drop(&mut self) {
         unsafe {
             cpp!([self as "const pxr::SdfAssetPath*"] {
@@ -73,7 +73,7 @@ impl Drop for AssetPathRef {
 }
 
 //------------------------------------------------------------------------------
-impl AsRef<AssetPath> for AssetPathRef {
+impl AsRef<AssetPath> for BoxAssetPath {
     fn as_ref(&self) -> &AssetPath {
         unsafe { &*(self._asset_path) }
     }
