@@ -172,12 +172,39 @@ impl Stage {
         };
     }
 
+    pub fn override_prim(&self, path: &sdf::Path) -> Prim {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                  path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
+                return (*self)->OverridePrim(*path);
+            })
+        }
+    }
+
     pub fn define_prim(&self, path: &sdf::Path, type_name: &tf::Token) -> Prim {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *",
                   type_name as "const pxr::TfToken *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->DefinePrim(*path, *type_name);
+            })
+        }
+    }
+
+    pub fn create_class_prim(&self, root_prim_path: &sdf::Path) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                root_prim_path as "const pxr::SdfPath *"] -> bool as "bool" {
+                return (*self)->CreateClassPrim(*root_prim_path);
+            })
+        }
+    }
+
+    pub fn remove_prim(&self, path: &sdf::Path) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                  path as "const pxr::SdfPath *"] -> bool as "bool" {
+                return (*self)->RemovePrim(*path);
             })
         }
     }
