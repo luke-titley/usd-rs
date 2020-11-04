@@ -50,7 +50,7 @@ mod tests {
             &tf::Token::default(),
         );
 
-        prim.create_attribute(AttributeDescriptor {
+        prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::from(
                 CString::new("lukes_attr").unwrap().as_c_str(),
             ),
@@ -73,7 +73,7 @@ mod tests {
             &tf::Token::default(),
         );
 
-        let attr = prim.create_attribute(AttributeDescriptor {
+        let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::from(
                 CString::new("lukes_attr").unwrap().as_c_str(),
             ),
@@ -109,7 +109,7 @@ mod tests {
             &tf::Token::default(),
         );
 
-        let attr = prim.create_attribute(AttributeDescriptor {
+        let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::from(
                 CString::new("lukes_attr").unwrap().as_c_str(),
             ),
@@ -147,7 +147,7 @@ mod tests {
             &tf::Token::default(),
         );
 
-        let attr = prim.create_attribute(AttributeDescriptor {
+        let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::from(
                 CString::new("lukes_attr").unwrap().as_c_str(),
             ),

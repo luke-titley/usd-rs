@@ -10,7 +10,7 @@ mod test_stage;
 mod time_code;
 
 //------------------------------------------------------------------------------
-pub use attribute::*;
-pub use prim::*;
+pub use attribute::Attribute;
+pub use prim::Prim;
 pub use stage::{InitialLoadSet, Stage};
 pub use time_code::*;
