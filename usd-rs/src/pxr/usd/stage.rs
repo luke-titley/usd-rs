@@ -62,6 +62,8 @@ use crate::pxr::tf;
 
 use crate::pxr::usd::prim::Prim;
 
+use super::common::LoadPolicy;
+
 //------------------------------------------------------------------------------
 #[repr(C)]
 /// Specifies the initial set of prims to load when opening a UsdStage
@@ -109,6 +111,21 @@ impl From<InitialLoadSet> for StageInMemoryDescriptor {
 impl Default for StageInMemoryDescriptor {
     fn default() -> Self {
         Self { _load: None }
+    }
+}
+
+//------------------------------------------------------------------------------
+pub struct StageInLoadDescriptor<'a> {
+    pub path: Option<&'a sdf::Path>,
+    pub policy: Option<LoadPolicy>,
+}
+
+impl<'a> Default for StageInLoadDescriptor<'a> {
+    fn default() -> Self {
+        Self {
+            path: None,
+            policy: None,
+        }
     }
 }
 
@@ -164,6 +181,30 @@ impl Stage {
         };
     }
 
+    /*
+    pub fn load(&self, desc: StageInLoadDescriptor) -> Prim {
+        // 
+        let path = if let Some(path) = desc.path {
+            path
+        } else {
+        }
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                  path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
+                return (*self)->Load(*path);
+            })
+        }
+    }
+    */
+
+    pub fn unload(&self) {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *"] {
+                (*self)->Unload();
+            })
+        };
+    }
+
     pub fn export(&self) {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] {
@@ -191,10 +232,10 @@ impl Stage {
         }
     }
 
-    pub fn create_class_prim(&self, root_prim_path: &sdf::Path) -> bool {
+    pub fn create_class_prim(&self, root_prim_path: &sdf::Path) -> Prim {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
-                root_prim_path as "const pxr::SdfPath *"] -> bool as "bool" {
+                root_prim_path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->CreateClassPrim(*root_prim_path);
             })
         }

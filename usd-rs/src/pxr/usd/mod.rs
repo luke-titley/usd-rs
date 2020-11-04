@@ -3,6 +3,7 @@
 //------------------------------------------------------------------------------
 
 mod attribute;
+mod common;
 mod prim;
 mod stage;
 mod test_stage;

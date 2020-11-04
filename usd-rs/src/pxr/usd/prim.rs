@@ -39,7 +39,7 @@ impl Prim {
             cpp!([self as "pxr::UsdPrim*",
                 attr_name as "pxr::TfToken*"]
                         -> Attribute as "pxr::UsdAttribute" {
-                return self->GetAttribute(attr_name);
+                return self->GetAttribute(*attr_name);
             })
         }
     }
