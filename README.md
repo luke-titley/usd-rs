@@ -22,6 +22,7 @@ The beginnings of some rust bindings for [USD](https://github.com/PixarAnimation
 - g++/clang with c++14 support
 - cmake
 - python
+- and of course cargo
 
 At the moment we use the handy 'build_usd.py' script that is bundled with USD to
 download all the thirdparty libraries USD depends on. That's why we need python.
@@ -31,19 +32,9 @@ Perhaps in the future, it might be possible to port a subset of build_usd.py to
 our build.rs and so remove the python dependency.
 
 # The method
-I'm using cpp crate for these bindings instead of cbindgen. At the time I tried out
-cbindgen (16/9/2020) it was unable to parse USD without panicking. On top of that, cbindgen
-produces a sys level crate which you use as a foundation for an ergonomic/safe hand written api.
-The cpp crate allows you to write your safe api directly on top of the cpp library, and so
-far it's been a good experience.
-
-# Why not [cxx](https://github.com/dtolnay/cxx) crate?
-I didn't know about it until I was a good way through.
-It's not finished yet.
-The cpp crate is really awesome and easy to use.
-Limitation of cpp crate is that it's difficult to manage c++ objects that are
-not relocatable. Thankfully, usd uses a lot of shared pointers, so it's not
-a big deal.
+I'm using cpp crate for these bindings in the mid term. This makes it easy to
+hand write the wrappers and work the api. Work on automatically generated
+bindings is going on in the background.
 
 # Adding a new basic type.
 The attribute types supported by USD are finite and rarely change. However

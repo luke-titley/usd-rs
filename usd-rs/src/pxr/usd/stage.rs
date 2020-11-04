@@ -156,6 +156,14 @@ impl Stage {
         };
     }
 
+    pub fn save_session_layers(&self) {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *"] {
+                (*self)->SaveSessionLayers();
+            })
+        };
+    }
+
     pub fn export(&self) {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] {

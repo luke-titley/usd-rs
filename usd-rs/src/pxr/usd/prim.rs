@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 //use crate::pxr::sdf;
 use crate::pxr::usd::attribute::*;
+use crate::pxr::tf;
 use cpp::*;
 
 cpp! {{
@@ -29,6 +30,16 @@ impl Prim {
                   type_name as "pxr::SdfValueTypeName*"]
                         -> Attribute as "pxr::UsdAttribute" {
                 return self->CreateAttribute(*name, *type_name);
+            })
+        }
+    }
+
+    pub fn get_attribute(&self, attr_name : &tf::Token) -> Attribute {
+        unsafe {
+            cpp!([self as "pxr::UsdPrim*",
+                attr_name as "pxr::TfToken*"]
+                        -> Attribute as "pxr::UsdAttribute" {
+                return self->GetAttribute(attr_name);
             })
         }
     }
