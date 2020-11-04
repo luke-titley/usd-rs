@@ -256,6 +256,15 @@ impl Stage {
         };
     }
 
+    pub fn get_prim_at_path(&self, path: &sdf::Path) -> Prim {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *",
+                  path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
+                return (*self)->GetPrimAtPath(*path);
+            })
+        }
+    }
+
     pub fn override_prim(&self, path: &sdf::Path) -> Prim {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
