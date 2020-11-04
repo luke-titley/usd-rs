@@ -229,12 +229,20 @@ impl Stage {
         }
     }
 
-    pub fn unload(&self) {
-        unsafe {
-            cpp!([self as "const pxr::UsdStageRefPtr *"] {
-                (*self)->Unload();
-            })
-        };
+    pub fn unload(&self, path: Option<&sdf::Path>) {
+        match path {
+            None => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *"] {
+                    (*self)->Unload();
+                })
+            },
+            Some(path) => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *",
+                      path as "const pxr::SdfPath *"] {
+                    (*self)->Unload(*path);
+                })
+            },
+        }
     }
 
     pub fn export(&self, file_path: &std::ffi::CStr) {
