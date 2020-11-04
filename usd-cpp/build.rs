@@ -21,7 +21,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // The include directory
     let mut include_dir = cpp_out_dir.clone();
     include_dir.push("include");
-    
+
     println!("Downloading dependencies and building USD c++ library");
 
     // Run the command to build the python c++ library
@@ -62,7 +62,6 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 }
 
 fn write_lib_info(out_dir: &std::path::PathBuf, info: [std::path::PathBuf; 3]) {
-
     // Make sure the source directory exists
     let mut locations_path = out_dir.clone();
     locations_path.push("locations.rs");
@@ -84,7 +83,10 @@ fn main() {
     // Only run this build job if the USD source directory has changed
     let mut thirdparty_usd = std::path::PathBuf::from("thirdparty");
     thirdparty_usd.push("USD");
-    println!("cargo:rerun-if-changed={}", thirdparty_usd.to_str().unwrap());
+    println!(
+        "cargo:rerun-if-changed={}",
+        thirdparty_usd.to_str().unwrap()
+    );
 
     // The out directory of the build
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());

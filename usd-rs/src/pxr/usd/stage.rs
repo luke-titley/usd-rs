@@ -139,7 +139,8 @@ impl Stage {
             desc.identifier.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
-            cpp!([identifier_str as "const char *"] -> Stage as "pxr::UsdStageRefPtr" {
+            cpp!([identifier_str as "const char *"]
+                -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateNew(std::string(identifier_str));
             })
         }
@@ -153,7 +154,7 @@ impl Stage {
         }
     }
 
-    pub fn open<'a>(file_path: & std::ffi::CStr, load : InitialLoadSet) -> Self {
+    pub fn open<'a>(file_path: &std::ffi::CStr, load: InitialLoadSet) -> Self {
         let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
@@ -183,7 +184,7 @@ impl Stage {
 
     /*
     pub fn load(&self, desc: StageInLoadDescriptor) -> Prim {
-        // 
+        //
         let path = if let Some(path) = desc.path {
             path
         } else {
@@ -205,10 +206,13 @@ impl Stage {
         };
     }
 
-    pub fn export(&self) {
+    pub fn export(&self, file_path: &std::ffi::CStr) {
+        let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
+
         unsafe {
-            cpp!([self as "const pxr::UsdStageRefPtr *"] {
-                (*self)->Export("test_out.usda");
+            cpp!([file_path as "const char *",
+                  self as "const pxr::UsdStageRefPtr *"] {
+                (*self)->Export(std::string(file_path));
             })
         };
     }

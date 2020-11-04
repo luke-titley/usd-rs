@@ -3,8 +3,7 @@
 //------------------------------------------------------------------------------
 
 #[repr(C)]
-pub enum LoadPolicy
-{
+pub enum LoadPolicy {
     /// Load a prim plus all its descendants.
     UsdLoadWithDescendants = 0,
 
