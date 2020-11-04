@@ -12,5 +12,5 @@ mod time_code;
 //------------------------------------------------------------------------------
 pub use attribute::*;
 pub use prim::*;
-pub use stage::*;
+pub use stage::{InitialLoadSet, Stage};
 pub use time_code::*;

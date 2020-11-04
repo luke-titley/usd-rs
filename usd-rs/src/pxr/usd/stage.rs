@@ -81,50 +81,54 @@ impl Default for InitialLoadSet {
 }
 
 //------------------------------------------------------------------------------
-pub struct StageDescriptor<'a> {
-    pub identifier: &'a std::ffi::CStr,
-    pub _load: Option<InitialLoadSet>,
-}
+pub mod desc {
+    use super::*;
 
-impl<'a> From<&'a std::ffi::CStr> for StageDescriptor<'a> {
-    fn from(identifier: &'a std::ffi::CStr) -> Self {
-        Self {
-            identifier,
-            _load: None,
-            // TODO : session_layer
-            // TODO : path_resolver_context
+    pub struct CreateNew<'a> {
+        pub identifier: &'a std::ffi::CStr,
+        pub _load: Option<InitialLoadSet>,
+    }
+
+    impl<'a> From<&'a std::ffi::CStr> for CreateNew<'a> {
+        fn from(identifier: &'a std::ffi::CStr) -> Self {
+            Self {
+                identifier,
+                _load: None,
+                // TODO : session_layer
+                // TODO : path_resolver_context
+            }
         }
     }
-}
 
-//------------------------------------------------------------------------------
-pub struct StageInMemoryDescriptor {
-    pub _load: Option<InitialLoadSet>,
-}
-
-impl From<InitialLoadSet> for StageInMemoryDescriptor {
-    fn from(load: InitialLoadSet) -> Self {
-        Self { _load: Some(load) }
+    //------------------------------------------------------------------------------
+    pub struct CreateInMemory {
+        pub _load: Option<InitialLoadSet>,
     }
-}
 
-impl Default for StageInMemoryDescriptor {
-    fn default() -> Self {
-        Self { _load: None }
+    impl From<InitialLoadSet> for CreateInMemory {
+        fn from(load: InitialLoadSet) -> Self {
+            Self { _load: Some(load) }
+        }
     }
-}
 
-//------------------------------------------------------------------------------
-pub struct StageInLoadDescriptor<'a> {
-    pub path: Option<&'a sdf::Path>,
-    pub policy: Option<LoadPolicy>,
-}
+    impl Default for CreateInMemory {
+        fn default() -> Self {
+            Self { _load: None }
+        }
+    }
 
-impl<'a> Default for StageInLoadDescriptor<'a> {
-    fn default() -> Self {
-        Self {
-            path: None,
-            policy: None,
+    //------------------------------------------------------------------------------
+    pub struct Load<'a> {
+        pub path: Option<&'a sdf::Path>,
+        pub policy: Option<LoadPolicy>,
+    }
+
+    impl<'a> Default for Load<'a> {
+        fn default() -> Self {
+            Self {
+                path: None,
+                policy: None,
+            }
         }
     }
 }
@@ -134,7 +138,7 @@ cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_new<'a>(desc: StageDescriptor<'a>) -> Self {
+    pub fn create_new<'a>(desc: desc::CreateNew<'a>) -> Self {
         let identifier_str =
             desc.identifier.as_ptr() as *const std::os::raw::c_char;
 
@@ -146,7 +150,7 @@ impl Stage {
         }
     }
 
-    pub fn create_in_memory(_desc: StageInMemoryDescriptor) -> Self {
+    pub fn create_in_memory(_desc: desc::CreateInMemory) -> Self {
         unsafe {
             cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
@@ -182,21 +186,48 @@ impl Stage {
         };
     }
 
-    /*
-    pub fn load(&self, desc: StageInLoadDescriptor) -> Prim {
-        //
-        let path = if let Some(path) = desc.path {
-            path
-        } else {
-        }
-        unsafe {
-            cpp!([self as "const pxr::UsdStageRefPtr *",
-                  path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
-                return (*self)->Load(*path);
-            })
+    pub fn load(&self, desc: desc::Load) -> Prim {
+        match desc {
+            desc::Load {
+                path: None,
+                policy: None,
+            } => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *"]
+                        -> Prim as "pxr::UsdPrim" {
+                    return (*self)->Load();
+                })
+            },
+            desc::Load {
+                path: Some(path),
+                policy: None,
+            } => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *",
+                      path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
+                    return (*self)->Load(*path);
+                })
+            },
+            desc::Load {
+                path: None,
+                policy: Some(policy),
+            } => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *",
+                      policy as "pxr::UsdLoadPolicy"] -> Prim as "pxr::UsdPrim" {
+                    return (*self)->Load(pxr::SdfPath::AbsoluteRootPath(),
+                                         policy);
+                })
+            },
+            desc::Load {
+                path: Some(path),
+                policy: Some(policy),
+            } => unsafe {
+                cpp!([self as "const pxr::UsdStageRefPtr *",
+                      path as "const pxr::SdfPath *",
+                      policy as "pxr::UsdLoadPolicy"] -> Prim as "pxr::UsdPrim" {
+                    return (*self)->Load(*path, policy);
+                })
+            },
         }
     }
-    */
 
     pub fn unload(&self) {
         unsafe {

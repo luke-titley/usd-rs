@@ -11,7 +11,7 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("test.usda").unwrap().as_c_str(),
         ));
         stage.save();
@@ -19,13 +19,14 @@ mod tests {
 
     #[test]
     fn test_in_memory() {
-        let stage = Stage::create_in_memory(StageInMemoryDescriptor::default());
+        let stage =
+            Stage::create_in_memory(stage::desc::CreateInMemory::default());
         stage.save();
     }
 
     #[test]
     fn test_define_prim() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("define_prim.usda").unwrap().as_c_str(),
         ));
         let path = CString::new("/root/world/test").unwrap();
@@ -38,7 +39,7 @@ mod tests {
 
     #[test]
     fn test_create_attribute() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("create_attribute_prim.usda")
                 .unwrap()
                 .as_c_str(),
@@ -63,7 +64,7 @@ mod tests {
 
     #[test]
     fn test_set_bool_attribute() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_attribute_prim.usda").unwrap().as_c_str(),
         ));
         let path = CString::new("/root/world/test").unwrap();
@@ -97,7 +98,7 @@ mod tests {
 
     #[test]
     fn test_set_string_attribute() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_string_attribute_prim.usda")
                 .unwrap()
                 .as_c_str(),
@@ -135,7 +136,7 @@ mod tests {
 
     #[test]
     fn test_set_asset_path_attribute() {
-        let stage = Stage::create_new(StageDescriptor::from(
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_asset_path_attribute_prim.usda")
                 .unwrap()
                 .as_c_str(),
