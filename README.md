@@ -1,6 +1,6 @@
 # usd-rs
 
-The beginnings of some rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
+Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
 # What works ?
 - You can create and open/save/export a stage.
@@ -34,7 +34,8 @@ our build.rs and so remove the python dependency.
 # The method
 I'm using cpp crate for these bindings in the mid term. This makes it easy to
 hand write the wrappers and work the api. Work on automatically generated
-bindings is going on in the background.
+bindings is going on in the background. Ultimately this crate will move over
+to using usd-sys, when that work is complete.
 
 # Adding a new basic type.
 The attribute types supported by USD are finite and rarely change. However
