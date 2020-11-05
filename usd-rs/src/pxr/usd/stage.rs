@@ -301,4 +301,13 @@ impl Stage {
             })
         }
     }
+
+    pub fn get_root_layer(&self) -> sdf::LayerHandle {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *"]
+                    -> sdf::LayerHandle as "pxr::SdfLayerHandle" {
+                return (*self)->GetRootLayer();
+            })
+        }
+    }
 }
