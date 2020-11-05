@@ -2,9 +2,11 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
+mod array;
 mod basic_types;
 mod value;
 
 //------------------------------------------------------------------------------
+pub use array::*;
 pub use basic_types::*;
 pub use value::*;

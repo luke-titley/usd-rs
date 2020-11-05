@@ -3,5 +3,5 @@
 //------------------------------------------------------------------------------
 
 pub struct Error {
-    pub messages : std::vec::Vec<std::string::String>,
+    pub messages: std::vec::Vec<std::string::String>,
 }
