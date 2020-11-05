@@ -14,19 +14,19 @@ cpp! {{
 cpp_class!(pub unsafe struct LayerHandle as "pxr::SdfLayerHandle");
 
 impl LayerHandle {
-    pub fn save(&self, force : Option<bool>) -> bool {
+    pub fn save(&self, force: Option<bool>) -> bool {
         match force {
-            Some(force) =>  unsafe {
+            Some(force) => unsafe {
                 cpp!([self as "pxr::SdfLayerHandle *", force as "bool"]
                         -> bool as "bool" {
                     return (*self)->Save(force);
                 })
-            }
+            },
             None => unsafe {
                 cpp!([self as "pxr::SdfLayerHandle *"] -> bool as "bool" {
                     return (*self)->Save();
                 })
-            }
+            },
         }
     }
 }

@@ -131,6 +131,23 @@ pub mod desc {
             }
         }
     }
+
+    //------------------------------------------------------------------------------
+    pub struct Open<'a> {
+        pub file_path: &'a std::ffi::CStr,
+        pub load: Option<InitialLoadSet>,
+        // path_resolver_context : ar::ResolverContext
+    }
+
+    impl<'a> From<&'a std::ffi::CStr> for Open<'a> {
+        fn from(file_path: &'a std::ffi::CStr) -> Self {
+            Self {
+                file_path,
+                load: None,
+                // TODO : path_resolver_context
+            }
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -158,15 +175,37 @@ impl Stage {
         }
     }
 
-    pub fn open<'a>(file_path: &std::ffi::CStr, load: InitialLoadSet) -> Self {
-        let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
+    pub fn open<'a>(desc: desc::Open) -> Self {
+        match desc {
+            desc::Open {
+                file_path,
+                load: None,
+            } => {
+                let file_path =
+                    file_path.as_ptr() as *const std::os::raw::c_char;
 
-        unsafe {
-            cpp!([file_path as "const char *",
-                  load as "pxr::UsdStage::InitialLoadSet"] ->
-                        Stage as "pxr::UsdStageRefPtr" {
-                return pxr::UsdStage::Open(std::string(file_path), load);
-            })
+                unsafe {
+                    cpp!([file_path as "const char *"] ->
+                                Stage as "pxr::UsdStageRefPtr" {
+                        return pxr::UsdStage::Open(std::string(file_path));
+                    })
+                }
+            }
+            desc::Open {
+                file_path,
+                load: Some(load),
+            } => {
+                let file_path =
+                    file_path.as_ptr() as *const std::os::raw::c_char;
+
+                unsafe {
+                    cpp!([file_path as "const char *",
+                          load as "pxr::UsdStage::InitialLoadSet"] ->
+                                Stage as "pxr::UsdStageRefPtr" {
+                        return pxr::UsdStage::Open(std::string(file_path), load);
+                    })
+                }
+            }
         }
     }
 

@@ -25,6 +25,18 @@ mod tests {
     }
 
     #[test]
+    fn test_open() {
+        let stage = Stage::create_new(stage::desc::CreateNew::from(
+            CString::new("test_open.usda").unwrap().as_c_str(),
+        ));
+        stage.save();
+
+        Stage::open(stage::desc::Open::from(
+            CString::new("test_open.usda").unwrap().as_c_str(),
+        ));
+    }
+
+    #[test]
     fn test_define_prim() {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("define_prim.usda").unwrap().as_c_str(),
