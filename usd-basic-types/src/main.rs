@@ -107,6 +107,14 @@ impl From<&{typ}> for &{name} {{
 cpp_class!(pub unsafe struct Array{name} as \"pxr::VtArray<{cpp_type}>\");
 
 impl VtArray<{typ}> for Array{name} {{
+    fn new() -> Self {{
+        unsafe {{
+            cpp!([] -> Array{name} as \"pxr::VtArray<{cpp_type}>\" {{
+                return pxr::VtArray<{cpp_type}>();
+            }})
+        }}
+    }}
+
     fn size(&self) -> usize {{
         unsafe {{
             cpp!([self as \"const pxr::VtArray<{cpp_type}> *\"]
@@ -248,7 +256,8 @@ cpp! {{{{
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
 
-trait VtArray<T> {{
+pub trait VtArray<T> {{
+    fn new() -> Self;
     fn size(&self) -> usize;
     fn reserve(& mut self, num : usize);
     fn push_back(& mut self, elem : &T);

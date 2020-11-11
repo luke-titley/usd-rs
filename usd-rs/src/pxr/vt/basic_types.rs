@@ -28,6 +28,14 @@ impl From<&bool> for &Bool {
 cpp_class!(pub unsafe struct ArrayBool as "pxr::VtArray<bool>");
 
 impl VtArray<bool> for ArrayBool {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayBool as "pxr::VtArray<bool>" {
+                return pxr::VtArray<bool>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<bool> *"]
@@ -107,6 +115,14 @@ impl From<&u8> for &UChar {
 cpp_class!(pub unsafe struct ArrayUChar as "pxr::VtArray<uint8_t>");
 
 impl VtArray<u8> for ArrayUChar {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayUChar as "pxr::VtArray<uint8_t>" {
+                return pxr::VtArray<uint8_t>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint8_t> *"]
@@ -186,6 +202,14 @@ impl From<&i32> for &Int {
 cpp_class!(pub unsafe struct ArrayInt as "pxr::VtArray<int32_t>");
 
 impl VtArray<i32> for ArrayInt {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayInt as "pxr::VtArray<int32_t>" {
+                return pxr::VtArray<int32_t>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<int32_t> *"]
@@ -265,6 +289,14 @@ impl From<&u32> for &UInt {
 cpp_class!(pub unsafe struct ArrayUInt as "pxr::VtArray<uint32_t>");
 
 impl VtArray<u32> for ArrayUInt {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayUInt as "pxr::VtArray<uint32_t>" {
+                return pxr::VtArray<uint32_t>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint32_t> *"]
@@ -344,6 +376,14 @@ impl From<&i64> for &Int64 {
 cpp_class!(pub unsafe struct ArrayInt64 as "pxr::VtArray<int64_t>");
 
 impl VtArray<i64> for ArrayInt64 {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayInt64 as "pxr::VtArray<int64_t>" {
+                return pxr::VtArray<int64_t>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<int64_t> *"]
@@ -423,6 +463,14 @@ impl From<&u64> for &UInt64 {
 cpp_class!(pub unsafe struct ArrayUInt64 as "pxr::VtArray<uint64_t>");
 
 impl VtArray<u64> for ArrayUInt64 {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayUInt64 as "pxr::VtArray<uint64_t>" {
+                return pxr::VtArray<uint64_t>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint64_t> *"]
@@ -502,6 +550,14 @@ impl From<&f16> for &Half {
 cpp_class!(pub unsafe struct ArrayHalf as "pxr::VtArray<pxr::GfHalf>");
 
 impl VtArray<f16> for ArrayHalf {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayHalf as "pxr::VtArray<pxr::GfHalf>" {
+                return pxr::VtArray<pxr::GfHalf>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfHalf> *"]
@@ -581,6 +637,14 @@ impl From<&f32> for &Float {
 cpp_class!(pub unsafe struct ArrayFloat as "pxr::VtArray<float>");
 
 impl VtArray<f32> for ArrayFloat {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayFloat as "pxr::VtArray<float>" {
+                return pxr::VtArray<float>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<float> *"]
@@ -660,6 +724,14 @@ impl From<&f64> for &Double {
 cpp_class!(pub unsafe struct ArrayDouble as "pxr::VtArray<double>");
 
 impl VtArray<f64> for ArrayDouble {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayDouble as "pxr::VtArray<double>" {
+                return pxr::VtArray<double>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<double> *"]
@@ -741,6 +813,14 @@ impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
 cpp_class!(pub unsafe struct ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>");
 
 impl VtArray<crate::pxr::sdf::TimeCode> for ArrayTimeCode {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>" {
+                return pxr::VtArray<pxr::SdfTimeCode>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfTimeCode> *"]
@@ -820,6 +900,14 @@ impl From<&crate::pxr::tf::Token> for &Token {
 cpp_class!(pub unsafe struct ArrayToken as "pxr::VtArray<pxr::TfToken>");
 
 impl VtArray<crate::pxr::tf::Token> for ArrayToken {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayToken as "pxr::VtArray<pxr::TfToken>" {
+                return pxr::VtArray<pxr::TfToken>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::TfToken> *"]
@@ -901,6 +989,14 @@ impl From<&crate::pxr::sdf::AsstPth> for &Asset {
 cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
 
 impl VtArray<crate::pxr::sdf::AsstPth> for ArrayAsset {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>" {
+                return pxr::VtArray<pxr::SdfAssetPath>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *"]
@@ -980,6 +1076,14 @@ impl From<&[f64; 2 * 3]> for &Matrix2d {
 cpp_class!(pub unsafe struct ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>");
 
 impl VtArray<[f64; 2 * 3]> for ArrayMatrix2d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>" {
+                return pxr::VtArray<pxr::GfMatrix2d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix2d> *"]
@@ -1059,6 +1163,14 @@ impl From<&[f64; 3 * 3]> for &Matrix3d {
 cpp_class!(pub unsafe struct ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>");
 
 impl VtArray<[f64; 3 * 3]> for ArrayMatrix3d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>" {
+                return pxr::VtArray<pxr::GfMatrix3d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix3d> *"]
@@ -1138,6 +1250,14 @@ impl From<&[f64; 4 * 4]> for &Matrix4d {
 cpp_class!(pub unsafe struct ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>");
 
 impl VtArray<[f64; 4 * 4]> for ArrayMatrix4d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>" {
+                return pxr::VtArray<pxr::GfMatrix4d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix4d> *"]
@@ -1217,6 +1337,14 @@ impl From<&[f64; 4]> for &Quatd {
 cpp_class!(pub unsafe struct ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>");
 
 impl VtArray<[f64; 4]> for ArrayQuatd {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>" {
+                return pxr::VtArray<pxr::GfQuatd>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatd> *"]
@@ -1296,6 +1424,14 @@ impl From<&[f32; 4]> for &Quatf {
 cpp_class!(pub unsafe struct ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>");
 
 impl VtArray<[f32; 4]> for ArrayQuatf {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>" {
+                return pxr::VtArray<pxr::GfQuatf>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatf> *"]
@@ -1375,6 +1511,14 @@ impl From<&[f16; 4]> for &Quath {
 cpp_class!(pub unsafe struct ArrayQuath as "pxr::VtArray<pxr::GfQuath>");
 
 impl VtArray<[f16; 4]> for ArrayQuath {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayQuath as "pxr::VtArray<pxr::GfQuath>" {
+                return pxr::VtArray<pxr::GfQuath>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuath> *"]
@@ -1454,6 +1598,14 @@ impl From<&[f64; 2]> for &Vec2d {
 cpp_class!(pub unsafe struct ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>");
 
 impl VtArray<[f64; 2]> for ArrayVec2d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>" {
+                return pxr::VtArray<pxr::GfVec2d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2d> *"]
@@ -1533,6 +1685,14 @@ impl From<&[f32; 2]> for &Vec2f {
 cpp_class!(pub unsafe struct ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>");
 
 impl VtArray<[f32; 2]> for ArrayVec2f {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>" {
+                return pxr::VtArray<pxr::GfVec2f>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2f> *"]
@@ -1612,6 +1772,14 @@ impl From<&[f16; 2]> for &Vec2h {
 cpp_class!(pub unsafe struct ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>");
 
 impl VtArray<[f16; 2]> for ArrayVec2h {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>" {
+                return pxr::VtArray<pxr::GfVec2h>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2h> *"]
@@ -1691,6 +1859,14 @@ impl From<&[i32; 2]> for &Vec2i {
 cpp_class!(pub unsafe struct ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>");
 
 impl VtArray<[i32; 2]> for ArrayVec2i {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>" {
+                return pxr::VtArray<pxr::GfVec2i>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2i> *"]
@@ -1770,6 +1946,14 @@ impl From<&[f64; 3]> for &Vec3d {
 cpp_class!(pub unsafe struct ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>");
 
 impl VtArray<[f64; 3]> for ArrayVec3d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>" {
+                return pxr::VtArray<pxr::GfVec3d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3d> *"]
@@ -1849,6 +2033,14 @@ impl From<&[f32; 3]> for &Vec3f {
 cpp_class!(pub unsafe struct ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>");
 
 impl VtArray<[f32; 3]> for ArrayVec3f {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>" {
+                return pxr::VtArray<pxr::GfVec3f>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3f> *"]
@@ -1928,6 +2120,14 @@ impl From<&[f16; 3]> for &Vec3h {
 cpp_class!(pub unsafe struct ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>");
 
 impl VtArray<[f16; 3]> for ArrayVec3h {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>" {
+                return pxr::VtArray<pxr::GfVec3h>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3h> *"]
@@ -2007,6 +2207,14 @@ impl From<&[i32; 3]> for &Vec3i {
 cpp_class!(pub unsafe struct ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>");
 
 impl VtArray<[i32; 3]> for ArrayVec3i {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>" {
+                return pxr::VtArray<pxr::GfVec3i>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3i> *"]
@@ -2086,6 +2294,14 @@ impl From<&[f64; 4]> for &Vec4d {
 cpp_class!(pub unsafe struct ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>");
 
 impl VtArray<[f64; 4]> for ArrayVec4d {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>" {
+                return pxr::VtArray<pxr::GfVec4d>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4d> *"]
@@ -2165,6 +2381,14 @@ impl From<&[f32; 4]> for &Vec4f {
 cpp_class!(pub unsafe struct ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>");
 
 impl VtArray<[f32; 4]> for ArrayVec4f {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>" {
+                return pxr::VtArray<pxr::GfVec4f>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4f> *"]
@@ -2244,6 +2468,14 @@ impl From<&[f16; 4]> for &Vec4h {
 cpp_class!(pub unsafe struct ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>");
 
 impl VtArray<[f16; 4]> for ArrayVec4h {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>" {
+                return pxr::VtArray<pxr::GfVec4h>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4h> *"]
@@ -2323,6 +2555,14 @@ impl From<&[i32; 4]> for &Vec4i {
 cpp_class!(pub unsafe struct ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>");
 
 impl VtArray<[i32; 4]> for ArrayVec4i {
+    fn new() -> Self {
+        unsafe {
+            cpp!([] -> ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>" {
+                return pxr::VtArray<pxr::GfVec4i>();
+            })
+        }
+    }
+
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4i> *"]
@@ -2457,7 +2697,8 @@ cpp! {{
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
 
-trait VtArray<T> {
+pub trait VtArray<T> {
+    fn new() -> Self;
     fn size(&self) -> usize;
     fn reserve(&mut self, num: usize);
     fn push_back(&mut self, elem: &T);

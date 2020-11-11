@@ -191,4 +191,18 @@ mod tests {
 
         stage.save();
     }
+
+    #[test]
+    fn test_array() {
+        use vt::VtArray as _;
+        let mut array = vt::ArrayBool::new();
+
+        array.reserve(2);
+        array.push_back(&true);
+        array.push_back(&false);
+
+        assert_eq!(array.size(), 2_usize);
+        assert_eq!(array[0], true);
+        assert_eq!(array[1], false);
+    }
 }
