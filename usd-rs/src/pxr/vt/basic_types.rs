@@ -27,6 +27,17 @@ impl From<&bool> for &Bool {
 
 cpp_class!(pub unsafe struct ArrayBool as "pxr::VtArray<bool>");
 
+impl VtArray for ArrayBool {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<bool> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayBool {
     type Output = bool;
     fn index(&self, index: usize) -> &Self::Output {
@@ -66,6 +77,17 @@ impl From<&u8> for &UChar {
 }
 
 cpp_class!(pub unsafe struct ArrayUChar as "pxr::VtArray<uint8_t>");
+
+impl VtArray for ArrayUChar {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<uint8_t> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayUChar {
     type Output = u8;
@@ -107,6 +129,17 @@ impl From<&i32> for &Int {
 
 cpp_class!(pub unsafe struct ArrayInt as "pxr::VtArray<int32_t>");
 
+impl VtArray for ArrayInt {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<int32_t> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayInt {
     type Output = i32;
     fn index(&self, index: usize) -> &Self::Output {
@@ -146,6 +179,17 @@ impl From<&u32> for &UInt {
 }
 
 cpp_class!(pub unsafe struct ArrayUInt as "pxr::VtArray<uint32_t>");
+
+impl VtArray for ArrayUInt {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<uint32_t> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayUInt {
     type Output = u32;
@@ -187,6 +231,17 @@ impl From<&i64> for &Int64 {
 
 cpp_class!(pub unsafe struct ArrayInt64 as "pxr::VtArray<int64_t>");
 
+impl VtArray for ArrayInt64 {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<int64_t> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayInt64 {
     type Output = i64;
     fn index(&self, index: usize) -> &Self::Output {
@@ -226,6 +281,17 @@ impl From<&u64> for &UInt64 {
 }
 
 cpp_class!(pub unsafe struct ArrayUInt64 as "pxr::VtArray<uint64_t>");
+
+impl VtArray for ArrayUInt64 {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<uint64_t> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayUInt64 {
     type Output = u64;
@@ -267,6 +333,17 @@ impl From<&f16> for &Half {
 
 cpp_class!(pub unsafe struct ArrayHalf as "pxr::VtArray<pxr::GfHalf>");
 
+impl VtArray for ArrayHalf {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfHalf> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayHalf {
     type Output = f16;
     fn index(&self, index: usize) -> &Self::Output {
@@ -307,6 +384,17 @@ impl From<&f32> for &Float {
 
 cpp_class!(pub unsafe struct ArrayFloat as "pxr::VtArray<float>");
 
+impl VtArray for ArrayFloat {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<float> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayFloat {
     type Output = f32;
     fn index(&self, index: usize) -> &Self::Output {
@@ -346,6 +434,17 @@ impl From<&f64> for &Double {
 }
 
 cpp_class!(pub unsafe struct ArrayDouble as "pxr::VtArray<double>");
+
+impl VtArray for ArrayDouble {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<double> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayDouble {
     type Output = f64;
@@ -389,6 +488,17 @@ impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
 
 cpp_class!(pub unsafe struct ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>");
 
+impl VtArray for ArrayTimeCode {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::SdfTimeCode> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayTimeCode {
     type Output = crate::pxr::sdf::TimeCode;
     fn index(&self, index: usize) -> &Self::Output {
@@ -428,6 +538,17 @@ impl From<&crate::pxr::tf::Token> for &Token {
 }
 
 cpp_class!(pub unsafe struct ArrayToken as "pxr::VtArray<pxr::TfToken>");
+
+impl VtArray for ArrayToken {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::TfToken> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayToken {
     type Output = crate::pxr::tf::Token;
@@ -471,6 +592,17 @@ impl From<&crate::pxr::sdf::AsstPth> for &Asset {
 
 cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
 
+impl VtArray for ArrayAsset {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayAsset {
     type Output = crate::pxr::sdf::AsstPth;
     fn index(&self, index: usize) -> &Self::Output {
@@ -510,6 +642,17 @@ impl From<&[f64; 2 * 3]> for &Matrix2d {
 }
 
 cpp_class!(pub unsafe struct ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>");
+
+impl VtArray for ArrayMatrix2d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix2d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayMatrix2d {
     type Output = [f64; 2 * 3];
@@ -551,6 +694,17 @@ impl From<&[f64; 3 * 3]> for &Matrix3d {
 
 cpp_class!(pub unsafe struct ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>");
 
+impl VtArray for ArrayMatrix3d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix3d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayMatrix3d {
     type Output = [f64; 3 * 3];
     fn index(&self, index: usize) -> &Self::Output {
@@ -590,6 +744,17 @@ impl From<&[f64; 4 * 4]> for &Matrix4d {
 }
 
 cpp_class!(pub unsafe struct ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>");
+
+impl VtArray for ArrayMatrix4d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix4d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayMatrix4d {
     type Output = [f64; 4 * 4];
@@ -631,6 +796,17 @@ impl From<&[f64; 4]> for &Quatd {
 
 cpp_class!(pub unsafe struct ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>");
 
+impl VtArray for ArrayQuatd {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfQuatd> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayQuatd {
     type Output = [f64; 4];
     fn index(&self, index: usize) -> &Self::Output {
@@ -670,6 +846,17 @@ impl From<&[f32; 4]> for &Quatf {
 }
 
 cpp_class!(pub unsafe struct ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>");
+
+impl VtArray for ArrayQuatf {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfQuatf> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayQuatf {
     type Output = [f32; 4];
@@ -711,6 +898,17 @@ impl From<&[f16; 4]> for &Quath {
 
 cpp_class!(pub unsafe struct ArrayQuath as "pxr::VtArray<pxr::GfQuath>");
 
+impl VtArray for ArrayQuath {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfQuath> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayQuath {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
@@ -750,6 +948,17 @@ impl From<&[f64; 2]> for &Vec2d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>");
+
+impl VtArray for ArrayVec2d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec2d {
     type Output = [f64; 2];
@@ -791,6 +1000,17 @@ impl From<&[f32; 2]> for &Vec2f {
 
 cpp_class!(pub unsafe struct ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>");
 
+impl VtArray for ArrayVec2f {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2f> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec2f {
     type Output = [f32; 2];
     fn index(&self, index: usize) -> &Self::Output {
@@ -830,6 +1050,17 @@ impl From<&[f16; 2]> for &Vec2h {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>");
+
+impl VtArray for ArrayVec2h {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2h> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec2h {
     type Output = [f16; 2];
@@ -871,6 +1102,17 @@ impl From<&[i32; 2]> for &Vec2i {
 
 cpp_class!(pub unsafe struct ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>");
 
+impl VtArray for ArrayVec2i {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2i> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec2i {
     type Output = [i32; 2];
     fn index(&self, index: usize) -> &Self::Output {
@@ -910,6 +1152,17 @@ impl From<&[f64; 3]> for &Vec3d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>");
+
+impl VtArray for ArrayVec3d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec3d {
     type Output = [f64; 3];
@@ -951,6 +1204,17 @@ impl From<&[f32; 3]> for &Vec3f {
 
 cpp_class!(pub unsafe struct ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>");
 
+impl VtArray for ArrayVec3f {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3f> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec3f {
     type Output = [f32; 3];
     fn index(&self, index: usize) -> &Self::Output {
@@ -990,6 +1254,17 @@ impl From<&[f16; 3]> for &Vec3h {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>");
+
+impl VtArray for ArrayVec3h {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3h> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec3h {
     type Output = [f16; 3];
@@ -1031,6 +1306,17 @@ impl From<&[i32; 3]> for &Vec3i {
 
 cpp_class!(pub unsafe struct ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>");
 
+impl VtArray for ArrayVec3i {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3i> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec3i {
     type Output = [i32; 3];
     fn index(&self, index: usize) -> &Self::Output {
@@ -1070,6 +1356,17 @@ impl From<&[f64; 4]> for &Vec4d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>");
+
+impl VtArray for ArrayVec4d {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4d> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec4d {
     type Output = [f64; 4];
@@ -1111,6 +1408,17 @@ impl From<&[f32; 4]> for &Vec4f {
 
 cpp_class!(pub unsafe struct ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>");
 
+impl VtArray for ArrayVec4f {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4f> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec4f {
     type Output = [f32; 4];
     fn index(&self, index: usize) -> &Self::Output {
@@ -1151,6 +1459,17 @@ impl From<&[f16; 4]> for &Vec4h {
 
 cpp_class!(pub unsafe struct ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>");
 
+impl VtArray for ArrayVec4h {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4h> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
+
 impl std::ops::Index<usize> for ArrayVec4h {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
@@ -1190,6 +1509,17 @@ impl From<&[i32; 4]> for &Vec4i {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>");
+
+impl VtArray for ArrayVec4i {
+    fn size(&self) -> usize {
+        unsafe {
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4i> *"]
+                -> usize as "size_t" {
+                return self->size();
+            })
+        }
+    }
+}
 
 impl std::ops::Index<usize> for ArrayVec4i {
     type Output = [i32; 4];
@@ -1286,6 +1616,10 @@ cpp! {{
 // There is a cost to using CStr. That is, the API user has to do the conversion
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
+
+trait VtArray {
+    fn size(&self) -> usize;
+}
 
 #[repr(transparent)]
 pub struct String(pub std::ffi::CStr);

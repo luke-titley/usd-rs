@@ -106,6 +106,17 @@ impl From<&{typ}> for &{name} {{
 
 cpp_class!(pub unsafe struct Array{name} as \"pxr::VtArray<{cpp_type}>\");
 
+impl VtArray for Array{name} {{
+    fn size(&self) -> usize {{
+        unsafe {{
+            cpp!([self as \"const pxr::VtArray<{cpp_type}> *\"]
+                -> usize as \"size_t\" {{
+                return self->size();
+            }})
+        }}
+    }}
+}}
+
 impl std::ops::Index<usize> for Array{name} {{
     type Output = {typ};
     fn index(&self, index: usize) -> &Self::Output {{
@@ -208,6 +219,10 @@ cpp! {{{{
 // There is a cost to using CStr. That is, the API user has to do the conversion
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
+
+trait VtArray {{
+    fn size(&self) -> usize;
+}}
 
 #[repr(transparent)]
 pub struct String(pub std::ffi::CStr);
