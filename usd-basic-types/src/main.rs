@@ -106,7 +106,7 @@ impl From<&{typ}> for &{name} {{
 
 cpp_class!(pub unsafe struct Array{name} as \"pxr::VtArray<{cpp_type}>\");
 
-impl VtArray for Array{name} {{
+impl VtArray<{typ}> for Array{name} {{
     fn size(&self) -> usize {{
         unsafe {{
             cpp!([self as \"const pxr::VtArray<{cpp_type}> *\"]
@@ -115,11 +115,34 @@ impl VtArray for Array{name} {{
             }})
         }}
     }}
+
+    fn reserve(& mut self, num : usize) {{
+        unsafe {{
+            cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
+                  num as \"size_t\"] {{
+                self->reserve(num);
+            }})
+        }}
+    }}
+
+    fn push_back(& mut self, elem : &{typ}) {{
+        unsafe {{
+            cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
+                  elem as \"const {cpp_type} *\"] {{
+                self->push_back(*elem);
+            }})
+        }}
+    }}
 }}
 
 impl std::ops::Index<usize> for Array{name} {{
     type Output = {typ};
     fn index(&self, index: usize) -> &Self::Output {{
+        // Bounds check
+        if index >= self.size() {{
+            panic!(\"Out of bounds VtArray access for Array{name}\");
+        }}
+
         unsafe {{
             cpp!([self as \"const pxr::VtArray<{cpp_type}> *\",
                   index as \"size_t\"]
@@ -134,6 +157,11 @@ impl std::ops::Index<usize> for Array{name} {{
 
 impl std::ops::IndexMut<usize> for Array{name} {{
     fn index_mut(& mut self, index: usize) -> &mut Self::Output {{
+        // Bounds check
+        if index >= self.size() {{
+            panic!(\"Out of bounds VtArray access for Array{name}\");
+        }}
+        
         unsafe {{
             cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
                   index as \"size_t\"]
@@ -220,8 +248,10 @@ cpp! {{{{
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
 
-trait VtArray {{
+trait VtArray<T> {{
     fn size(&self) -> usize;
+    fn reserve(& mut self, num : usize);
+    fn push_back(& mut self, elem : &T);
 }}
 
 #[repr(transparent)]

@@ -27,7 +27,7 @@ impl From<&bool> for &Bool {
 
 cpp_class!(pub unsafe struct ArrayBool as "pxr::VtArray<bool>");
 
-impl VtArray for ArrayBool {
+impl VtArray<bool> for ArrayBool {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<bool> *"]
@@ -36,11 +36,34 @@ impl VtArray for ArrayBool {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<bool> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &bool) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<bool> *",
+                  elem as "const bool *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayBool {
     type Output = bool;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayBool");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<bool> *",
                   index as "size_t"]
@@ -55,6 +78,11 @@ impl std::ops::Index<usize> for ArrayBool {
 
 impl std::ops::IndexMut<usize> for ArrayBool {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayBool");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<bool> *",
                   index as "size_t"]
@@ -78,7 +106,7 @@ impl From<&u8> for &UChar {
 
 cpp_class!(pub unsafe struct ArrayUChar as "pxr::VtArray<uint8_t>");
 
-impl VtArray for ArrayUChar {
+impl VtArray<u8> for ArrayUChar {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint8_t> *"]
@@ -87,11 +115,34 @@ impl VtArray for ArrayUChar {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint8_t> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &u8) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint8_t> *",
+                  elem as "const uint8_t *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayUChar {
     type Output = u8;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUChar");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<uint8_t> *",
                   index as "size_t"]
@@ -106,6 +157,11 @@ impl std::ops::Index<usize> for ArrayUChar {
 
 impl std::ops::IndexMut<usize> for ArrayUChar {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUChar");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<uint8_t> *",
                   index as "size_t"]
@@ -129,7 +185,7 @@ impl From<&i32> for &Int {
 
 cpp_class!(pub unsafe struct ArrayInt as "pxr::VtArray<int32_t>");
 
-impl VtArray for ArrayInt {
+impl VtArray<i32> for ArrayInt {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<int32_t> *"]
@@ -138,11 +194,34 @@ impl VtArray for ArrayInt {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int32_t> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &i32) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int32_t> *",
+                  elem as "const int32_t *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayInt {
     type Output = i32;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayInt");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<int32_t> *",
                   index as "size_t"]
@@ -157,6 +236,11 @@ impl std::ops::Index<usize> for ArrayInt {
 
 impl std::ops::IndexMut<usize> for ArrayInt {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayInt");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<int32_t> *",
                   index as "size_t"]
@@ -180,7 +264,7 @@ impl From<&u32> for &UInt {
 
 cpp_class!(pub unsafe struct ArrayUInt as "pxr::VtArray<uint32_t>");
 
-impl VtArray for ArrayUInt {
+impl VtArray<u32> for ArrayUInt {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint32_t> *"]
@@ -189,11 +273,34 @@ impl VtArray for ArrayUInt {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint32_t> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &u32) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint32_t> *",
+                  elem as "const uint32_t *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayUInt {
     type Output = u32;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUInt");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<uint32_t> *",
                   index as "size_t"]
@@ -208,6 +315,11 @@ impl std::ops::Index<usize> for ArrayUInt {
 
 impl std::ops::IndexMut<usize> for ArrayUInt {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUInt");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<uint32_t> *",
                   index as "size_t"]
@@ -231,7 +343,7 @@ impl From<&i64> for &Int64 {
 
 cpp_class!(pub unsafe struct ArrayInt64 as "pxr::VtArray<int64_t>");
 
-impl VtArray for ArrayInt64 {
+impl VtArray<i64> for ArrayInt64 {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<int64_t> *"]
@@ -240,11 +352,34 @@ impl VtArray for ArrayInt64 {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int64_t> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &i64) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int64_t> *",
+                  elem as "const int64_t *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayInt64 {
     type Output = i64;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayInt64");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<int64_t> *",
                   index as "size_t"]
@@ -259,6 +394,11 @@ impl std::ops::Index<usize> for ArrayInt64 {
 
 impl std::ops::IndexMut<usize> for ArrayInt64 {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayInt64");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<int64_t> *",
                   index as "size_t"]
@@ -282,7 +422,7 @@ impl From<&u64> for &UInt64 {
 
 cpp_class!(pub unsafe struct ArrayUInt64 as "pxr::VtArray<uint64_t>");
 
-impl VtArray for ArrayUInt64 {
+impl VtArray<u64> for ArrayUInt64 {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<uint64_t> *"]
@@ -291,11 +431,34 @@ impl VtArray for ArrayUInt64 {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint64_t> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &u64) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint64_t> *",
+                  elem as "const uint64_t *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayUInt64 {
     type Output = u64;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUInt64");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<uint64_t> *",
                   index as "size_t"]
@@ -310,6 +473,11 @@ impl std::ops::Index<usize> for ArrayUInt64 {
 
 impl std::ops::IndexMut<usize> for ArrayUInt64 {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayUInt64");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<uint64_t> *",
                   index as "size_t"]
@@ -333,7 +501,7 @@ impl From<&f16> for &Half {
 
 cpp_class!(pub unsafe struct ArrayHalf as "pxr::VtArray<pxr::GfHalf>");
 
-impl VtArray for ArrayHalf {
+impl VtArray<f16> for ArrayHalf {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfHalf> *"]
@@ -342,11 +510,34 @@ impl VtArray for ArrayHalf {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &f16) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
+                  elem as "const pxr::GfHalf *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayHalf {
     type Output = f16;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayHalf");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfHalf> *",
                   index as "size_t"]
@@ -361,6 +552,11 @@ impl std::ops::Index<usize> for ArrayHalf {
 
 impl std::ops::IndexMut<usize> for ArrayHalf {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayHalf");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
                   index as "size_t"]
@@ -384,7 +580,7 @@ impl From<&f32> for &Float {
 
 cpp_class!(pub unsafe struct ArrayFloat as "pxr::VtArray<float>");
 
-impl VtArray for ArrayFloat {
+impl VtArray<f32> for ArrayFloat {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<float> *"]
@@ -393,11 +589,34 @@ impl VtArray for ArrayFloat {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<float> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &f32) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<float> *",
+                  elem as "const float *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayFloat {
     type Output = f32;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayFloat");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<float> *",
                   index as "size_t"]
@@ -412,6 +631,11 @@ impl std::ops::Index<usize> for ArrayFloat {
 
 impl std::ops::IndexMut<usize> for ArrayFloat {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayFloat");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<float> *",
                   index as "size_t"]
@@ -435,7 +659,7 @@ impl From<&f64> for &Double {
 
 cpp_class!(pub unsafe struct ArrayDouble as "pxr::VtArray<double>");
 
-impl VtArray for ArrayDouble {
+impl VtArray<f64> for ArrayDouble {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<double> *"]
@@ -444,11 +668,34 @@ impl VtArray for ArrayDouble {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<double> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &f64) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<double> *",
+                  elem as "const double *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayDouble {
     type Output = f64;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayDouble");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<double> *",
                   index as "size_t"]
@@ -463,6 +710,11 @@ impl std::ops::Index<usize> for ArrayDouble {
 
 impl std::ops::IndexMut<usize> for ArrayDouble {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayDouble");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<double> *",
                   index as "size_t"]
@@ -488,7 +740,7 @@ impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
 
 cpp_class!(pub unsafe struct ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>");
 
-impl VtArray for ArrayTimeCode {
+impl VtArray<crate::pxr::sdf::TimeCode> for ArrayTimeCode {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfTimeCode> *"]
@@ -497,11 +749,34 @@ impl VtArray for ArrayTimeCode {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &crate::pxr::sdf::TimeCode) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
+                  elem as "const pxr::SdfTimeCode *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayTimeCode {
     type Output = crate::pxr::sdf::TimeCode;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayTimeCode");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfTimeCode> *",
                   index as "size_t"]
@@ -516,6 +791,11 @@ impl std::ops::Index<usize> for ArrayTimeCode {
 
 impl std::ops::IndexMut<usize> for ArrayTimeCode {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayTimeCode");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
                   index as "size_t"]
@@ -539,7 +819,7 @@ impl From<&crate::pxr::tf::Token> for &Token {
 
 cpp_class!(pub unsafe struct ArrayToken as "pxr::VtArray<pxr::TfToken>");
 
-impl VtArray for ArrayToken {
+impl VtArray<crate::pxr::tf::Token> for ArrayToken {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::TfToken> *"]
@@ -548,11 +828,34 @@ impl VtArray for ArrayToken {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::TfToken> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &crate::pxr::tf::Token) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::TfToken> *",
+                  elem as "const pxr::TfToken *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayToken {
     type Output = crate::pxr::tf::Token;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayToken");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::TfToken> *",
                   index as "size_t"]
@@ -567,6 +870,11 @@ impl std::ops::Index<usize> for ArrayToken {
 
 impl std::ops::IndexMut<usize> for ArrayToken {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayToken");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::TfToken> *",
                   index as "size_t"]
@@ -592,7 +900,7 @@ impl From<&crate::pxr::sdf::AsstPth> for &Asset {
 
 cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
 
-impl VtArray for ArrayAsset {
+impl VtArray<crate::pxr::sdf::AsstPth> for ArrayAsset {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *"]
@@ -601,11 +909,34 @@ impl VtArray for ArrayAsset {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &crate::pxr::sdf::AsstPth) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
+                  elem as "const pxr::SdfAssetPath *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayAsset {
     type Output = crate::pxr::sdf::AsstPth;
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayAsset");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *",
                   index as "size_t"]
@@ -620,6 +951,11 @@ impl std::ops::Index<usize> for ArrayAsset {
 
 impl std::ops::IndexMut<usize> for ArrayAsset {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayAsset");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
                   index as "size_t"]
@@ -643,7 +979,7 @@ impl From<&[f64; 2 * 3]> for &Matrix2d {
 
 cpp_class!(pub unsafe struct ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>");
 
-impl VtArray for ArrayMatrix2d {
+impl VtArray<[f64; 2 * 3]> for ArrayMatrix2d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix2d> *"]
@@ -652,11 +988,34 @@ impl VtArray for ArrayMatrix2d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 2 * 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
+                  elem as "const pxr::GfMatrix2d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayMatrix2d {
     type Output = [f64; 2 * 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix2d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix2d> *",
                   index as "size_t"]
@@ -671,6 +1030,11 @@ impl std::ops::Index<usize> for ArrayMatrix2d {
 
 impl std::ops::IndexMut<usize> for ArrayMatrix2d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix2d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
                   index as "size_t"]
@@ -694,7 +1058,7 @@ impl From<&[f64; 3 * 3]> for &Matrix3d {
 
 cpp_class!(pub unsafe struct ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>");
 
-impl VtArray for ArrayMatrix3d {
+impl VtArray<[f64; 3 * 3]> for ArrayMatrix3d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix3d> *"]
@@ -703,11 +1067,34 @@ impl VtArray for ArrayMatrix3d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 3 * 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
+                  elem as "const pxr::GfMatrix3d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayMatrix3d {
     type Output = [f64; 3 * 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix3d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix3d> *",
                   index as "size_t"]
@@ -722,6 +1109,11 @@ impl std::ops::Index<usize> for ArrayMatrix3d {
 
 impl std::ops::IndexMut<usize> for ArrayMatrix3d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix3d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
                   index as "size_t"]
@@ -745,7 +1137,7 @@ impl From<&[f64; 4 * 4]> for &Matrix4d {
 
 cpp_class!(pub unsafe struct ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>");
 
-impl VtArray for ArrayMatrix4d {
+impl VtArray<[f64; 4 * 4]> for ArrayMatrix4d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix4d> *"]
@@ -754,11 +1146,34 @@ impl VtArray for ArrayMatrix4d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 4 * 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
+                  elem as "const pxr::GfMatrix4d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayMatrix4d {
     type Output = [f64; 4 * 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix4d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfMatrix4d> *",
                   index as "size_t"]
@@ -773,6 +1188,11 @@ impl std::ops::Index<usize> for ArrayMatrix4d {
 
 impl std::ops::IndexMut<usize> for ArrayMatrix4d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayMatrix4d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
                   index as "size_t"]
@@ -796,7 +1216,7 @@ impl From<&[f64; 4]> for &Quatd {
 
 cpp_class!(pub unsafe struct ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>");
 
-impl VtArray for ArrayQuatd {
+impl VtArray<[f64; 4]> for ArrayQuatd {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatd> *"]
@@ -805,11 +1225,34 @@ impl VtArray for ArrayQuatd {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
+                  elem as "const pxr::GfQuatd *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayQuatd {
     type Output = [f64; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuatd");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatd> *",
                   index as "size_t"]
@@ -824,6 +1267,11 @@ impl std::ops::Index<usize> for ArrayQuatd {
 
 impl std::ops::IndexMut<usize> for ArrayQuatd {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuatd");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
                   index as "size_t"]
@@ -847,7 +1295,7 @@ impl From<&[f32; 4]> for &Quatf {
 
 cpp_class!(pub unsafe struct ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>");
 
-impl VtArray for ArrayQuatf {
+impl VtArray<[f32; 4]> for ArrayQuatf {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatf> *"]
@@ -856,11 +1304,34 @@ impl VtArray for ArrayQuatf {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f32; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
+                  elem as "const pxr::GfQuatf *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayQuatf {
     type Output = [f32; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuatf");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuatf> *",
                   index as "size_t"]
@@ -875,6 +1346,11 @@ impl std::ops::Index<usize> for ArrayQuatf {
 
 impl std::ops::IndexMut<usize> for ArrayQuatf {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuatf");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
                   index as "size_t"]
@@ -898,7 +1374,7 @@ impl From<&[f16; 4]> for &Quath {
 
 cpp_class!(pub unsafe struct ArrayQuath as "pxr::VtArray<pxr::GfQuath>");
 
-impl VtArray for ArrayQuath {
+impl VtArray<[f16; 4]> for ArrayQuath {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuath> *"]
@@ -907,11 +1383,34 @@ impl VtArray for ArrayQuath {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f16; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
+                  elem as "const pxr::GfQuath *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayQuath {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuath");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfQuath> *",
                   index as "size_t"]
@@ -926,6 +1425,11 @@ impl std::ops::Index<usize> for ArrayQuath {
 
 impl std::ops::IndexMut<usize> for ArrayQuath {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayQuath");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
                   index as "size_t"]
@@ -949,7 +1453,7 @@ impl From<&[f64; 2]> for &Vec2d {
 
 cpp_class!(pub unsafe struct ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>");
 
-impl VtArray for ArrayVec2d {
+impl VtArray<[f64; 2]> for ArrayVec2d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2d> *"]
@@ -958,11 +1462,34 @@ impl VtArray for ArrayVec2d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 2]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
+                  elem as "const pxr::GfVec2d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec2d {
     type Output = [f64; 2];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2d> *",
                   index as "size_t"]
@@ -977,6 +1504,11 @@ impl std::ops::Index<usize> for ArrayVec2d {
 
 impl std::ops::IndexMut<usize> for ArrayVec2d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
                   index as "size_t"]
@@ -1000,7 +1532,7 @@ impl From<&[f32; 2]> for &Vec2f {
 
 cpp_class!(pub unsafe struct ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>");
 
-impl VtArray for ArrayVec2f {
+impl VtArray<[f32; 2]> for ArrayVec2f {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2f> *"]
@@ -1009,11 +1541,34 @@ impl VtArray for ArrayVec2f {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f32; 2]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
+                  elem as "const pxr::GfVec2f *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec2f {
     type Output = [f32; 2];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2f");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2f> *",
                   index as "size_t"]
@@ -1028,6 +1583,11 @@ impl std::ops::Index<usize> for ArrayVec2f {
 
 impl std::ops::IndexMut<usize> for ArrayVec2f {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2f");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
                   index as "size_t"]
@@ -1051,7 +1611,7 @@ impl From<&[f16; 2]> for &Vec2h {
 
 cpp_class!(pub unsafe struct ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>");
 
-impl VtArray for ArrayVec2h {
+impl VtArray<[f16; 2]> for ArrayVec2h {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2h> *"]
@@ -1060,11 +1620,34 @@ impl VtArray for ArrayVec2h {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f16; 2]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
+                  elem as "const pxr::GfVec2h *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec2h {
     type Output = [f16; 2];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2h");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2h> *",
                   index as "size_t"]
@@ -1079,6 +1662,11 @@ impl std::ops::Index<usize> for ArrayVec2h {
 
 impl std::ops::IndexMut<usize> for ArrayVec2h {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2h");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
                   index as "size_t"]
@@ -1102,7 +1690,7 @@ impl From<&[i32; 2]> for &Vec2i {
 
 cpp_class!(pub unsafe struct ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>");
 
-impl VtArray for ArrayVec2i {
+impl VtArray<[i32; 2]> for ArrayVec2i {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2i> *"]
@@ -1111,11 +1699,34 @@ impl VtArray for ArrayVec2i {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[i32; 2]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
+                  elem as "const pxr::GfVec2i *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec2i {
     type Output = [i32; 2];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2i");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec2i> *",
                   index as "size_t"]
@@ -1130,6 +1741,11 @@ impl std::ops::Index<usize> for ArrayVec2i {
 
 impl std::ops::IndexMut<usize> for ArrayVec2i {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec2i");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
                   index as "size_t"]
@@ -1153,7 +1769,7 @@ impl From<&[f64; 3]> for &Vec3d {
 
 cpp_class!(pub unsafe struct ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>");
 
-impl VtArray for ArrayVec3d {
+impl VtArray<[f64; 3]> for ArrayVec3d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3d> *"]
@@ -1162,11 +1778,34 @@ impl VtArray for ArrayVec3d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
+                  elem as "const pxr::GfVec3d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec3d {
     type Output = [f64; 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3d> *",
                   index as "size_t"]
@@ -1181,6 +1820,11 @@ impl std::ops::Index<usize> for ArrayVec3d {
 
 impl std::ops::IndexMut<usize> for ArrayVec3d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
                   index as "size_t"]
@@ -1204,7 +1848,7 @@ impl From<&[f32; 3]> for &Vec3f {
 
 cpp_class!(pub unsafe struct ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>");
 
-impl VtArray for ArrayVec3f {
+impl VtArray<[f32; 3]> for ArrayVec3f {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3f> *"]
@@ -1213,11 +1857,34 @@ impl VtArray for ArrayVec3f {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f32; 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
+                  elem as "const pxr::GfVec3f *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec3f {
     type Output = [f32; 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3f");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3f> *",
                   index as "size_t"]
@@ -1232,6 +1899,11 @@ impl std::ops::Index<usize> for ArrayVec3f {
 
 impl std::ops::IndexMut<usize> for ArrayVec3f {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3f");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
                   index as "size_t"]
@@ -1255,7 +1927,7 @@ impl From<&[f16; 3]> for &Vec3h {
 
 cpp_class!(pub unsafe struct ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>");
 
-impl VtArray for ArrayVec3h {
+impl VtArray<[f16; 3]> for ArrayVec3h {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3h> *"]
@@ -1264,11 +1936,34 @@ impl VtArray for ArrayVec3h {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f16; 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
+                  elem as "const pxr::GfVec3h *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec3h {
     type Output = [f16; 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3h");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3h> *",
                   index as "size_t"]
@@ -1283,6 +1978,11 @@ impl std::ops::Index<usize> for ArrayVec3h {
 
 impl std::ops::IndexMut<usize> for ArrayVec3h {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3h");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
                   index as "size_t"]
@@ -1306,7 +2006,7 @@ impl From<&[i32; 3]> for &Vec3i {
 
 cpp_class!(pub unsafe struct ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>");
 
-impl VtArray for ArrayVec3i {
+impl VtArray<[i32; 3]> for ArrayVec3i {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3i> *"]
@@ -1315,11 +2015,34 @@ impl VtArray for ArrayVec3i {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[i32; 3]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
+                  elem as "const pxr::GfVec3i *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec3i {
     type Output = [i32; 3];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3i");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec3i> *",
                   index as "size_t"]
@@ -1334,6 +2057,11 @@ impl std::ops::Index<usize> for ArrayVec3i {
 
 impl std::ops::IndexMut<usize> for ArrayVec3i {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec3i");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
                   index as "size_t"]
@@ -1357,7 +2085,7 @@ impl From<&[f64; 4]> for &Vec4d {
 
 cpp_class!(pub unsafe struct ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>");
 
-impl VtArray for ArrayVec4d {
+impl VtArray<[f64; 4]> for ArrayVec4d {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4d> *"]
@@ -1366,11 +2094,34 @@ impl VtArray for ArrayVec4d {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f64; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
+                  elem as "const pxr::GfVec4d *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec4d {
     type Output = [f64; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4d");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4d> *",
                   index as "size_t"]
@@ -1385,6 +2136,11 @@ impl std::ops::Index<usize> for ArrayVec4d {
 
 impl std::ops::IndexMut<usize> for ArrayVec4d {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4d");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
                   index as "size_t"]
@@ -1408,7 +2164,7 @@ impl From<&[f32; 4]> for &Vec4f {
 
 cpp_class!(pub unsafe struct ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>");
 
-impl VtArray for ArrayVec4f {
+impl VtArray<[f32; 4]> for ArrayVec4f {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4f> *"]
@@ -1417,11 +2173,34 @@ impl VtArray for ArrayVec4f {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f32; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
+                  elem as "const pxr::GfVec4f *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec4f {
     type Output = [f32; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4f");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4f> *",
                   index as "size_t"]
@@ -1436,6 +2215,11 @@ impl std::ops::Index<usize> for ArrayVec4f {
 
 impl std::ops::IndexMut<usize> for ArrayVec4f {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4f");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
                   index as "size_t"]
@@ -1459,7 +2243,7 @@ impl From<&[f16; 4]> for &Vec4h {
 
 cpp_class!(pub unsafe struct ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>");
 
-impl VtArray for ArrayVec4h {
+impl VtArray<[f16; 4]> for ArrayVec4h {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4h> *"]
@@ -1468,11 +2252,34 @@ impl VtArray for ArrayVec4h {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[f16; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
+                  elem as "const pxr::GfVec4h *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec4h {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4h");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4h> *",
                   index as "size_t"]
@@ -1487,6 +2294,11 @@ impl std::ops::Index<usize> for ArrayVec4h {
 
 impl std::ops::IndexMut<usize> for ArrayVec4h {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4h");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
                   index as "size_t"]
@@ -1510,7 +2322,7 @@ impl From<&[i32; 4]> for &Vec4i {
 
 cpp_class!(pub unsafe struct ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>");
 
-impl VtArray for ArrayVec4i {
+impl VtArray<[i32; 4]> for ArrayVec4i {
     fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4i> *"]
@@ -1519,11 +2331,34 @@ impl VtArray for ArrayVec4i {
             })
         }
     }
+
+    fn reserve(&mut self, num: usize) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
+                  num as "size_t"] {
+                self->reserve(num);
+            })
+        }
+    }
+
+    fn push_back(&mut self, elem: &[i32; 4]) {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
+                  elem as "const pxr::GfVec4i *"] {
+                self->push_back(*elem);
+            })
+        }
+    }
 }
 
 impl std::ops::Index<usize> for ArrayVec4i {
     type Output = [i32; 4];
     fn index(&self, index: usize) -> &Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4i");
+        }
+
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::GfVec4i> *",
                   index as "size_t"]
@@ -1538,6 +2373,11 @@ impl std::ops::Index<usize> for ArrayVec4i {
 
 impl std::ops::IndexMut<usize> for ArrayVec4i {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        // Bounds check
+        if index >= self.size() {
+            panic!("Out of bounds VtArray access for ArrayVec4i");
+        }
+
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
                   index as "size_t"]
@@ -1617,8 +2457,10 @@ cpp! {{
 // from &str to &CStr, but by pushing these upwards, there is more opportunity
 // to reduce the number of times the conversions need to be done.
 
-trait VtArray {
+trait VtArray<T> {
     fn size(&self) -> usize;
+    fn reserve(&mut self, num: usize);
+    fn push_back(&mut self, elem: &T);
 }
 
 #[repr(transparent)]
