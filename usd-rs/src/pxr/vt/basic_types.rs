@@ -26,6 +26,22 @@ impl From<&bool> for &Bool {
 }
 
 cpp_class!(pub unsafe struct ArrayBool as "pxr::VtArray<bool>");
+
+impl std::ops::Index<usize> for ArrayBool {
+    type Output = bool;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<bool> *",
+                  index as "size_t"]
+                -> * const bool as "const bool *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct UChar(pub u8);
 
@@ -36,6 +52,22 @@ impl From<&u8> for &UChar {
 }
 
 cpp_class!(pub unsafe struct ArrayUChar as "pxr::VtArray<uint8_t>");
+
+impl std::ops::Index<usize> for ArrayUChar {
+    type Output = u8;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint8_t> *",
+                  index as "size_t"]
+                -> * const u8 as "const uint8_t *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Int(pub i32);
 
@@ -46,6 +78,22 @@ impl From<&i32> for &Int {
 }
 
 cpp_class!(pub unsafe struct ArrayInt as "pxr::VtArray<int32_t>");
+
+impl std::ops::Index<usize> for ArrayInt {
+    type Output = i32;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int32_t> *",
+                  index as "size_t"]
+                -> * const i32 as "const int32_t *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct UInt(pub u32);
 
@@ -56,6 +104,22 @@ impl From<&u32> for &UInt {
 }
 
 cpp_class!(pub unsafe struct ArrayUInt as "pxr::VtArray<uint32_t>");
+
+impl std::ops::Index<usize> for ArrayUInt {
+    type Output = u32;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint32_t> *",
+                  index as "size_t"]
+                -> * const u32 as "const uint32_t *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Int64(pub i64);
 
@@ -66,6 +130,22 @@ impl From<&i64> for &Int64 {
 }
 
 cpp_class!(pub unsafe struct ArrayInt64 as "pxr::VtArray<int64_t>");
+
+impl std::ops::Index<usize> for ArrayInt64 {
+    type Output = i64;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int64_t> *",
+                  index as "size_t"]
+                -> * const i64 as "const int64_t *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct UInt64(pub u64);
 
@@ -76,6 +156,22 @@ impl From<&u64> for &UInt64 {
 }
 
 cpp_class!(pub unsafe struct ArrayUInt64 as "pxr::VtArray<uint64_t>");
+
+impl std::ops::Index<usize> for ArrayUInt64 {
+    type Output = u64;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint64_t> *",
+                  index as "size_t"]
+                -> * const u64 as "const uint64_t *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Half(pub f16);
 
@@ -86,6 +182,22 @@ impl From<&f16> for &Half {
 }
 
 cpp_class!(pub unsafe struct ArrayHalf as "pxr::VtArray<pxr::GfHalf>");
+
+impl std::ops::Index<usize> for ArrayHalf {
+    type Output = f16;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
+                  index as "size_t"]
+                -> * const f16 as "const pxr::GfHalf *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Float(pub f32);
 
@@ -96,6 +208,22 @@ impl From<&f32> for &Float {
 }
 
 cpp_class!(pub unsafe struct ArrayFloat as "pxr::VtArray<float>");
+
+impl std::ops::Index<usize> for ArrayFloat {
+    type Output = f32;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<float> *",
+                  index as "size_t"]
+                -> * const f32 as "const float *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Double(pub f64);
 
@@ -106,6 +234,22 @@ impl From<&f64> for &Double {
 }
 
 cpp_class!(pub unsafe struct ArrayDouble as "pxr::VtArray<double>");
+
+impl std::ops::Index<usize> for ArrayDouble {
+    type Output = f64;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<double> *",
+                  index as "size_t"]
+                -> * const f64 as "const double *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct TimeCode(pub crate::pxr::sdf::TimeCode);
 
@@ -118,6 +262,22 @@ impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
 }
 
 cpp_class!(pub unsafe struct ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>");
+
+impl std::ops::Index<usize> for ArrayTimeCode {
+    type Output = crate::pxr::sdf::TimeCode;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
+                  index as "size_t"]
+                -> * const crate::pxr::sdf::TimeCode as "const pxr::SdfTimeCode *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Token(pub crate::pxr::tf::Token);
 
@@ -128,6 +288,22 @@ impl From<&crate::pxr::tf::Token> for &Token {
 }
 
 cpp_class!(pub unsafe struct ArrayToken as "pxr::VtArray<pxr::TfToken>");
+
+impl std::ops::Index<usize> for ArrayToken {
+    type Output = crate::pxr::tf::Token;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::TfToken> *",
+                  index as "size_t"]
+                -> * const crate::pxr::tf::Token as "const pxr::TfToken *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Asset(pub crate::pxr::sdf::AsstPth);
 
@@ -140,6 +316,22 @@ impl From<&crate::pxr::sdf::AsstPth> for &Asset {
 }
 
 cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
+
+impl std::ops::Index<usize> for ArrayAsset {
+    type Output = crate::pxr::sdf::AsstPth;
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
+                  index as "size_t"]
+                -> * const crate::pxr::sdf::AsstPth as "const pxr::SdfAssetPath *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Matrix2d(pub [f64; 2 * 3]);
 
@@ -150,6 +342,22 @@ impl From<&[f64; 2 * 3]> for &Matrix2d {
 }
 
 cpp_class!(pub unsafe struct ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>");
+
+impl std::ops::Index<usize> for ArrayMatrix2d {
+    type Output = [f64; 2 * 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
+                  index as "size_t"]
+                -> * const [f64;2*3] as "const pxr::GfMatrix2d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Matrix3d(pub [f64; 3 * 3]);
 
@@ -160,6 +368,22 @@ impl From<&[f64; 3 * 3]> for &Matrix3d {
 }
 
 cpp_class!(pub unsafe struct ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>");
+
+impl std::ops::Index<usize> for ArrayMatrix3d {
+    type Output = [f64; 3 * 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
+                  index as "size_t"]
+                -> * const [f64;3*3] as "const pxr::GfMatrix3d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Matrix4d(pub [f64; 4 * 4]);
 
@@ -170,6 +394,22 @@ impl From<&[f64; 4 * 4]> for &Matrix4d {
 }
 
 cpp_class!(pub unsafe struct ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>");
+
+impl std::ops::Index<usize> for ArrayMatrix4d {
+    type Output = [f64; 4 * 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
+                  index as "size_t"]
+                -> * const [f64;4*4] as "const pxr::GfMatrix4d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Quatd(pub [f64; 4]);
 
@@ -180,6 +420,22 @@ impl From<&[f64; 4]> for &Quatd {
 }
 
 cpp_class!(pub unsafe struct ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>");
+
+impl std::ops::Index<usize> for ArrayQuatd {
+    type Output = [f64; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
+                  index as "size_t"]
+                -> * const [f64;4] as "const pxr::GfQuatd *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Quatf(pub [f32; 4]);
 
@@ -190,6 +446,22 @@ impl From<&[f32; 4]> for &Quatf {
 }
 
 cpp_class!(pub unsafe struct ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>");
+
+impl std::ops::Index<usize> for ArrayQuatf {
+    type Output = [f32; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
+                  index as "size_t"]
+                -> * const [f32;4] as "const pxr::GfQuatf *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Quath(pub [f16; 4]);
 
@@ -200,6 +472,22 @@ impl From<&[f16; 4]> for &Quath {
 }
 
 cpp_class!(pub unsafe struct ArrayQuath as "pxr::VtArray<pxr::GfQuath>");
+
+impl std::ops::Index<usize> for ArrayQuath {
+    type Output = [f16; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
+                  index as "size_t"]
+                -> * const [f16;4] as "const pxr::GfQuath *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec2d(pub [f64; 2]);
 
@@ -210,6 +498,22 @@ impl From<&[f64; 2]> for &Vec2d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>");
+
+impl std::ops::Index<usize> for ArrayVec2d {
+    type Output = [f64; 2];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
+                  index as "size_t"]
+                -> * const [f64;2] as "const pxr::GfVec2d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec2f(pub [f32; 2]);
 
@@ -220,6 +524,22 @@ impl From<&[f32; 2]> for &Vec2f {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>");
+
+impl std::ops::Index<usize> for ArrayVec2f {
+    type Output = [f32; 2];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
+                  index as "size_t"]
+                -> * const [f32;2] as "const pxr::GfVec2f *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec2h(pub [f16; 2]);
 
@@ -230,6 +550,22 @@ impl From<&[f16; 2]> for &Vec2h {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>");
+
+impl std::ops::Index<usize> for ArrayVec2h {
+    type Output = [f16; 2];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
+                  index as "size_t"]
+                -> * const [f16;2] as "const pxr::GfVec2h *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec2i(pub [i32; 2]);
 
@@ -240,6 +576,22 @@ impl From<&[i32; 2]> for &Vec2i {
 }
 
 cpp_class!(pub unsafe struct ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>");
+
+impl std::ops::Index<usize> for ArrayVec2i {
+    type Output = [i32; 2];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
+                  index as "size_t"]
+                -> * const [i32;2] as "const pxr::GfVec2i *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec3d(pub [f64; 3]);
 
@@ -250,6 +602,22 @@ impl From<&[f64; 3]> for &Vec3d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>");
+
+impl std::ops::Index<usize> for ArrayVec3d {
+    type Output = [f64; 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
+                  index as "size_t"]
+                -> * const [f64;3] as "const pxr::GfVec3d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec3f(pub [f32; 3]);
 
@@ -260,6 +628,22 @@ impl From<&[f32; 3]> for &Vec3f {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>");
+
+impl std::ops::Index<usize> for ArrayVec3f {
+    type Output = [f32; 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
+                  index as "size_t"]
+                -> * const [f32;3] as "const pxr::GfVec3f *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec3h(pub [f16; 3]);
 
@@ -270,6 +654,22 @@ impl From<&[f16; 3]> for &Vec3h {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>");
+
+impl std::ops::Index<usize> for ArrayVec3h {
+    type Output = [f16; 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
+                  index as "size_t"]
+                -> * const [f16;3] as "const pxr::GfVec3h *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec3i(pub [i32; 3]);
 
@@ -280,6 +680,22 @@ impl From<&[i32; 3]> for &Vec3i {
 }
 
 cpp_class!(pub unsafe struct ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>");
+
+impl std::ops::Index<usize> for ArrayVec3i {
+    type Output = [i32; 3];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
+                  index as "size_t"]
+                -> * const [i32;3] as "const pxr::GfVec3i *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec4d(pub [f64; 4]);
 
@@ -290,6 +706,22 @@ impl From<&[f64; 4]> for &Vec4d {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>");
+
+impl std::ops::Index<usize> for ArrayVec4d {
+    type Output = [f64; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
+                  index as "size_t"]
+                -> * const [f64;4] as "const pxr::GfVec4d *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec4f(pub [f32; 4]);
 
@@ -300,6 +732,22 @@ impl From<&[f32; 4]> for &Vec4f {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>");
+
+impl std::ops::Index<usize> for ArrayVec4f {
+    type Output = [f32; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
+                  index as "size_t"]
+                -> * const [f32;4] as "const pxr::GfVec4f *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec4h(pub [f16; 4]);
 
@@ -310,6 +758,22 @@ impl From<&[f16; 4]> for &Vec4h {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>");
+
+impl std::ops::Index<usize> for ArrayVec4h {
+    type Output = [f16; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
+                  index as "size_t"]
+                -> * const [f16;4] as "const pxr::GfVec4h *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
 #[repr(transparent)]
 pub struct Vec4i(pub [i32; 4]);
 
@@ -320,6 +784,21 @@ impl From<&[i32; 4]> for &Vec4i {
 }
 
 cpp_class!(pub unsafe struct ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>");
+
+impl std::ops::Index<usize> for ArrayVec4i {
+    type Output = [i32; 4];
+    fn index(&self, index: usize) -> &Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
+                  index as "size_t"]
+                -> * const [i32;4] as "const pxr::GfVec4i *" {
+                return &self->operator[](index);
+            })
+            .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
 
 cpp! {{
     #include <string>

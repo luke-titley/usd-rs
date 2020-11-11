@@ -105,6 +105,22 @@ impl From<&{typ}> for &{name} {{
 }}
 
 cpp_class!(pub unsafe struct Array{name} as \"pxr::VtArray<{cpp_type}>\");
+
+impl std::ops::Index<usize> for Array{name} {{
+    type Output = {typ};
+    fn index(&self, index: usize) -> &Self::Output {{
+        unsafe {{
+            cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
+                  index as \"size_t\"]
+                -> * const {typ} as \"const {cpp_type} *\" {{
+                return &self->operator[](index);
+            }})
+            .as_ref()
+            .expect(\"Error converting pointer to reference\")
+        }}
+    }}
+}}
+
 ",
                 name = &name,
                 typ = &typ,
