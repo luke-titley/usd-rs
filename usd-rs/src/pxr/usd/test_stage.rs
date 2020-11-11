@@ -204,5 +204,7 @@ mod tests {
         assert_eq!(array.size(), 2_usize);
         assert_eq!(array[0], true);
         assert_eq!(array[1], false);
+
+        let _value = vt::Value::from(&array);
     }
 }
