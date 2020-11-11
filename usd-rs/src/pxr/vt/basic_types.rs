@@ -2497,6 +2497,7 @@ impl AsRef<String> for Value {
     }
 }
 
+// Scalar
 impl From<&Bool> for Value {
     fn from(other: &Bool) -> Self {
         unsafe {
@@ -2516,6 +2517,29 @@ impl AsRef<Bool> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayBool> for Value {
+    fn from(other: &ArrayBool) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<bool> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayBool> for Value {
+    fn as_ref(&self) -> &ArrayBool {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayBool as "const pxr::VtArray<bool> *" {
+                return &(self->Get<pxr::VtArray<bool>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&UChar> for Value {
     fn from(other: &UChar) -> Self {
         unsafe {
@@ -2535,6 +2559,29 @@ impl AsRef<UChar> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayUChar> for Value {
+    fn from(other: &ArrayUChar) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<uint8_t> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayUChar> for Value {
+    fn as_ref(&self) -> &ArrayUChar {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayUChar as "const pxr::VtArray<uint8_t> *" {
+                return &(self->Get<pxr::VtArray<uint8_t>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Int> for Value {
     fn from(other: &Int) -> Self {
         unsafe {
@@ -2554,6 +2601,29 @@ impl AsRef<Int> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayInt> for Value {
+    fn from(other: &ArrayInt) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<int32_t> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayInt> for Value {
+    fn as_ref(&self) -> &ArrayInt {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayInt as "const pxr::VtArray<int32_t> *" {
+                return &(self->Get<pxr::VtArray<int32_t>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&UInt> for Value {
     fn from(other: &UInt) -> Self {
         unsafe {
@@ -2573,6 +2643,29 @@ impl AsRef<UInt> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayUInt> for Value {
+    fn from(other: &ArrayUInt) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<uint32_t> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayUInt> for Value {
+    fn as_ref(&self) -> &ArrayUInt {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayUInt as "const pxr::VtArray<uint32_t> *" {
+                return &(self->Get<pxr::VtArray<uint32_t>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Int64> for Value {
     fn from(other: &Int64) -> Self {
         unsafe {
@@ -2592,6 +2685,29 @@ impl AsRef<Int64> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayInt64> for Value {
+    fn from(other: &ArrayInt64) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<int64_t> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayInt64> for Value {
+    fn as_ref(&self) -> &ArrayInt64 {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayInt64 as "const pxr::VtArray<int64_t> *" {
+                return &(self->Get<pxr::VtArray<int64_t>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&UInt64> for Value {
     fn from(other: &UInt64) -> Self {
         unsafe {
@@ -2611,6 +2727,29 @@ impl AsRef<UInt64> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayUInt64> for Value {
+    fn from(other: &ArrayUInt64) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<uint64_t> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayUInt64> for Value {
+    fn as_ref(&self) -> &ArrayUInt64 {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayUInt64 as "const pxr::VtArray<uint64_t> *" {
+                return &(self->Get<pxr::VtArray<uint64_t>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Half> for Value {
     fn from(other: &Half) -> Self {
         unsafe {
@@ -2630,6 +2769,29 @@ impl AsRef<Half> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayHalf> for Value {
+    fn from(other: &ArrayHalf) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfHalf> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayHalf> for Value {
+    fn as_ref(&self) -> &ArrayHalf {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayHalf as "const pxr::VtArray<pxr::GfHalf> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfHalf>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Float> for Value {
     fn from(other: &Float) -> Self {
         unsafe {
@@ -2649,6 +2811,29 @@ impl AsRef<Float> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayFloat> for Value {
+    fn from(other: &ArrayFloat) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<float> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayFloat> for Value {
+    fn as_ref(&self) -> &ArrayFloat {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayFloat as "const pxr::VtArray<float> *" {
+                return &(self->Get<pxr::VtArray<float>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Double> for Value {
     fn from(other: &Double) -> Self {
         unsafe {
@@ -2668,6 +2853,29 @@ impl AsRef<Double> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayDouble> for Value {
+    fn from(other: &ArrayDouble) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<double> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayDouble> for Value {
+    fn as_ref(&self) -> &ArrayDouble {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayDouble as "const pxr::VtArray<double> *" {
+                return &(self->Get<pxr::VtArray<double>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&TimeCode> for Value {
     fn from(other: &TimeCode) -> Self {
         unsafe {
@@ -2687,6 +2895,29 @@ impl AsRef<TimeCode> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayTimeCode> for Value {
+    fn from(other: &ArrayTimeCode) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::SdfTimeCode> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayTimeCode> for Value {
+    fn as_ref(&self) -> &ArrayTimeCode {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayTimeCode as "const pxr::VtArray<pxr::SdfTimeCode> *" {
+                return &(self->Get<pxr::VtArray<pxr::SdfTimeCode>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Token> for Value {
     fn from(other: &Token) -> Self {
         unsafe {
@@ -2706,6 +2937,29 @@ impl AsRef<Token> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayToken> for Value {
+    fn from(other: &ArrayToken) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::TfToken> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayToken> for Value {
+    fn as_ref(&self) -> &ArrayToken {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayToken as "const pxr::VtArray<pxr::TfToken> *" {
+                return &(self->Get<pxr::VtArray<pxr::TfToken>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Asset> for Value {
     fn from(other: &Asset) -> Self {
         unsafe {
@@ -2725,6 +2979,29 @@ impl AsRef<Asset> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayAsset> for Value {
+    fn from(other: &ArrayAsset) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::SdfAssetPath> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayAsset> for Value {
+    fn as_ref(&self) -> &ArrayAsset {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayAsset as "const pxr::VtArray<pxr::SdfAssetPath> *" {
+                return &(self->Get<pxr::VtArray<pxr::SdfAssetPath>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Matrix2d> for Value {
     fn from(other: &Matrix2d) -> Self {
         unsafe {
@@ -2744,6 +3021,29 @@ impl AsRef<Matrix2d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayMatrix2d> for Value {
+    fn from(other: &ArrayMatrix2d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfMatrix2d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayMatrix2d> for Value {
+    fn as_ref(&self) -> &ArrayMatrix2d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayMatrix2d as "const pxr::VtArray<pxr::GfMatrix2d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfMatrix2d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Matrix3d> for Value {
     fn from(other: &Matrix3d) -> Self {
         unsafe {
@@ -2763,6 +3063,29 @@ impl AsRef<Matrix3d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayMatrix3d> for Value {
+    fn from(other: &ArrayMatrix3d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfMatrix3d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayMatrix3d> for Value {
+    fn as_ref(&self) -> &ArrayMatrix3d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayMatrix3d as "const pxr::VtArray<pxr::GfMatrix3d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfMatrix3d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Matrix4d> for Value {
     fn from(other: &Matrix4d) -> Self {
         unsafe {
@@ -2782,6 +3105,29 @@ impl AsRef<Matrix4d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayMatrix4d> for Value {
+    fn from(other: &ArrayMatrix4d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfMatrix4d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayMatrix4d> for Value {
+    fn as_ref(&self) -> &ArrayMatrix4d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayMatrix4d as "const pxr::VtArray<pxr::GfMatrix4d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfMatrix4d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Quatd> for Value {
     fn from(other: &Quatd) -> Self {
         unsafe {
@@ -2801,6 +3147,29 @@ impl AsRef<Quatd> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayQuatd> for Value {
+    fn from(other: &ArrayQuatd) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfQuatd> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayQuatd> for Value {
+    fn as_ref(&self) -> &ArrayQuatd {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayQuatd as "const pxr::VtArray<pxr::GfQuatd> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfQuatd>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Quatf> for Value {
     fn from(other: &Quatf) -> Self {
         unsafe {
@@ -2820,6 +3189,29 @@ impl AsRef<Quatf> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayQuatf> for Value {
+    fn from(other: &ArrayQuatf) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfQuatf> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayQuatf> for Value {
+    fn as_ref(&self) -> &ArrayQuatf {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayQuatf as "const pxr::VtArray<pxr::GfQuatf> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfQuatf>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Quath> for Value {
     fn from(other: &Quath) -> Self {
         unsafe {
@@ -2839,6 +3231,29 @@ impl AsRef<Quath> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayQuath> for Value {
+    fn from(other: &ArrayQuath) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfQuath> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayQuath> for Value {
+    fn as_ref(&self) -> &ArrayQuath {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayQuath as "const pxr::VtArray<pxr::GfQuath> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfQuath>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec2d> for Value {
     fn from(other: &Vec2d) -> Self {
         unsafe {
@@ -2858,6 +3273,29 @@ impl AsRef<Vec2d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec2d> for Value {
+    fn from(other: &ArrayVec2d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec2d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec2d> for Value {
+    fn as_ref(&self) -> &ArrayVec2d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec2d as "const pxr::VtArray<pxr::GfVec2d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec2d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec2f> for Value {
     fn from(other: &Vec2f) -> Self {
         unsafe {
@@ -2877,6 +3315,29 @@ impl AsRef<Vec2f> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec2f> for Value {
+    fn from(other: &ArrayVec2f) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec2f> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec2f> for Value {
+    fn as_ref(&self) -> &ArrayVec2f {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec2f as "const pxr::VtArray<pxr::GfVec2f> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec2f>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec2h> for Value {
     fn from(other: &Vec2h) -> Self {
         unsafe {
@@ -2896,6 +3357,29 @@ impl AsRef<Vec2h> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec2h> for Value {
+    fn from(other: &ArrayVec2h) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec2h> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec2h> for Value {
+    fn as_ref(&self) -> &ArrayVec2h {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec2h as "const pxr::VtArray<pxr::GfVec2h> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec2h>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec2i> for Value {
     fn from(other: &Vec2i) -> Self {
         unsafe {
@@ -2915,6 +3399,29 @@ impl AsRef<Vec2i> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec2i> for Value {
+    fn from(other: &ArrayVec2i) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec2i> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec2i> for Value {
+    fn as_ref(&self) -> &ArrayVec2i {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec2i as "const pxr::VtArray<pxr::GfVec2i> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec2i>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec3d> for Value {
     fn from(other: &Vec3d) -> Self {
         unsafe {
@@ -2934,6 +3441,29 @@ impl AsRef<Vec3d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec3d> for Value {
+    fn from(other: &ArrayVec3d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec3d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec3d> for Value {
+    fn as_ref(&self) -> &ArrayVec3d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec3d as "const pxr::VtArray<pxr::GfVec3d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec3d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec3f> for Value {
     fn from(other: &Vec3f) -> Self {
         unsafe {
@@ -2953,6 +3483,29 @@ impl AsRef<Vec3f> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec3f> for Value {
+    fn from(other: &ArrayVec3f) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec3f> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec3f> for Value {
+    fn as_ref(&self) -> &ArrayVec3f {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec3f as "const pxr::VtArray<pxr::GfVec3f> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec3f>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec3h> for Value {
     fn from(other: &Vec3h) -> Self {
         unsafe {
@@ -2972,6 +3525,29 @@ impl AsRef<Vec3h> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec3h> for Value {
+    fn from(other: &ArrayVec3h) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec3h> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec3h> for Value {
+    fn as_ref(&self) -> &ArrayVec3h {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec3h as "const pxr::VtArray<pxr::GfVec3h> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec3h>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec3i> for Value {
     fn from(other: &Vec3i) -> Self {
         unsafe {
@@ -2991,6 +3567,29 @@ impl AsRef<Vec3i> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec3i> for Value {
+    fn from(other: &ArrayVec3i) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec3i> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec3i> for Value {
+    fn as_ref(&self) -> &ArrayVec3i {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec3i as "const pxr::VtArray<pxr::GfVec3i> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec3i>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec4d> for Value {
     fn from(other: &Vec4d) -> Self {
         unsafe {
@@ -3010,6 +3609,29 @@ impl AsRef<Vec4d> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec4d> for Value {
+    fn from(other: &ArrayVec4d) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec4d> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec4d> for Value {
+    fn as_ref(&self) -> &ArrayVec4d {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec4d as "const pxr::VtArray<pxr::GfVec4d> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec4d>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec4f> for Value {
     fn from(other: &Vec4f) -> Self {
         unsafe {
@@ -3029,6 +3651,29 @@ impl AsRef<Vec4f> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec4f> for Value {
+    fn from(other: &ArrayVec4f) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec4f> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec4f> for Value {
+    fn as_ref(&self) -> &ArrayVec4f {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec4f as "const pxr::VtArray<pxr::GfVec4f> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec4f>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec4h> for Value {
     fn from(other: &Vec4h) -> Self {
         unsafe {
@@ -3048,6 +3693,29 @@ impl AsRef<Vec4h> for Value {
         }
     }
 }
+
+// Array
+impl From<&ArrayVec4h> for Value {
+    fn from(other: &ArrayVec4h) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec4h> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec4h> for Value {
+    fn as_ref(&self) -> &ArrayVec4h {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec4h as "const pxr::VtArray<pxr::GfVec4h> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec4h>>());
+            }).as_ref().expect("Error converting from pointer to reference")
+        }
+    }
+}
+
+// Scalar
 impl From<&Vec4i> for Value {
     fn from(other: &Vec4i) -> Self {
         unsafe {
@@ -3064,6 +3732,27 @@ impl AsRef<Vec4i> for Value {
             cpp!([self as "const pxr::VtValue *"] -> &Vec4i as "const pxr::GfVec4i *" {
                 return &(self->Get<pxr::GfVec4i>());
             })
+        }
+    }
+}
+
+// Array
+impl From<&ArrayVec4i> for Value {
+    fn from(other: &ArrayVec4i) -> Self {
+        unsafe {
+            cpp!([other as "const pxr::VtArray<pxr::GfVec4i> *"] -> Value as "pxr::VtValue" {
+                return pxr::VtValue(*other);
+            })
+        }
+    }
+}
+
+impl AsRef<ArrayVec4i> for Value {
+    fn as_ref(&self) -> &ArrayVec4i {
+        unsafe {
+            cpp!([self as "const pxr::VtValue *"] -> * const ArrayVec4i as "const pxr::VtArray<pxr::GfVec4i> *" {
+                return &(self->Get<pxr::VtArray<pxr::GfVec4i>>());
+            }).as_ref().expect("Error converting from pointer to reference")
         }
     }
 }

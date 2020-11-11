@@ -161,7 +161,7 @@ impl std::ops::IndexMut<usize> for Array{name} {{
         if index >= self.size() {{
             panic!(\"Out of bounds VtArray access for Array{name}\");
         }}
-        
+
         unsafe {{
             cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
                   index as \"size_t\"]
@@ -299,7 +299,9 @@ impl AsRef<String> for Value {{
 
     for (name, _, c, _) in BASIC_TYPES.iter() {
         println!(
-            r#"impl From<&{name}> for Value {{
+            r#"
+// Scalar
+impl From<&{name}> for Value {{
     fn from(other: &{name}) -> Self {{
         unsafe {{
             cpp!([other as "const {c} *"] -> Value as "pxr::VtValue" {{
@@ -317,7 +319,30 @@ impl AsRef<{name}> for Value {{
             }})
         }}
     }}
-}}"#,
+}}
+
+// Array
+impl From<&Array{name}> for Value {{
+    fn from(other: &Array{name}) -> Self {{
+        unsafe {{
+            cpp!([other as "const pxr::VtArray<{c}> *"] -> Value as "pxr::VtValue" {{
+                return pxr::VtValue(*other);
+            }})
+        }}
+    }}
+}}
+
+impl AsRef<Array{name}> for Value {{
+    fn as_ref(&self) -> &Array{name} {{
+        unsafe {{
+            cpp!([self as "const pxr::VtValue *"] -> * const Array{name} as "const pxr::VtArray<{c}> *" {{
+                return &(self->Get<pxr::VtArray<{c}>>());
+            }}).as_ref().expect("Error converting from pointer to reference")
+        }}
+    }}
+}}
+
+"#,
             name = name,
             c = c
         );
