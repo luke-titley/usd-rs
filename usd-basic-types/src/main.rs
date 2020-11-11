@@ -93,7 +93,7 @@ fn generate_basic_types() {
 
     let names: std::string::String = BASIC_TYPES
         .iter()
-        .map(|(name, typ, _, _)| {
+        .map(|(name, typ, cpp_type, _)| {
             format!(
                 "#[repr(transparent)]
 pub struct {name}(pub {typ});
@@ -103,9 +103,12 @@ impl From<&{typ}> for &{name} {{
         unsafe {{ &*((other as *const {typ}) as *const {name}) }}
     }}
 }}
+
+cpp_class!(pub unsafe struct Array{name} as \"pxr::VtArray<{cpp_type}>\");
 ",
                 name = &name,
-                typ = &typ
+                typ = &typ,
+                cpp_type = cpp_type,
             )
         })
         .collect();
@@ -138,6 +141,7 @@ cpp! {{{{
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/base/vt/value.h"
+    #include "pxr/base/vt/array.h"
 {headers}
     #pragma GCC diagnostic pop
 }}}}

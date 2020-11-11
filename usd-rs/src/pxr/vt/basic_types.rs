@@ -24,6 +24,8 @@ impl From<&bool> for &Bool {
         unsafe { &*((other as *const bool) as *const Bool) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayBool as "pxr::VtArray<bool>");
 #[repr(transparent)]
 pub struct UChar(pub u8);
 
@@ -32,6 +34,8 @@ impl From<&u8> for &UChar {
         unsafe { &*((other as *const u8) as *const UChar) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayUChar as "pxr::VtArray<uint8_t>");
 #[repr(transparent)]
 pub struct Int(pub i32);
 
@@ -40,6 +44,8 @@ impl From<&i32> for &Int {
         unsafe { &*((other as *const i32) as *const Int) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayInt as "pxr::VtArray<int32_t>");
 #[repr(transparent)]
 pub struct UInt(pub u32);
 
@@ -48,6 +54,8 @@ impl From<&u32> for &UInt {
         unsafe { &*((other as *const u32) as *const UInt) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayUInt as "pxr::VtArray<uint32_t>");
 #[repr(transparent)]
 pub struct Int64(pub i64);
 
@@ -56,6 +64,8 @@ impl From<&i64> for &Int64 {
         unsafe { &*((other as *const i64) as *const Int64) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayInt64 as "pxr::VtArray<int64_t>");
 #[repr(transparent)]
 pub struct UInt64(pub u64);
 
@@ -64,6 +74,8 @@ impl From<&u64> for &UInt64 {
         unsafe { &*((other as *const u64) as *const UInt64) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayUInt64 as "pxr::VtArray<uint64_t>");
 #[repr(transparent)]
 pub struct Half(pub f16);
 
@@ -72,6 +84,8 @@ impl From<&f16> for &Half {
         unsafe { &*((other as *const f16) as *const Half) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayHalf as "pxr::VtArray<pxr::GfHalf>");
 #[repr(transparent)]
 pub struct Float(pub f32);
 
@@ -80,6 +94,8 @@ impl From<&f32> for &Float {
         unsafe { &*((other as *const f32) as *const Float) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayFloat as "pxr::VtArray<float>");
 #[repr(transparent)]
 pub struct Double(pub f64);
 
@@ -88,6 +104,8 @@ impl From<&f64> for &Double {
         unsafe { &*((other as *const f64) as *const Double) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayDouble as "pxr::VtArray<double>");
 #[repr(transparent)]
 pub struct TimeCode(pub crate::pxr::sdf::TimeCode);
 
@@ -98,6 +116,8 @@ impl From<&crate::pxr::sdf::TimeCode> for &TimeCode {
         }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayTimeCode as "pxr::VtArray<pxr::SdfTimeCode>");
 #[repr(transparent)]
 pub struct Token(pub crate::pxr::tf::Token);
 
@@ -106,6 +126,8 @@ impl From<&crate::pxr::tf::Token> for &Token {
         unsafe { &*((other as *const crate::pxr::tf::Token) as *const Token) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayToken as "pxr::VtArray<pxr::TfToken>");
 #[repr(transparent)]
 pub struct Asset(pub crate::pxr::sdf::AsstPth);
 
@@ -116,6 +138,8 @@ impl From<&crate::pxr::sdf::AsstPth> for &Asset {
         }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
 #[repr(transparent)]
 pub struct Matrix2d(pub [f64; 2 * 3]);
 
@@ -124,6 +148,8 @@ impl From<&[f64; 2 * 3]> for &Matrix2d {
         unsafe { &*((other as *const [f64; 2 * 3]) as *const Matrix2d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayMatrix2d as "pxr::VtArray<pxr::GfMatrix2d>");
 #[repr(transparent)]
 pub struct Matrix3d(pub [f64; 3 * 3]);
 
@@ -132,6 +158,8 @@ impl From<&[f64; 3 * 3]> for &Matrix3d {
         unsafe { &*((other as *const [f64; 3 * 3]) as *const Matrix3d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayMatrix3d as "pxr::VtArray<pxr::GfMatrix3d>");
 #[repr(transparent)]
 pub struct Matrix4d(pub [f64; 4 * 4]);
 
@@ -140,6 +168,8 @@ impl From<&[f64; 4 * 4]> for &Matrix4d {
         unsafe { &*((other as *const [f64; 4 * 4]) as *const Matrix4d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayMatrix4d as "pxr::VtArray<pxr::GfMatrix4d>");
 #[repr(transparent)]
 pub struct Quatd(pub [f64; 4]);
 
@@ -148,6 +178,8 @@ impl From<&[f64; 4]> for &Quatd {
         unsafe { &*((other as *const [f64; 4]) as *const Quatd) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayQuatd as "pxr::VtArray<pxr::GfQuatd>");
 #[repr(transparent)]
 pub struct Quatf(pub [f32; 4]);
 
@@ -156,6 +188,8 @@ impl From<&[f32; 4]> for &Quatf {
         unsafe { &*((other as *const [f32; 4]) as *const Quatf) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayQuatf as "pxr::VtArray<pxr::GfQuatf>");
 #[repr(transparent)]
 pub struct Quath(pub [f16; 4]);
 
@@ -164,6 +198,8 @@ impl From<&[f16; 4]> for &Quath {
         unsafe { &*((other as *const [f16; 4]) as *const Quath) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayQuath as "pxr::VtArray<pxr::GfQuath>");
 #[repr(transparent)]
 pub struct Vec2d(pub [f64; 2]);
 
@@ -172,6 +208,8 @@ impl From<&[f64; 2]> for &Vec2d {
         unsafe { &*((other as *const [f64; 2]) as *const Vec2d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec2d as "pxr::VtArray<pxr::GfVec2d>");
 #[repr(transparent)]
 pub struct Vec2f(pub [f32; 2]);
 
@@ -180,6 +218,8 @@ impl From<&[f32; 2]> for &Vec2f {
         unsafe { &*((other as *const [f32; 2]) as *const Vec2f) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec2f as "pxr::VtArray<pxr::GfVec2f>");
 #[repr(transparent)]
 pub struct Vec2h(pub [f16; 2]);
 
@@ -188,6 +228,8 @@ impl From<&[f16; 2]> for &Vec2h {
         unsafe { &*((other as *const [f16; 2]) as *const Vec2h) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec2h as "pxr::VtArray<pxr::GfVec2h>");
 #[repr(transparent)]
 pub struct Vec2i(pub [i32; 2]);
 
@@ -196,6 +238,8 @@ impl From<&[i32; 2]> for &Vec2i {
         unsafe { &*((other as *const [i32; 2]) as *const Vec2i) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec2i as "pxr::VtArray<pxr::GfVec2i>");
 #[repr(transparent)]
 pub struct Vec3d(pub [f64; 3]);
 
@@ -204,6 +248,8 @@ impl From<&[f64; 3]> for &Vec3d {
         unsafe { &*((other as *const [f64; 3]) as *const Vec3d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec3d as "pxr::VtArray<pxr::GfVec3d>");
 #[repr(transparent)]
 pub struct Vec3f(pub [f32; 3]);
 
@@ -212,6 +258,8 @@ impl From<&[f32; 3]> for &Vec3f {
         unsafe { &*((other as *const [f32; 3]) as *const Vec3f) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec3f as "pxr::VtArray<pxr::GfVec3f>");
 #[repr(transparent)]
 pub struct Vec3h(pub [f16; 3]);
 
@@ -220,6 +268,8 @@ impl From<&[f16; 3]> for &Vec3h {
         unsafe { &*((other as *const [f16; 3]) as *const Vec3h) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec3h as "pxr::VtArray<pxr::GfVec3h>");
 #[repr(transparent)]
 pub struct Vec3i(pub [i32; 3]);
 
@@ -228,6 +278,8 @@ impl From<&[i32; 3]> for &Vec3i {
         unsafe { &*((other as *const [i32; 3]) as *const Vec3i) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec3i as "pxr::VtArray<pxr::GfVec3i>");
 #[repr(transparent)]
 pub struct Vec4d(pub [f64; 4]);
 
@@ -236,6 +288,8 @@ impl From<&[f64; 4]> for &Vec4d {
         unsafe { &*((other as *const [f64; 4]) as *const Vec4d) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec4d as "pxr::VtArray<pxr::GfVec4d>");
 #[repr(transparent)]
 pub struct Vec4f(pub [f32; 4]);
 
@@ -244,6 +298,8 @@ impl From<&[f32; 4]> for &Vec4f {
         unsafe { &*((other as *const [f32; 4]) as *const Vec4f) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec4f as "pxr::VtArray<pxr::GfVec4f>");
 #[repr(transparent)]
 pub struct Vec4h(pub [f16; 4]);
 
@@ -252,6 +308,8 @@ impl From<&[f16; 4]> for &Vec4h {
         unsafe { &*((other as *const [f16; 4]) as *const Vec4h) }
     }
 }
+
+cpp_class!(pub unsafe struct ArrayVec4h as "pxr::VtArray<pxr::GfVec4h>");
 #[repr(transparent)]
 pub struct Vec4i(pub [i32; 4]);
 
@@ -261,6 +319,8 @@ impl From<&[i32; 4]> for &Vec4i {
     }
 }
 
+cpp_class!(pub unsafe struct ArrayVec4i as "pxr::VtArray<pxr::GfVec4i>");
+
 cpp! {{
     #include <string>
 
@@ -268,6 +328,7 @@ cpp! {{
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     #include "pxr/base/vt/value.h"
+    #include "pxr/base/vt/array.h"
     #include "pxr/base/gf/half.h"
     #include "pxr/usd/sdf/timeCode.h"
     #include "pxr/base/tf/token.h"

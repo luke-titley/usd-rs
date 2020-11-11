@@ -13,4 +13,4 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct Array as "pxr::VtArray");
+cpp_class!(pub unsafe struct Array as "pxr::VtArray<int>");
