@@ -31,12 +31,26 @@ impl std::ops::Index<usize> for ArrayBool {
     type Output = bool;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<bool> *",
+            cpp!([self as "const pxr::VtArray<bool> *",
                   index as "size_t"]
                 -> * const bool as "const bool *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayBool {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<bool> *",
+                  index as "size_t"]
+                -> * mut bool as "bool *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -57,12 +71,26 @@ impl std::ops::Index<usize> for ArrayUChar {
     type Output = u8;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<uint8_t> *",
+            cpp!([self as "const pxr::VtArray<uint8_t> *",
                   index as "size_t"]
                 -> * const u8 as "const uint8_t *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayUChar {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint8_t> *",
+                  index as "size_t"]
+                -> * mut u8 as "uint8_t *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -83,12 +111,26 @@ impl std::ops::Index<usize> for ArrayInt {
     type Output = i32;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<int32_t> *",
+            cpp!([self as "const pxr::VtArray<int32_t> *",
                   index as "size_t"]
                 -> * const i32 as "const int32_t *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayInt {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int32_t> *",
+                  index as "size_t"]
+                -> * mut i32 as "int32_t *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -109,12 +151,26 @@ impl std::ops::Index<usize> for ArrayUInt {
     type Output = u32;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<uint32_t> *",
+            cpp!([self as "const pxr::VtArray<uint32_t> *",
                   index as "size_t"]
                 -> * const u32 as "const uint32_t *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayUInt {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint32_t> *",
+                  index as "size_t"]
+                -> * mut u32 as "uint32_t *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -135,12 +191,26 @@ impl std::ops::Index<usize> for ArrayInt64 {
     type Output = i64;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<int64_t> *",
+            cpp!([self as "const pxr::VtArray<int64_t> *",
                   index as "size_t"]
                 -> * const i64 as "const int64_t *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayInt64 {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<int64_t> *",
+                  index as "size_t"]
+                -> * mut i64 as "int64_t *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -161,12 +231,26 @@ impl std::ops::Index<usize> for ArrayUInt64 {
     type Output = u64;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<uint64_t> *",
+            cpp!([self as "const pxr::VtArray<uint64_t> *",
                   index as "size_t"]
                 -> * const u64 as "const uint64_t *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayUInt64 {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<uint64_t> *",
+                  index as "size_t"]
+                -> * mut u64 as "uint64_t *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -187,12 +271,26 @@ impl std::ops::Index<usize> for ArrayHalf {
     type Output = f16;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfHalf> *",
                   index as "size_t"]
                 -> * const f16 as "const pxr::GfHalf *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayHalf {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfHalf> *",
+                  index as "size_t"]
+                -> * mut f16 as "pxr::GfHalf *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -213,12 +311,26 @@ impl std::ops::Index<usize> for ArrayFloat {
     type Output = f32;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<float> *",
+            cpp!([self as "const pxr::VtArray<float> *",
                   index as "size_t"]
                 -> * const f32 as "const float *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayFloat {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<float> *",
+                  index as "size_t"]
+                -> * mut f32 as "float *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -239,12 +351,26 @@ impl std::ops::Index<usize> for ArrayDouble {
     type Output = f64;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<double> *",
+            cpp!([self as "const pxr::VtArray<double> *",
                   index as "size_t"]
                 -> * const f64 as "const double *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayDouble {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<double> *",
+                  index as "size_t"]
+                -> * mut f64 as "double *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -267,12 +393,26 @@ impl std::ops::Index<usize> for ArrayTimeCode {
     type Output = crate::pxr::sdf::TimeCode;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
+            cpp!([self as "const pxr::VtArray<pxr::SdfTimeCode> *",
                   index as "size_t"]
                 -> * const crate::pxr::sdf::TimeCode as "const pxr::SdfTimeCode *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayTimeCode {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfTimeCode> *",
+                  index as "size_t"]
+                -> * mut crate::pxr::sdf::TimeCode as "pxr::SdfTimeCode *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -293,12 +433,26 @@ impl std::ops::Index<usize> for ArrayToken {
     type Output = crate::pxr::tf::Token;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::TfToken> *",
+            cpp!([self as "const pxr::VtArray<pxr::TfToken> *",
                   index as "size_t"]
                 -> * const crate::pxr::tf::Token as "const pxr::TfToken *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayToken {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::TfToken> *",
+                  index as "size_t"]
+                -> * mut crate::pxr::tf::Token as "pxr::TfToken *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -321,12 +475,26 @@ impl std::ops::Index<usize> for ArrayAsset {
     type Output = crate::pxr::sdf::AsstPth;
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
+            cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *",
                   index as "size_t"]
                 -> * const crate::pxr::sdf::AsstPth as "const pxr::SdfAssetPath *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayAsset {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
+                  index as "size_t"]
+                -> * mut crate::pxr::sdf::AsstPth as "pxr::SdfAssetPath *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -347,12 +515,26 @@ impl std::ops::Index<usize> for ArrayMatrix2d {
     type Output = [f64; 2 * 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix2d> *",
                   index as "size_t"]
                 -> * const [f64;2*3] as "const pxr::GfMatrix2d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayMatrix2d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix2d> *",
+                  index as "size_t"]
+                -> * mut [f64;2*3] as "pxr::GfMatrix2d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -373,12 +555,26 @@ impl std::ops::Index<usize> for ArrayMatrix3d {
     type Output = [f64; 3 * 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix3d> *",
                   index as "size_t"]
                 -> * const [f64;3*3] as "const pxr::GfMatrix3d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayMatrix3d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix3d> *",
+                  index as "size_t"]
+                -> * mut [f64;3*3] as "pxr::GfMatrix3d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -399,12 +595,26 @@ impl std::ops::Index<usize> for ArrayMatrix4d {
     type Output = [f64; 4 * 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfMatrix4d> *",
                   index as "size_t"]
                 -> * const [f64;4*4] as "const pxr::GfMatrix4d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayMatrix4d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfMatrix4d> *",
+                  index as "size_t"]
+                -> * mut [f64;4*4] as "pxr::GfMatrix4d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -425,12 +635,26 @@ impl std::ops::Index<usize> for ArrayQuatd {
     type Output = [f64; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfQuatd> *",
                   index as "size_t"]
                 -> * const [f64;4] as "const pxr::GfQuatd *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayQuatd {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatd> *",
+                  index as "size_t"]
+                -> * mut [f64;4] as "pxr::GfQuatd *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -451,12 +675,26 @@ impl std::ops::Index<usize> for ArrayQuatf {
     type Output = [f32; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfQuatf> *",
                   index as "size_t"]
                 -> * const [f32;4] as "const pxr::GfQuatf *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayQuatf {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuatf> *",
+                  index as "size_t"]
+                -> * mut [f32;4] as "pxr::GfQuatf *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -477,12 +715,26 @@ impl std::ops::Index<usize> for ArrayQuath {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfQuath> *",
                   index as "size_t"]
                 -> * const [f16;4] as "const pxr::GfQuath *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayQuath {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfQuath> *",
+                  index as "size_t"]
+                -> * mut [f16;4] as "pxr::GfQuath *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -503,12 +755,26 @@ impl std::ops::Index<usize> for ArrayVec2d {
     type Output = [f64; 2];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2d> *",
                   index as "size_t"]
                 -> * const [f64;2] as "const pxr::GfVec2d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec2d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2d> *",
+                  index as "size_t"]
+                -> * mut [f64;2] as "pxr::GfVec2d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -529,12 +795,26 @@ impl std::ops::Index<usize> for ArrayVec2f {
     type Output = [f32; 2];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2f> *",
                   index as "size_t"]
                 -> * const [f32;2] as "const pxr::GfVec2f *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec2f {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2f> *",
+                  index as "size_t"]
+                -> * mut [f32;2] as "pxr::GfVec2f *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -555,12 +835,26 @@ impl std::ops::Index<usize> for ArrayVec2h {
     type Output = [f16; 2];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2h> *",
                   index as "size_t"]
                 -> * const [f16;2] as "const pxr::GfVec2h *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec2h {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2h> *",
+                  index as "size_t"]
+                -> * mut [f16;2] as "pxr::GfVec2h *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -581,12 +875,26 @@ impl std::ops::Index<usize> for ArrayVec2i {
     type Output = [i32; 2];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec2i> *",
                   index as "size_t"]
                 -> * const [i32;2] as "const pxr::GfVec2i *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec2i {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec2i> *",
+                  index as "size_t"]
+                -> * mut [i32;2] as "pxr::GfVec2i *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -607,12 +915,26 @@ impl std::ops::Index<usize> for ArrayVec3d {
     type Output = [f64; 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3d> *",
                   index as "size_t"]
                 -> * const [f64;3] as "const pxr::GfVec3d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec3d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3d> *",
+                  index as "size_t"]
+                -> * mut [f64;3] as "pxr::GfVec3d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -633,12 +955,26 @@ impl std::ops::Index<usize> for ArrayVec3f {
     type Output = [f32; 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3f> *",
                   index as "size_t"]
                 -> * const [f32;3] as "const pxr::GfVec3f *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec3f {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3f> *",
+                  index as "size_t"]
+                -> * mut [f32;3] as "pxr::GfVec3f *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -659,12 +995,26 @@ impl std::ops::Index<usize> for ArrayVec3h {
     type Output = [f16; 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3h> *",
                   index as "size_t"]
                 -> * const [f16;3] as "const pxr::GfVec3h *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec3h {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3h> *",
+                  index as "size_t"]
+                -> * mut [f16;3] as "pxr::GfVec3h *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -685,12 +1035,26 @@ impl std::ops::Index<usize> for ArrayVec3i {
     type Output = [i32; 3];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec3i> *",
                   index as "size_t"]
                 -> * const [i32;3] as "const pxr::GfVec3i *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec3i {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec3i> *",
+                  index as "size_t"]
+                -> * mut [i32;3] as "pxr::GfVec3i *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -711,12 +1075,26 @@ impl std::ops::Index<usize> for ArrayVec4d {
     type Output = [f64; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4d> *",
                   index as "size_t"]
                 -> * const [f64;4] as "const pxr::GfVec4d *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec4d {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4d> *",
+                  index as "size_t"]
+                -> * mut [f64;4] as "pxr::GfVec4d *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -737,12 +1115,26 @@ impl std::ops::Index<usize> for ArrayVec4f {
     type Output = [f32; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4f> *",
                   index as "size_t"]
                 -> * const [f32;4] as "const pxr::GfVec4f *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec4f {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4f> *",
+                  index as "size_t"]
+                -> * mut [f32;4] as "pxr::GfVec4f *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -763,12 +1155,26 @@ impl std::ops::Index<usize> for ArrayVec4h {
     type Output = [f16; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4h> *",
                   index as "size_t"]
                 -> * const [f16;4] as "const pxr::GfVec4h *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec4h {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4h> *",
+                  index as "size_t"]
+                -> * mut [f16;4] as "pxr::GfVec4h *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }
@@ -789,12 +1195,26 @@ impl std::ops::Index<usize> for ArrayVec4i {
     type Output = [i32; 4];
     fn index(&self, index: usize) -> &Self::Output {
         unsafe {
-            cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
+            cpp!([self as "const pxr::VtArray<pxr::GfVec4i> *",
                   index as "size_t"]
                 -> * const [i32;4] as "const pxr::GfVec4i *" {
                 return &self->operator[](index);
             })
             .as_ref()
+            .expect("Error converting pointer to reference")
+        }
+    }
+}
+
+impl std::ops::IndexMut<usize> for ArrayVec4i {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        unsafe {
+            cpp!([self as "pxr::VtArray<pxr::GfVec4i> *",
+                  index as "size_t"]
+                -> * mut [i32;4] as "pxr::GfVec4i *" {
+                return &self->operator[](index);
+            })
+            .as_mut()
             .expect("Error converting pointer to reference")
         }
     }

@@ -110,12 +110,26 @@ impl std::ops::Index<usize> for Array{name} {{
     type Output = {typ};
     fn index(&self, index: usize) -> &Self::Output {{
         unsafe {{
-            cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
+            cpp!([self as \"const pxr::VtArray<{cpp_type}> *\",
                   index as \"size_t\"]
                 -> * const {typ} as \"const {cpp_type} *\" {{
                 return &self->operator[](index);
             }})
             .as_ref()
+            .expect(\"Error converting pointer to reference\")
+        }}
+    }}
+}}
+
+impl std::ops::IndexMut<usize> for Array{name} {{
+    fn index_mut(& mut self, index: usize) -> &mut Self::Output {{
+        unsafe {{
+            cpp!([self as \"pxr::VtArray<{cpp_type}> *\",
+                  index as \"size_t\"]
+                -> * mut {typ} as \"{cpp_type} *\" {{
+                return &self->operator[](index);
+            }})
+            .as_mut()
             .expect(\"Error converting pointer to reference\")
         }}
     }}
