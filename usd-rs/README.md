@@ -1,17 +1,20 @@
-Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
+# usd-rs
 
-This is experimental and by no means complete.
+Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
 # What works ?
 - You can create and open/save/export a stage.
 - You can define a prim and get/set attributes on it.
-  All 30 basic types are supported.
+  All 30 basic types are supported + arrays of those types.
 
-# What doesn't work
-Everything else.
+# The parts
+- usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
+- usd-rs is the actual bindings crate.
 
-# Things to note
-This crate depends on usd-cpp. Which downloads the usd cpp lib and deps and builds it.
-USD is a big library that relies heavily on templates, it can be very slow to
-build. You just need to wait it out, once it's built, cargo will cache it and
-you don't have to build it again.
+# Requirements
+
+- g++/clang with c++14 support
+- cmake
+- python
+- and of course cargo
+
