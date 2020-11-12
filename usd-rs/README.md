@@ -2,6 +2,9 @@
 
 Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
+These are in version 0.0.x. The api is likely to change significantly
+between now and 0.1.0.
+
 # What works ?
 - You can create and open/save/export a stage.
 - You can define a prim and get/set attributes on it.
