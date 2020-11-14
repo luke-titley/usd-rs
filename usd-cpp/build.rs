@@ -79,18 +79,33 @@ pub const LIB : &str = \"{}\"; \n\
     );
 }
 
-fn main() {
-    // Only run this build job if the USD source directory has changed
-    let mut thirdparty_usd = std::path::PathBuf::from("thirdparty");
-    thirdparty_usd.push("USD");
-    println!(
-        "cargo:rerun-if-changed={}",
-        thirdparty_usd.to_str().unwrap()
-    );
+fn write_stub_lib_info(out_dir: &std::path::PathBuf) {
+    // Make sure the source directory exists
+    let mut locations_path = out_dir.clone();
+    locations_path.push("locations.rs");
 
+    write!(
+        std::fs::File::create(locations_path).unwrap(),
+        "",
+    );
+}
+
+fn main() {
     // The out directory of the build
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
 
-    // Build the usd cpp library
-    write_lib_info(&out_dir, build_cpp_usd(&out_dir));
+    if let Ok(_) = std::env::var("DOCS_RS") {
+        // Only run this build job if the USD source directory has changed
+        let mut thirdparty_usd = std::path::PathBuf::from("thirdparty");
+        thirdparty_usd.push("USD");
+        println!(
+            "cargo:rerun-if-changed={}",
+            thirdparty_usd.to_str().unwrap()
+        );
+
+        // Build the usd cpp library
+        write_lib_info(&out_dir, build_cpp_usd(&out_dir));
+    } else {
+        write_stub_lib_info(&out_dir);
+    }
 }
