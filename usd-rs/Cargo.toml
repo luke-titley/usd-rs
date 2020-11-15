@@ -8,6 +8,8 @@ description = "The beginnings of rust bindings for USD"
 repository = "https://github.com/luke-titley/usd-rs"
 keywords = ["vfx", "graphics", "scene_description", "scene_graph", "alembic"]
 
+[package.metadata.docs.rs]
+rustc-args = ["--cfg", "docsrs"]
 
 [lib]
 crate-type = ["dylib"]
