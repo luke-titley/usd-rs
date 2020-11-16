@@ -10,6 +10,8 @@ exclude = [
     "*testenv*",
     "*.exr",
     "*.usdc",
+    "*.usd",
+    "*.usda",
     #"thirdparty/USD/extras",
 ]
 
