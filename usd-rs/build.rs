@@ -34,6 +34,10 @@ fn main() {
         // The out directory of the build
         let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
         let include_dir = copy_headers(&out_dir);
+        println!(
+            "cargo:rerun-if-changed={}",
+            include_dir.to_str().unwrap()
+        );
 
         cpp_build::Config::new()
             .include(include_dir)
