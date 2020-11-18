@@ -14,15 +14,10 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
-#[repr(C, align(8))]
-struct PrimRangeImpl {}
-
 //------------------------------------------------------------------------------
-/// This is a reference to an asset path.
-///
-/// &AsstPth is to AssetPath, as &str is to String.
-///
+/// This allows for iterating over a collection of prims
 #[repr(C, align(8))]
 pub struct PrimRange {
-    _prim_range: *const PrimRangeImpl,
+    pub(in crate) _prim_range: *mut std::ffi::c_void,
+    pub(in crate) _prim_range_it: *mut std::ffi::c_void,
 }
