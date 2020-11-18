@@ -2,10 +2,10 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
-mod attribute;
+pub mod attribute;
 mod common;
-mod prim;
-mod stage;
+pub mod prim;
+pub mod stage;
 mod test_stage;
 mod time_code;
 
