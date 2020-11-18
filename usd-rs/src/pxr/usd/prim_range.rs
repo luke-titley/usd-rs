@@ -14,7 +14,15 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
-//------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct PrimRange as "pxr::UsdPrimRange");
+#[repr(C, align(8))]
+struct PrimRangeImpl {}
 
-impl PrimRange {}
+//------------------------------------------------------------------------------
+/// This is a reference to an asset path.
+///
+/// &AsstPth is to AssetPath, as &str is to String.
+///
+#[repr(C, align(8))]
+pub struct PrimRange {
+    _prim_range: *const PrimRangeImpl,
+}
