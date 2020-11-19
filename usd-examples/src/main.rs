@@ -32,17 +32,7 @@ fn add_references() {
         _load: None,
     });
 
-    let prim_path = std::ffi::CString::new("/root").unwrap();
-    let prim = stage.define_prim(
-        &pxr::sdf::Path::from(prim_path.as_c_str()),
-        &pxr::tf::Token::default(),
-    );
-
-    prim.get_references()
-        .add_reference(pxr::usd::references::desc::AddReference {
-            identifier: &asset_path,
-            prim_path: None,
-        });
+    stage.get_root_layer().insert_sub_layer_path(&asset_path, None);
     stage.save();
 }
 
