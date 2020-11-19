@@ -13,6 +13,8 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 - [ ] Relationships
 - [ ] Schemas
 - [ ] Edit Targets
+- [ ] Variant Sets
+- [ ] Get/Set default root prim
 
 # The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
