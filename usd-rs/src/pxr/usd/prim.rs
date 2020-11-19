@@ -7,6 +7,7 @@
 use crate::pxr::sdf;
 use crate::pxr::tf;
 use crate::pxr::usd::attribute::*;
+use crate::pxr::usd::references::References;
 use cpp::*;
 
 cpp! {{
@@ -43,16 +44,14 @@ impl Prim {
         }
     }
 
-    /*
-    pub fn get_references(&self) -> &tf::Token {
+    pub fn get_references(&self) -> References {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*"]
-                        -> * const tf::Token as "const pxr::TfToken*" {
-                return &self->GetTypeName();
-            }).as_ref().unwrap()
+                        -> References as "const pxr::UsdReferences" {
+                return self->GetReferences();
+            })
         }
     }
-    */
 
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
