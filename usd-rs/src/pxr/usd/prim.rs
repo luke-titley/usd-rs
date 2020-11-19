@@ -55,4 +55,13 @@ impl Prim {
             })
         }
     }
+
+    pub fn get_name(&self) -> &tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*"]
+                        -> * const tf::Token as "const pxr::TfToken*" {
+                return &self->GetName();
+            }).as_ref().unwrap()
+        }
+    }
 }

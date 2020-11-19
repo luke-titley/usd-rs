@@ -48,6 +48,18 @@ cpp! {{
 
 cpp_class!(pub unsafe struct Token as "pxr::TfToken");
 
+impl Token {
+    pub fn get_text(&self) -> & std::ffi::CStr {
+        unsafe {
+            std::ffi::CStr::from_ptr(
+                cpp!([self as "const pxr::TfToken *"]
+                    -> * const std::os::raw::c_char as "const char *" {
+                return self->GetText();
+            }))
+        }
+    }
+}
+
 impl From<&CStr> for Token {
     fn from(value: &CStr) -> Self {
         let value_str = value.as_ptr() as *const std::os::raw::c_char;
