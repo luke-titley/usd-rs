@@ -33,6 +33,16 @@ pub mod desc {
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
 impl Prim {
+
+    pub fn get_type_name(&self) -> &tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*"]
+                        -> * const tf::Token as "const pxr::TfToken*" {
+                return &self->GetTypeName();
+            }).as_ref().unwrap()
+        }
+    }
+
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
         let type_name = &desc.type_name;
