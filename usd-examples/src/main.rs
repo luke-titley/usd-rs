@@ -1,7 +1,7 @@
 use usd::pxr::usd;
 
 fn main() {
-    let path = std::ffi::CString::new("Spoon.geom.usd").unwrap();
+    let path = std::ffi::CString::new("../assets/Kitchen_set/Kitchen_set.usd").unwrap();
     let stage = usd::Stage::open(usd::stage::desc::Open {
         file_path: &path,
         load: None,
