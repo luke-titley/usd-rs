@@ -4,6 +4,7 @@
 
 //------------------------------------------------------------------------------
 //use crate::pxr::sdf;
+use crate::pxr::sdf;
 use crate::pxr::tf;
 use crate::pxr::usd::attribute::*;
 use cpp::*;
@@ -62,6 +63,15 @@ impl Prim {
                         -> * const tf::Token as "const pxr::TfToken*" {
                 return &self->GetName();
             }).as_ref().unwrap()
+        }
+    }
+
+    pub fn get_path(&self) -> sdf::Path {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*"]
+                        -> sdf::Path as "pxr::SdfPath" {
+                return self->GetPath();
+            })
         }
     }
 }

@@ -8,6 +8,6 @@ fn main() {
     });
 
     for prim in stage.traverse().iter() {
-        println!("Prim name: {:?}", prim.get_name().get_text());
+        println!("Prim name: {:?}", prim.get_path().get_text());
     }
 }
