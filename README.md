@@ -10,9 +10,9 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 - You can traverse the prims in a stage.
 
 # Work to do
-- [] Relationships
-- [] Schemas
-- [] Edit Targets
+- [ ] Relationships
+- [ ] Schemas
+- [ ] Edit Targets
 
 # The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
