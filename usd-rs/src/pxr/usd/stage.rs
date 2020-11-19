@@ -63,6 +63,7 @@ use crate::pxr::tf;
 use crate::pxr::usd::prim::Prim;
 
 use super::common::LoadPolicy;
+use super::prim_range::*;
 
 //------------------------------------------------------------------------------
 #[repr(C)]
@@ -301,6 +302,18 @@ impl Stage {
                   path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->GetPrimAtPath(*path);
             })
+        }
+    }
+
+    pub fn traverse(&self) -> PrimRange {
+        let prm_range = unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *"] -> *const PrmRange as "const pxr::UsdPrimRange*" {
+                return new pxr::UsdPrimRange((*self)->Traverse());
+            })
+        };
+
+        PrimRange {
+            _prim_range: prm_range,
         }
     }
 
