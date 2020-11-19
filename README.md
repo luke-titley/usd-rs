@@ -5,7 +5,14 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 # What works ?
 - You can create and open/save/export a stage.
 - You can define a prim and get/set attributes on it.
-  All 30 basic types are supported.
+  All 30 basic types are supported + arrays of those types.
+- You can create references under prims or as layers.
+- You can traverse the prims in a stage.
+
+# Work to do
+- [] Relationships
+- [] Schemas
+- [] Edit Targets
 
 # The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
