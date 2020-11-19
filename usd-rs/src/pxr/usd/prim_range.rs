@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 
 use cpp::*;
+use crate::pxr::usd::Prim;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -14,6 +15,64 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
+
+//------------------------------------------------------------------------------
+cpp_class!(pub unsafe struct PrimRangeIteratorPos as
+            "pxr::UsdPrimRange::iterator");
+
+impl PrimRangeIteratorPos {
+    pub fn increment(&mut self) {
+        unsafe {
+            cpp!([self as "pxr::UsdPrimRange::iterator *"] {
+                ++(*self);
+            });
+        }
+    }
+
+    pub fn dereference(&self) -> Prim {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrimRange::iterator *"]
+                -> Prim as "pxr::UsdPrim" {
+                return *(*self);
+            })
+        }
+    }
+
+    pub fn eq(&self, rhs : &Self) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrimRange::iterator *",
+                  rhs as "const pxr::UsdPrimRange::iterator *"]
+                -> bool as "bool" {
+                return (*self) == (*rhs);
+            })
+        }
+    }
+}
+
+pub struct PrimRangeIterator {
+    it: PrimRangeIteratorPos,
+    end: PrimRangeIteratorPos,
+}
+
+impl PrimRangeIterator {
+    pub fn new(begin: PrimRangeIteratorPos, end: PrimRangeIteratorPos) -> Self {
+        Self { it: begin, end }
+    }
+}
+
+impl std::iter::Iterator for PrimRangeIterator {
+    type Item = Prim;
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.it.eq(&self.end) {
+            None
+        } else {
+            let result = self.it.dereference();
+            self.it.increment();
+            Some(result)
+        }
+    }
+}
+
 #[repr(C, align(8))]
 pub(in crate) struct PrmRange {}
 
@@ -22,6 +81,24 @@ pub(in crate) struct PrmRange {}
 #[repr(C, align(8))]
 pub struct PrimRange {
     pub(in crate) _prim_range: *const PrmRange,
+}
+
+impl PrimRange {
+    pub fn iter(&self) -> PrimRangeIterator {
+        let prim_range = self._prim_range;
+        let begin = unsafe {
+            cpp!([prim_range as "pxr::UsdPrimRange *"] -> PrimRangeIteratorPos as "pxr::UsdPrimRange::iterator" {
+                return prim_range->begin();
+            })
+        };
+        let end = unsafe {
+            cpp!([prim_range as "pxr::UsdPrimRange *"] -> PrimRangeIteratorPos as "pxr::UsdPrimRange::iterator" {
+                return prim_range->end();
+            })
+        };
+
+        PrimRangeIterator::new(begin, end)
+    }
 }
 
 impl Drop for PrimRange {
