@@ -305,6 +305,15 @@ impl Stage {
         }
     }
 
+    pub fn get_pseudo_root(&self) -> Prim {
+        unsafe {
+            cpp!([self as "const pxr::UsdStageRefPtr *"]
+                    -> Prim as "pxr::UsdPrim" {
+                return (*self)->GetPseudoRoot();
+            })
+        }
+    }
+
     pub fn traverse(&self) -> PrimRange {
         let prm_range = unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] -> *const PrmRange as "const pxr::UsdPrimRange*" {
