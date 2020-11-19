@@ -9,5 +9,6 @@ fn main() {
 
     for prim in stage.traverse().iter() {
         println!("Prim name: {:?}", prim.get_path().get_text());
+        println!("     type: {:?}", prim.get_type_name().get_text());
     }
 }
