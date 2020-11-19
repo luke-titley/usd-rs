@@ -43,6 +43,17 @@ impl Prim {
         }
     }
 
+    /*
+    pub fn get_references(&self) -> &tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*"]
+                        -> * const tf::Token as "const pxr::TfToken*" {
+                return &self->GetTypeName();
+            }).as_ref().unwrap()
+        }
+    }
+    */
+
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
         let type_name = &desc.type_name;
