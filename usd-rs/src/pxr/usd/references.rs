@@ -65,7 +65,11 @@ impl References {
         }
     }
 
-    pub fn clear_references() -> bool {
-        false
+    pub fn clear_references(&mut self) -> bool {
+        unsafe {
+            cpp!([self as "pxr::UsdReferences*"] -> bool as "bool" {
+                return self->ClearReferences();
+            })
+        }
     }
 }
