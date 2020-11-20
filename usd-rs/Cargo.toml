@@ -4,7 +4,7 @@ version = "0.0.8"
 authors = ["Luke Titley <from+crates_io@luketitley.com>"]
 edition = "2018"
 license = "Apache-2.0"
-description = "The beginnings of rust bindings for USD"
+description = "Rust bindings for USD"
 repository = "https://github.com/luke-titley/usd-rs"
 keywords = ["vfx", "graphics", "scene_description", "scene_graph", "alembic"]
 
