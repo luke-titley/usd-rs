@@ -40,10 +40,12 @@ fn add_references() {
 }
 
 fn array_attributes() {
+    /*
     use usd::pxr::vt::VtArray as _;
-    let mut array = usd::pxr::vt::ArrayInt::new();
-    array.push_back(&123_i32);
+    let mut array = usd::pxr::vt::ArrayBool::new();
+    array.push_back(&true);
     let value = usd::pxr::vt::Value::from(&array);
+    */
 
     let asset_path = std::ffi::CString::new("array_value.usda").unwrap();
     let stage = pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
@@ -63,12 +65,15 @@ fn array_attributes() {
             ),
             type_name: usd::pxr::sdf::Schema::get_instance().find_type(
                 &usd::pxr::tf::Token::from(
-                    std::ffi::CString::new("int[]").unwrap().as_c_str(),
+                    std::ffi::CString::new("bool[]").unwrap().as_c_str(),
                 ),
             ),
         });
 
-    attr.set(&value, usd::pxr::usd::TimeCode::default());
+    let mut value = usd::pxr::vt::Value::new();
+    attr.get(&mut value, usd::pxr::usd::TimeCode::default());
+
+    let array: &usd::pxr::vt::ArrayBool = value.as_ref();
 
     stage.save();
 }

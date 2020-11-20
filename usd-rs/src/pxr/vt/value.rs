@@ -14,3 +14,13 @@ cpp! {{
 
 //------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct Value as "pxr::VtValue");
+
+impl Value {
+    pub fn new() -> Self {
+        unsafe {
+            cpp!([] -> Value as "pxr::VtValue" {
+                return pxr::VtValue();
+            })
+        }
+    }
+}
