@@ -34,13 +34,14 @@ pub mod desc {
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
 impl Prim {
-
     pub fn get_type_name(&self) -> &tf::Token {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*"]
                         -> * const tf::Token as "const pxr::TfToken*" {
                 return &self->GetTypeName();
-            }).as_ref().unwrap()
+            })
+            .as_ref()
+            .unwrap()
         }
     }
 
@@ -82,7 +83,9 @@ impl Prim {
             cpp!([self as "const pxr::UsdPrim*"]
                         -> * const tf::Token as "const pxr::TfToken*" {
                 return &self->GetName();
-            }).as_ref().unwrap()
+            })
+            .as_ref()
+            .unwrap()
         }
     }
 

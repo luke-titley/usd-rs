@@ -90,7 +90,8 @@ fn write_stub_lib_info(out_dir: &std::path::PathBuf) {
 pub const INCLUDE : &str = \"\"; \n\
 pub const LIBS : &str = \"\"; \n\
 pub const LIB : &str = \"\"; \n\
-");
+"
+    );
 }
 
 fn main() {

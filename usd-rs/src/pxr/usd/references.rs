@@ -2,8 +2,8 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
-use cpp::*;
 use crate::pxr::sdf;
+use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -28,7 +28,7 @@ pub mod desc {
 cpp_class!(pub unsafe struct References as "pxr::UsdReferences");
 
 impl References {
-    pub fn add_reference(&mut self, desc : desc::AddReference) -> bool {
+    pub fn add_reference(&mut self, desc: desc::AddReference) -> bool {
         match desc {
             desc::AddReference {
                 identifier,
@@ -44,7 +44,7 @@ impl References {
                         return self->AddReference(std::string(identifier));
                     })
                 }
-            },
+            }
             desc::AddReference {
                 identifier,
                 prim_path: Some(prim_path),

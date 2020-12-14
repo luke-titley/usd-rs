@@ -15,10 +15,9 @@ cpp! {{
 cpp_class!(pub unsafe struct Path as "pxr::SdfPath");
 
 impl Path {
-    pub fn get_text(&self) -> & std::ffi::CStr {
+    pub fn get_text(&self) -> &std::ffi::CStr {
         unsafe {
-            std::ffi::CStr::from_ptr(
-                cpp!([self as "const pxr::SdfPath *"]
+            std::ffi::CStr::from_ptr(cpp!([self as "const pxr::SdfPath *"]
                     -> * const std::os::raw::c_char as "const char *" {
                 return self->GetText();
             }))

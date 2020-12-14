@@ -4,8 +4,8 @@
 
 //------------------------------------------------------------------------------
 
-use cpp::*;
 use crate::pxr::usd::Prim;
+use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -14,7 +14,6 @@ cpp! {{
     #include "pxr/usd/usd/primRange.h"
     #pragma GCC diagnostic pop
 }}
-
 
 //------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct PrimRangeIteratorPos as
@@ -38,7 +37,7 @@ impl PrimRangeIteratorPos {
         }
     }
 
-    pub fn eq(&self, rhs : &Self) -> bool {
+    pub fn eq(&self, rhs: &Self) -> bool {
         unsafe {
             cpp!([self as "const pxr::UsdPrimRange::iterator *",
                   rhs as "const pxr::UsdPrimRange::iterator *"]

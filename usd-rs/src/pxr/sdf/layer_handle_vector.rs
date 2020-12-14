@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
-use cpp::*;
 use super::layer_handle::LayerHandle;
+use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -15,7 +15,6 @@ cpp! {{
 cpp_class!(pub unsafe struct LayerHandleVector as "pxr::SdfLayerHandleVector");
 
 impl LayerHandleVector {
-
     pub fn size(&self) -> usize {
         unsafe {
             cpp!([self as "const pxr::SdfLayerHandleVector *"]
@@ -25,7 +24,7 @@ impl LayerHandleVector {
         }
     }
 
-    pub fn reserve(& mut self, num : usize) {
+    pub fn reserve(&mut self, num: usize) {
         unsafe {
             cpp!([self as "pxr::SdfLayerHandleVector *",
                   num as "size_t"] {
@@ -34,7 +33,7 @@ impl LayerHandleVector {
         }
     }
 
-    pub fn push_back(& mut self, elem : &LayerHandle) {
+    pub fn push_back(&mut self, elem: &LayerHandle) {
         unsafe {
             cpp!([self as "pxr::SdfLayerHandleVector *",
                   elem as "const pxr::SdfLayerHandle *"] {
@@ -43,7 +42,7 @@ impl LayerHandleVector {
         }
     }
 
-    pub fn clear(& mut self) {
+    pub fn clear(&mut self) {
         unsafe {
             cpp!([self as "pxr::SdfLayerHandleVector *"] {
                 self->clear();
