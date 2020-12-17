@@ -115,6 +115,10 @@ impl VtArray<{typ}> for Array{name} {{
         }}
     }}
 
+    fn boxed() -> std::boxed::Box<Self> {{
+        std::boxed::Box::new(Self::new())
+    }}
+
     fn size(&self) -> usize {{
         unsafe {{
             cpp!([self as \"const pxr::VtArray<{cpp_type}> *\"]
@@ -258,6 +262,7 @@ cpp! {{{{
 
 pub trait VtArray<T> {{
     fn new() -> Self;
+    fn boxed() -> std::boxed::Box<Self>;
     fn size(&self) -> usize;
     fn reserve(& mut self, num : usize);
     fn push_back(& mut self, elem : &T);

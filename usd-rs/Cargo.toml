@@ -11,9 +11,6 @@ keywords = ["vfx", "graphics", "scene_description", "scene_graph", "alembic"]
 [package.metadata.docs.rs]
 rustc-args = ["--cfg", "docsrs"]
 
-[lib]
-crate-type = ["dylib"]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
