@@ -1,7 +1,6 @@
-use usd::pxr;
-use pxr::usd::Stage;
 use pxr::sdf;
-use std::ffi::CString;
+use pxr::usd::Stage;
+use usd::pxr;
 
 use pxr::tf;
 use pxr::usd::*;
@@ -44,24 +43,18 @@ fn add_references() {
     stage.save();
 }
 
-
 fn array_attributes() {
-    let stage = Stage::create_new(
-    pxr::usd::stage::desc::CreateNew {
+    let stage = Stage::create_new(pxr::usd::stage::desc::CreateNew {
         identifier: c_str!("set_array_int_attribute_prim.usda"),
         _load: None,
     });
     let path = c_str!("/root/world/test");
-    let prim = stage.define_prim(
-        &sdf::Path::from(path),
-        &tf::Token::default(),
-    );
+    let prim = stage.define_prim(&sdf::Path::from(path), &tf::Token::default());
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
         name: tf::Token::from(c_str!("lukes_attr")),
-        type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-            CString::new("int[]").unwrap().as_c_str(),
-        )),
+        type_name: sdf::Schema::get_instance()
+            .find_type(&tf::Token::from(c_str!("int[]"))),
     });
 
     use vt::VtArray as _;
