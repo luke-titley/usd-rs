@@ -7,11 +7,11 @@ use pxr::tf;
 use pxr::usd::*;
 use pxr::vt;
 
+use usd::c_str;
+
 fn open_kitchen_set() {
-    let path = std::ffi::CString::new("../assets/Kitchen_set/Kitchen_set.usd")
-        .unwrap();
     let stage = pxr::usd::Stage::open(pxr::usd::stage::desc::Open {
-        file_path: &path,
+        file_path: c_str!("../assets/Kitchen_set/Kitchen_set.usd"),
         load: None,
     });
 
@@ -22,47 +22,43 @@ fn open_kitchen_set() {
 }
 
 fn add_references() {
-    let asset_path = std::ffi::CString::new("asset.usda").unwrap();
+    let asset_path = c_str!("asset.usda");
     let stage = pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-        identifier: &asset_path,
+        identifier: asset_path,
         _load: None,
     });
-    let prim_path = std::ffi::CString::new("/root").unwrap();
-    let prim = stage.define_prim(
-        &pxr::sdf::Path::from(prim_path.as_c_str()),
+    stage.define_prim(
+        &pxr::sdf::Path::from(c_str!("/root")),
         &pxr::tf::Token::default(),
     );
     stage.save();
 
-    let scene_path = std::ffi::CString::new("scene.usda").unwrap();
     let stage = pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-        identifier: &scene_path,
+        identifier: c_str!("scene.usda"),
         _load: None,
     });
 
     stage
         .get_root_layer()
-        .insert_sub_layer_path(&asset_path, None);
+        .insert_sub_layer_path(asset_path, None);
     stage.save();
 }
 
 
 fn array_attributes() {
-    let stage = Stage::create_new(stage::desc::CreateNew::from(
-        CString::new("set_array_int_attribute_prim.usda")
-            .unwrap()
-            .as_c_str(),
-    ));
-    let path = CString::new("/root/world/test").unwrap();
+    let stage = Stage::create_new(
+    pxr::usd::stage::desc::CreateNew {
+        identifier: c_str!("set_array_int_attribute_prim.usda"),
+        _load: None,
+    });
+    let path = c_str!("/root/world/test");
     let prim = stage.define_prim(
-        &sdf::Path::from(path.as_c_str()),
+        &sdf::Path::from(path),
         &tf::Token::default(),
     );
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
-        name: tf::Token::from(
-            CString::new("lukes_attr").unwrap().as_c_str(),
-        ),
+        name: tf::Token::from(c_str!("lukes_attr")),
         type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
             CString::new("int[]").unwrap().as_c_str(),
         )),
