@@ -59,6 +59,18 @@ impl Token {
     }
 }
 
+impl std::cmp::PartialEq for Token {
+    fn eq(&self, other: &Self) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::TfToken *",
+                  other as "const pxr::TfToken *"]
+                    -> bool as "bool" {
+                return (*self) == (*other);
+            })
+        }
+    }
+}
+
 impl From<&CStr> for Token {
     fn from(value: &CStr) -> Self {
         let value_str = value.as_ptr() as *const std::os::raw::c_char;
