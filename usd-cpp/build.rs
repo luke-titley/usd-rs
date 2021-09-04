@@ -25,8 +25,10 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     println!("Downloading dependencies and building USD c++ library");
 
     // Run the command to build the python c++ library
-    let result = Command::new("python")
+    let result = Command::new("python2")
         .arg(script_dir)
+        .arg("--generator")
+        .arg("Xcode")
         .arg("--build-monolithic")
         .arg("--no-tests")
         .arg("--no-examples")
