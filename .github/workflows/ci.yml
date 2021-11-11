@@ -21,9 +21,9 @@ jobs:
     - name: Run build
       run: cargo build
 
-
+  # MacOS Disabled for now, see issue #2
   build-macos:
-
+    if: ${{ false }}
     runs-on: macos-11
 
     steps:
