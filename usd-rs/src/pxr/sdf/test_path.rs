@@ -8,7 +8,7 @@ mod tests {
 
     #[test]
     fn test_from_str() {
-        let path = CString::new("/root/world/stuff").unwrap();
-        Path::from(path.as_c_str());
+        let path_str = CString::new("/root/world/stuff").unwrap();
+        let _path = Path::from(path_str.as_c_str());
     }
 }
