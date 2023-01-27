@@ -398,21 +398,21 @@ impl Stage {
         }
     }
 
-    pub fn get_session_layer(&self) -> pxr::Result<sdf::LayerHandle> {
-        Ok(unsafe {
+    pub fn get_session_layer(&self) -> sdf::LayerHandle {
+        unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> sdf::LayerHandle as "pxr::SdfLayerHandle" {
                 return (*self)->GetSessionLayer();
             })
-        })
+        }
     }
 
-    pub fn get_root_layer(&self) -> pxr::Result<sdf::LayerHandle> {
-        Ok(unsafe {
+    pub fn get_root_layer(&self) -> sdf::LayerHandle {
+        unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> sdf::LayerHandle as "pxr::SdfLayerHandle" {
                 return (*self)->GetRootLayer();
             })
-        })
+        }
     }
 }

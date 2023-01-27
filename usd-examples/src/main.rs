@@ -8,8 +8,6 @@ use pxr::vt;
 
 use std::convert::TryFrom;
 
-use usd::c_str;
-
 fn open_kitchen_set() -> pxr::NoResult {
     let stage = pxr::usd::Stage::open(pxr::usd::stage::desc::Open {
         file_path: "../assets/Kitchen_set/Kitchen_set.usd",
@@ -44,11 +42,10 @@ fn add_references() -> pxr::NoResult {
             _load: None,
         })?;
 
-    /*
     stage
         .get_root_layer()
-        .insert_sub_layer_path(asset_path, None);
-    */
+        .insert_sub_layer_path(asset_path, None)?;
+
     stage.save();
 
     Ok(())
