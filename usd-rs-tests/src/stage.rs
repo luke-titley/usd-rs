@@ -61,14 +61,14 @@ mod tests {
             "create_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
         prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::try_from("lukes_attr").unwrap(),
+            name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
-                .find_type(&tf::Token::try_from("int").unwrap()),
+                .find_type(&tf::Token::try_from("int")?),
         });
 
         stage.save()?;
@@ -114,7 +114,7 @@ mod tests {
             "set_string_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
@@ -148,7 +148,7 @@ mod tests {
             "set_asset_path_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
@@ -158,13 +158,12 @@ mod tests {
                 .find_type(&tf::Token::try_from("asset")?),
         });
 
-        let path = CString::new("/root/show/asset.abc").unwrap();
         attr.set(
             &vt::Value::from(<&vt::Asset>::from(
                 sdf::AssetPath::new(sdf::AssetPathDescriptor {
-                    path: path.as_c_str(),
+                    path: "/root/show/asset.abc",
                     resolved_path: None,
-                })
+                })?
                 .as_ref(),
             )),
             TimeCode::default(),

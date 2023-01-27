@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
-
+use crate::pxr;
 use cpp::*;
 use std::ffi::CStr;
 
@@ -53,8 +53,8 @@ impl AsstPth {
 // AssetPathDescriptor
 //------------------------------------------------------------------------------
 pub struct AssetPathDescriptor<'a> {
-    pub path: &'a CStr,
-    pub resolved_path: Option<&'a CStr>,
+    pub path: &'a str,
+    pub resolved_path: Option<&'a str>,
 }
 
 //------------------------------------------------------------------------------
@@ -65,28 +65,34 @@ pub struct AssetPath {
 
 //------------------------------------------------------------------------------
 impl AssetPath {
-    pub fn new(desc: AssetPathDescriptor) -> Self {
-        match desc {
+    pub fn new(desc: AssetPathDescriptor) -> pxr::Result<Self> {
+        Ok(match desc {
             AssetPathDescriptor {
                 path,
                 resolved_path: Some(resolved_path),
             } => unsafe {
-                let path = path.as_ptr() as *const std::os::raw::c_char;
-                let resolved_path =
+                let path = std::ffi::CString::new(path)?;
+                let resolved_path = std::ffi::CString::new(resolved_path)?;
+
+                let path_c_char = path.as_ptr() as *const std::os::raw::c_char;
+                let resolved_path_c_char =
                     resolved_path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *", resolved_path as "const char *"] -> AssetPath as "const pxr::SdfAssetPath*" {
-                    return new pxr::SdfAssetPath(std::string(path), std::string(resolved_path));
+                cpp!([path_c_char as "const char *", resolved_path_c_char as "const char *"]
+                        -> AssetPath as "const pxr::SdfAssetPath*" {
+                    return new pxr::SdfAssetPath(std::string(path_c_char), std::string(resolved_path_c_char));
                 })
             },
             AssetPathDescriptor { path, .. } => unsafe {
-                let path = path.as_ptr() as *const std::os::raw::c_char;
+                let path = std::ffi::CString::new(path)?;
+                let path_c_char = path.as_ptr() as *const std::os::raw::c_char;
 
-                cpp!([path as "const char *"] -> AssetPath as "const pxr::SdfAssetPath*" {
-                    return new pxr::SdfAssetPath(std::string(path));
+                cpp!([path_c_char as "const char *"]
+                        -> AssetPath as "const pxr::SdfAssetPath*" {
+                    return new pxr::SdfAssetPath(std::string(path_c_char));
                 })
             },
-        }
+        })
     }
 }
 
