@@ -29,6 +29,17 @@ CI Status: ![CI](https://github.com/luke-titley/usd-rs/actions/workflows/ci.yml/
 - git submodule update --init --recursive
 - cargo build
 
+## Building against your own USD build
+Same as above only instead of cargo build do:
+- env USD_ROOT=<path to your usd install> cargo build
+
+# Running tests
+One youve got the project building you can run the tests with
+> cargo test
+or
+> env USD_ROOT=<path to your usd install> cargo test
+
+
 # Requirements
 
 - g++/clang with c++14 support
