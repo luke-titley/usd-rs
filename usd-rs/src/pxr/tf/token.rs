@@ -34,6 +34,7 @@
 //! auto type conversion from string and char* to TfToken is disabled (you must
 //! use the explicit TfToken constructors). However, auto conversion from
 //! TfToken to string and char* is provided.
+use crate::pxr;
 
 use cpp::*;
 use std::ffi::CStr;
@@ -71,14 +72,22 @@ impl std::cmp::PartialEq for Token {
     }
 }
 
-impl From<&CStr> for Token {
-    fn from(value: &CStr) -> Self {
-        let value_str = value.as_ptr() as *const std::os::raw::c_char;
+fn from_c_str(value: &CStr) -> Token {
+    let value_str = value.as_ptr() as *const std::os::raw::c_char;
 
-        unsafe {
-            cpp!([value_str as "const char *"] -> Token as "pxr::TfToken" {
-                return pxr::TfToken(value_str);
-            })
-        }
+    unsafe {
+        cpp!([value_str as "const char *"] -> Token as "pxr::TfToken" {
+            return pxr::TfToken(value_str);
+        })
+    }
+}
+
+impl std::convert::TryFrom<&str> for Token {
+    type Error = pxr::Error;
+
+    fn try_from(value: &str) -> std::result::Result<Self, Self::Error> {
+        let value_cstring = std::ffi::CString::new(value)?;
+
+        Ok(from_c_str(value_cstring.as_c_str()))
     }
 }

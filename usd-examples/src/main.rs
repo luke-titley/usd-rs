@@ -45,7 +45,7 @@ fn add_references() {
     stage.save();
 }
 
-fn array_attributes() {
+fn array_attributes() -> pxr::NoResult {
     let stage = Stage::create_new(pxr::usd::stage::desc::CreateNew {
         identifier: c_str!("set_array_int_attribute_prim.usda"),
         _load: None,
@@ -56,9 +56,9 @@ fn array_attributes() {
     );
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
-        name: tf::Token::from(c_str!("lukes_attr")),
+        name: tf::Token::try_from("lukes_attr")?,
         type_name: sdf::Schema::get_instance()
-            .find_type(&tf::Token::from(c_str!("int[]"))),
+            .find_type(&tf::Token::try_from("int[]")?),
     });
 
     use vt::VtArray as _;
@@ -72,6 +72,8 @@ fn array_attributes() {
     attr.get(&mut _value, TimeCode::default());
 
     stage.save();
+
+    Ok(())
 }
 
 fn main() {

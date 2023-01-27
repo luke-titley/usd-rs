@@ -4,6 +4,7 @@
 #[cfg(test)]
 mod tests {
     use std::ffi::CString;
+    use usd::pxr;
     use usd::pxr::sdf;
     use usd::pxr::tf;
     use usd::pxr::usd::*;
@@ -12,22 +13,26 @@ mod tests {
     use std::convert::TryFrom;
 
     #[test]
-    fn test_new() {
+    fn test_new() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("test.usda").unwrap().as_c_str(),
         ));
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_in_memory() {
+    fn test_in_memory() -> pxr::NoResult {
         let stage =
             Stage::create_in_memory(stage::desc::CreateInMemory::default());
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_open() {
+    fn test_open() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("test_open.usda").unwrap().as_c_str(),
         ));
@@ -36,10 +41,12 @@ mod tests {
         Stage::open(stage::desc::Open::from(
             CString::new("test_open.usda").unwrap().as_c_str(),
         ));
+
+        Ok(())
     }
 
     #[test]
-    fn test_define_prim() {
+    fn test_define_prim() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("define_prim.usda").unwrap().as_c_str(),
         ));
@@ -48,10 +55,12 @@ mod tests {
             &tf::Token::default(),
         );
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_create_attribute() {
+    fn test_create_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("create_attribute_prim.usda")
                 .unwrap()
@@ -63,19 +72,18 @@ mod tests {
         );
 
         prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("int").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr").unwrap(),
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("int").unwrap()),
         });
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_set_bool_attribute() {
+    fn test_set_bool_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_attribute_prim.usda").unwrap().as_c_str(),
         ));
@@ -85,12 +93,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("bool").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("bool")?),
         });
 
         attr.set(
@@ -105,10 +110,12 @@ mod tests {
         println!("The attribute value is {}", result.0);
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_set_string_attribute() {
+    fn test_set_string_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_string_attribute_prim.usda")
                 .unwrap()
@@ -120,12 +127,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("string").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("string")?),
         });
 
         attr.set(
@@ -142,10 +146,12 @@ mod tests {
         println!("The attribute value is {}", result.0.to_str().unwrap());
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_set_asset_path_attribute() {
+    fn test_set_asset_path_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_asset_path_attribute_prim.usda")
                 .unwrap()
@@ -157,12 +163,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("asset").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("asset")?),
         });
 
         let path = CString::new("/root/show/asset.abc").unwrap();
@@ -187,10 +190,12 @@ mod tests {
         );
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_array() {
+    fn test_array() -> pxr::NoResult {
         use vt::VtArray as _;
         let mut array = vt::ArrayBool::new();
 
@@ -203,10 +208,12 @@ mod tests {
         assert_eq!(array[1], false);
 
         let _value = vt::Value::from(&array);
+
+        Ok(())
     }
 
     #[test]
-    fn test_float_array_attribute_value() {
+    fn test_float_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_array_float_attribute_prim.usda")
                 .unwrap()
@@ -218,12 +225,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("float[]").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("float[]")?),
         });
 
         use vt::VtArray as _;
@@ -237,10 +241,12 @@ mod tests {
         attr.get(&mut _value, TimeCode::default());
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_bool_array_attribute_value() {
+    fn test_bool_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_array_bool_attribute_prim.usda")
                 .unwrap()
@@ -252,12 +258,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("bool[]").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("bool[]")?),
         });
 
         use vt::VtArray as _;
@@ -271,10 +274,12 @@ mod tests {
         attr.get(&mut _value, TimeCode::default());
 
         stage.save();
+
+        Ok(())
     }
 
     #[test]
-    fn test_int_array_attribute_value() {
+    fn test_int_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_array_int_attribute_prim.usda")
                 .unwrap()
@@ -286,12 +291,9 @@ mod tests {
         );
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
-            name: tf::Token::from(
-                CString::new("lukes_attr").unwrap().as_c_str(),
-            ),
-            type_name: sdf::Schema::get_instance().find_type(&tf::Token::from(
-                CString::new("int[]").unwrap().as_c_str(),
-            )),
+            name: tf::Token::try_from("lukes_attr")?,
+            type_name: sdf::Schema::get_instance()
+                .find_type(&tf::Token::try_from("int[]")?),
         });
 
         use vt::VtArray as _;
@@ -305,5 +307,7 @@ mod tests {
         attr.get(&mut _value, TimeCode::default());
 
         stage.save();
+
+        Ok(())
     }
 }

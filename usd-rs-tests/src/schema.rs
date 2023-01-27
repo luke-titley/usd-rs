@@ -6,6 +6,7 @@ mod tests {
     use std::ffi::CString;
     use usd::pxr::sdf::*;
     use usd::pxr::tf;
+    use usd::pxr::NoResult;
 
     #[test]
     fn test_get_instance() {
@@ -14,11 +15,12 @@ mod tests {
     }
 
     #[test]
-    fn test_find_type() {
+    fn test_find_type() -> NoResult {
+        use std::convert::TryFrom as _;
+
         let schema = Schema::get_instance();
-        let _value_type_name = schema.find_type(&tf::Token::from(
-            CString::new("int").unwrap().as_c_str(),
-        ));
-        //Path::from("/root/world/stuff");
+        let _value_type_name = schema.find_type(&tf::Token::try_from("int")?);
+
+        Ok(())
     }
 }
