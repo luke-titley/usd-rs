@@ -245,8 +245,8 @@ impl Stage {
         Ok(())
     }
 
-    pub fn load(&self, desc: desc::Load) -> Prim {
-        match desc {
+    pub fn load(&self, desc: desc::Load) -> pxr::Result<Prim> {
+        Ok(match desc {
             desc::Load {
                 path: None,
                 policy: None,
@@ -285,7 +285,7 @@ impl Stage {
                     return (*self)->Load(*path, policy);
                 })
             },
-        }
+        })
     }
 
     pub fn unload(&self, path: Option<&sdf::Path>) -> pxr::NoResult {
@@ -319,88 +319,100 @@ impl Stage {
         Ok(())
     }
 
-    pub fn get_prim_at_path(&self, path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn get_prim_at_path(&self, path: &sdf::Path) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->GetPrimAtPath(*path);
             })
-        }
+        })
     }
 
-    pub fn get_pseudo_root(&self) -> Prim {
-        unsafe {
+    pub fn get_pseudo_root(&self) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> Prim as "pxr::UsdPrim" {
                 return (*self)->GetPseudoRoot();
             })
-        }
+        })
     }
 
-    pub fn traverse(&self) -> PrimRange {
+    pub fn traverse(&self) -> pxr::Result<PrimRange> {
         let prm_range = unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] -> *const PrmRange as "const pxr::UsdPrimRange*" {
                 return new pxr::UsdPrimRange((*self)->Traverse());
             })
         };
 
-        PrimRange {
+        Ok(PrimRange {
             _prim_range: prm_range,
-        }
+        })
     }
 
-    pub fn override_prim(&self, path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn override_prim(&self, path: &sdf::Path) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->OverridePrim(*path);
             })
-        }
+        })
     }
 
-    pub fn define_prim(&self, path: &sdf::Path, type_name: &tf::Token) -> Prim {
-        unsafe {
+    pub fn define_prim(
+        &self,
+        path: &sdf::Path,
+        type_name: &tf::Token,
+    ) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *",
                   type_name as "const pxr::TfToken *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->DefinePrim(*path, *type_name);
             })
-        }
+        })
     }
 
-    pub fn create_class_prim(&self, root_prim_path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn create_class_prim(
+        &self,
+        root_prim_path: &sdf::Path,
+    ) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                 root_prim_path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->CreateClassPrim(*root_prim_path);
             })
-        }
+        })
     }
 
-    pub fn remove_prim(&self, path: &sdf::Path) -> bool {
-        unsafe {
+    pub fn remove_prim(&self, path: &sdf::Path) -> pxr::NoResult {
+        let result = unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> bool as "bool" {
                 return (*self)->RemovePrim(*path);
             })
+        };
+        if result {
+            Ok(())
+        } else {
+            Err(pxr::Error::UnableToRemovePrim)
         }
     }
 
-    pub fn get_session_layer(&self) -> sdf::LayerHandle {
-        unsafe {
+    pub fn get_session_layer(&self) -> pxr::Result<sdf::LayerHandle> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> sdf::LayerHandle as "pxr::SdfLayerHandle" {
                 return (*self)->GetSessionLayer();
             })
-        }
+        })
     }
 
-    pub fn get_root_layer(&self) -> sdf::LayerHandle {
-        unsafe {
+    pub fn get_root_layer(&self) -> pxr::Result<sdf::LayerHandle> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> sdf::LayerHandle as "pxr::SdfLayerHandle" {
                 return (*self)->GetRootLayer();
             })
-        }
+        })
     }
 }

@@ -63,7 +63,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr").unwrap(),
@@ -84,7 +84,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
@@ -116,7 +116,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
@@ -150,7 +150,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
@@ -210,7 +210,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
@@ -241,7 +241,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
@@ -272,7 +272,7 @@ mod tests {
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
-        );
+        )?;
 
         let attr = prim.create_attribute(prim::desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,

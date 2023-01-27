@@ -10,6 +10,7 @@ pub struct Error {
 
 #[derive(Debug)]
 pub enum Error {
+    UnableToRemovePrim,
     MessageOnly(std::string::String),
     NullError(std::ffi::NulError),
 }

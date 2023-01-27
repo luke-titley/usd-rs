@@ -16,7 +16,7 @@ fn open_kitchen_set() -> pxr::NoResult {
         load: None,
     })?;
 
-    for prim in stage.traverse().iter() {
+    for prim in stage.traverse()?.iter() {
         println!("Prim path: {:?}", prim.get_path().get_text());
         println!("     type: {:?}", prim.get_type_name().get_text());
     }
@@ -62,7 +62,7 @@ fn array_attributes() -> pxr::NoResult {
     let prim = stage.define_prim(
         &sdf::Path::try_from("/root/world/test").unwrap(),
         &tf::Token::default(),
-    );
+    )?;
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
         name: tf::Token::try_from("lukes_attr")?,
