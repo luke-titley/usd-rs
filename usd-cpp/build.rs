@@ -94,6 +94,21 @@ pub const LIB : &str = \"\"; \n\
     );
 }
 
+fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::PathBuf) {
+    // Make sure the source directory exists
+    let mut locations_path = out_dir.clone();
+    locations_path.push("locations.rs");
+
+    write!(
+        std::fs::File::create(locations_path).unwrap(),
+        "\
+pub const INCLUDE : &str = \"{0}/include\"; \n\
+pub const LIBS : &str = \"{0}/lib\"; \n\
+pub const LIB : &str = \"usd_ms\"; \n\
+", usd_root
+    );
+}
+
 fn main() {
     // The out directory of the build
     let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
@@ -108,6 +123,8 @@ fn main() {
 
     if let Ok(_) = std::env::var("DOCS_RS") {
         write_stub_lib_info(&out_dir);
+    } else if let Ok(usd_root) = std::env::var("USD_ROOT") {
+        write_lib_info_from_env(&usd_root, &out_dir);
     } else {
         // Build the usd cpp library
         write_lib_info(&out_dir, build_cpp_usd(&out_dir));
