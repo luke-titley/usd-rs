@@ -37,7 +37,7 @@ Same as above only instead of cargo build do:
 One youve got the project building you can run the tests with
 > cargo test
 or
-> env USD_ROOT=<path to your usd install> cargo test
+> env USD_ROOT=<path to your usd install> LD_LIBRARY_PATH=<path to your usd install>/lib cargo test
 
 
 # Requirements

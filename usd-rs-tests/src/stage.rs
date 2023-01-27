@@ -124,9 +124,7 @@ mod tests {
         });
 
         attr.set(
-            &vt::Value::from(<&vt::String>::from(
-                CString::new("this is a string").unwrap().as_c_str(),
-            )),
+            &vt::Value::try_from("this is a string")?,
             TimeCode::default(),
         );
 
