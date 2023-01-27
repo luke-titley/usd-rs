@@ -288,6 +288,19 @@ impl From<&String> for Value {{
     }}
 }}
 
+impl std::convert::TryFrom<&str> for Value {{
+    type Error = crate::pxr::Error;
+    fn try_from(other : &str) -> std::result::Result<Self, Self::Error> {{
+        let other_str = std::ffi::CString::new(other)?;
+        let other = other_str.as_ptr() as *const std::os::raw::c_char;
+        Ok(unsafe {{
+            cpp!([other as "const char *"] -> Value as "pxr::VtValue" {{
+                return pxr::VtValue(other);
+            }})
+        }})
+    }}
+}}
+
 impl AsRef<String> for Value {{
     fn as_ref(&self) -> &String {{
         use std::os::raw::c_char;
