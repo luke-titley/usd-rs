@@ -73,13 +73,13 @@ impl std::iter::Iterator for PrimRangeIterator {
 }
 
 #[repr(C, align(8))]
-pub(in crate) struct PrmRange {}
+pub(crate) struct PrmRange {}
 
 //------------------------------------------------------------------------------
 /// This allows for iterating over a collection of prims
 #[repr(C, align(8))]
 pub struct PrimRange {
-    pub(in crate) _prim_range: *const PrmRange,
+    pub(crate) _prim_range: *const PrmRange,
 }
 
 impl PrimRange {
