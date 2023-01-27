@@ -7,6 +7,7 @@ mod tests {
 
     #[test]
     fn test_from_str() {
-        let _path = Path::from("/root/world/stuff");
+        use std::convert::TryFrom as _;
+        let _path = Path::try_from("/root/world/stuff").unwrap();
     }
 }

@@ -7,6 +7,8 @@ cpp! {{
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    #pragma GCC diagnostic ignored "-Wdeprecated-copy"
     #include "pxr/usd/sdf/layer.h"
     #pragma GCC diagnostic pop
 }}

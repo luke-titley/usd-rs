@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
-use cpp::*;
 use crate::pxr;
+use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -25,20 +25,6 @@ impl Path {
     }
 }
 
-/*
-impl From<&CStr> for Path {
-    fn from(path: &CStr) -> Self {
-        let path_str = path.as_ptr() as *const std::os::raw::c_char;
-
-        unsafe {
-            cpp!([path_str as "const char *"] -> Path as "pxr::SdfPath" {
-                return pxr::SdfPath(std::string(path_str));
-            })
-        }
-    }
-}
-*/
-
 fn from_c_str(path: &std::ffi::CStr) -> Path {
     let path_str = path.as_ptr() as *const std::os::raw::c_char;
 
@@ -53,7 +39,6 @@ impl std::convert::TryFrom<&str> for Path {
     type Error = pxr::Error;
 
     fn try_from(value: &str) -> std::result::Result<Self, Self::Error> {
-
         let path_cstring = std::ffi::CString::new(value)?;
 
         Ok(from_c_str(path_cstring.as_c_str()))

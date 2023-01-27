@@ -6,6 +6,8 @@ use pxr::tf;
 use pxr::usd::*;
 use pxr::vt;
 
+use std::convert::TryFrom;
+
 use usd::c_str;
 
 fn open_kitchen_set() {
@@ -27,7 +29,7 @@ fn add_references() {
         _load: None,
     });
     stage.define_prim(
-        &pxr::sdf::Path::from(c_str!("/root")),
+        &pxr::sdf::Path::try_from("/root").unwrap(),
         &pxr::tf::Token::default(),
     );
     stage.save();
@@ -48,8 +50,10 @@ fn array_attributes() {
         identifier: c_str!("set_array_int_attribute_prim.usda"),
         _load: None,
     });
-    let path = c_str!("/root/world/test");
-    let prim = stage.define_prim(&sdf::Path::from(path), &tf::Token::default());
+    let prim = stage.define_prim(
+        &sdf::Path::try_from("/root/world/test").unwrap(),
+        &tf::Token::default(),
+    );
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
         name: tf::Token::from(c_str!("lukes_attr")),

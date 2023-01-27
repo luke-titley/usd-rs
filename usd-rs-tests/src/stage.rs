@@ -3,11 +3,13 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
+    use std::ffi::CString;
     use usd::pxr::sdf;
     use usd::pxr::tf;
     use usd::pxr::usd::*;
     use usd::pxr::vt;
-    use std::ffi::CString;
+
+    use std::convert::TryFrom;
 
     #[test]
     fn test_new() {
@@ -41,9 +43,8 @@ mod tests {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("define_prim.usda").unwrap().as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
         stage.save();
@@ -56,9 +57,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -79,9 +79,8 @@ mod tests {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
             CString::new("set_attribute_prim.usda").unwrap().as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -115,9 +114,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -153,9 +151,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -215,9 +212,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -250,9 +246,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 
@@ -285,9 +280,8 @@ mod tests {
                 .unwrap()
                 .as_c_str(),
         ));
-        let path = CString::new("/root/world/test").unwrap();
         let prim = stage.define_prim(
-            &sdf::Path::from(path.as_c_str()),
+            &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
         );
 

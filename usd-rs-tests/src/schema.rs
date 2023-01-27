@@ -3,9 +3,9 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
+    use std::ffi::CString;
     use usd::pxr::sdf::*;
     use usd::pxr::tf;
-    use std::ffi::CString;
 
     #[test]
     fn test_get_instance() {

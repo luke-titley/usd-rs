@@ -8,19 +8,20 @@ pub struct Error {
 }
 */
 
+#[derive(Debug)]
 pub enum Error {
     MessageOnly(std::string::String),
-    NullError(std::ffi::NulError)
+    NullError(std::ffi::NulError),
 }
 
 impl std::convert::From<std::ffi::NulError> for Error {
-    fn from(error : std::ffi::NulError) -> Self {
+    fn from(error: std::ffi::NulError) -> Self {
         Error::NullError(error)
     }
 }
 
 impl std::convert::From<&str> for Error {
-    fn from(error : &str) -> Self {
+    fn from(error: &str) -> Self {
         Error::MessageOnly(error.to_string())
     }
 }
