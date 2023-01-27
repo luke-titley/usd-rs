@@ -14,9 +14,8 @@ mod tests {
 
     #[test]
     fn test_new() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("test.usda").unwrap().as_c_str(),
-        ));
+        let stage =
+            Stage::create_new(stage::desc::CreateNew::from("test.usda"))?;
         stage.save();
 
         Ok(())
@@ -25,7 +24,7 @@ mod tests {
     #[test]
     fn test_in_memory() -> pxr::NoResult {
         let stage =
-            Stage::create_in_memory(stage::desc::CreateInMemory::default());
+            Stage::create_in_memory(stage::desc::CreateInMemory::default())?;
         stage.save();
 
         Ok(())
@@ -33,14 +32,11 @@ mod tests {
 
     #[test]
     fn test_open() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("test_open.usda").unwrap().as_c_str(),
-        ));
+        let stage =
+            Stage::create_new(stage::desc::CreateNew::from("test_open.usda"))?;
         stage.save();
 
-        Stage::open(stage::desc::Open::from(
-            CString::new("test_open.usda").unwrap().as_c_str(),
-        ));
+        Stage::open(stage::desc::Open::from("test_open.usda"))?;
 
         Ok(())
     }
@@ -48,10 +44,10 @@ mod tests {
     #[test]
     fn test_define_prim() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("define_prim.usda").unwrap().as_c_str(),
-        ));
+            "define_prim.usda",
+        ))?;
         stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         );
         stage.save();
@@ -62,10 +58,8 @@ mod tests {
     #[test]
     fn test_create_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("create_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "create_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
@@ -85,10 +79,10 @@ mod tests {
     #[test]
     fn test_set_bool_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_attribute_prim.usda").unwrap().as_c_str(),
-        ));
+            "set_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         );
 
@@ -117,10 +111,8 @@ mod tests {
     #[test]
     fn test_set_string_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_string_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "set_string_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
@@ -153,10 +145,8 @@ mod tests {
     #[test]
     fn test_set_asset_path_attribute() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_asset_path_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "set_asset_path_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
@@ -215,10 +205,8 @@ mod tests {
     #[test]
     fn test_float_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_array_float_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "set_array_float_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
@@ -248,10 +236,8 @@ mod tests {
     #[test]
     fn test_bool_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_array_bool_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "set_array_bool_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),
@@ -281,10 +267,8 @@ mod tests {
     #[test]
     fn test_int_array_attribute_value() -> pxr::NoResult {
         let stage = Stage::create_new(stage::desc::CreateNew::from(
-            CString::new("set_array_int_attribute_prim.usda")
-                .unwrap()
-                .as_c_str(),
-        ));
+            "set_array_int_attribute_prim.usda",
+        ))?;
         let prim = stage.define_prim(
             &sdf::Path::try_from("/root/world/test").unwrap(),
             &tf::Token::default(),

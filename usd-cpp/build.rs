@@ -3,8 +3,7 @@ use std::process::Command;
 
 fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // The script directory
-    let mut script_dir =
-        std::path::PathBuf::from(std::env::current_dir().unwrap());
+    let mut script_dir = std::path::PathBuf::from(std::env::current_dir().unwrap());
     script_dir.push("thirdparty");
     script_dir.push("USD");
     script_dir.push("build_scripts");
