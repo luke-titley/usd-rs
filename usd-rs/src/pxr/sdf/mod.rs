@@ -8,9 +8,6 @@ mod path;
 mod schema;
 mod time_code;
 mod value_type_name;
-
-mod test_path;
-mod test_schema;
 //------------------------------------------------------------------------------
 pub use asset_path::*;
 pub use layer_handle::*;

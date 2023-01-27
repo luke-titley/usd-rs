@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
-    use crate::pxr::sdf::*;
-    use crate::pxr::tf;
+    use usd::pxr::sdf::*;
+    use usd::pxr::tf;
     use std::ffi::CString;
 
     #[test]

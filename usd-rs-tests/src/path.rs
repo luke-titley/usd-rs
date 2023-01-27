@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
-    use crate::pxr::sdf::path::*;
+    use usd::pxr::sdf::Path;
     use std::ffi::CString;
 
     #[test]
