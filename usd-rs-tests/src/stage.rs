@@ -16,7 +16,7 @@ mod tests {
     fn test_new() -> pxr::NoResult {
         let stage =
             Stage::create_new(stage::desc::CreateNew::from("test.usda"))?;
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -25,7 +25,7 @@ mod tests {
     fn test_in_memory() -> pxr::NoResult {
         let stage =
             Stage::create_in_memory(stage::desc::CreateInMemory::default())?;
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -34,7 +34,7 @@ mod tests {
     fn test_open() -> pxr::NoResult {
         let stage =
             Stage::create_new(stage::desc::CreateNew::from("test_open.usda"))?;
-        stage.save();
+        stage.save()?;
 
         Stage::open(stage::desc::Open::from("test_open.usda"))?;
 
@@ -50,7 +50,7 @@ mod tests {
             &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         );
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -71,7 +71,7 @@ mod tests {
                 .find_type(&tf::Token::try_from("int").unwrap()),
         });
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -103,7 +103,7 @@ mod tests {
         let result: &vt::Bool = value.as_ref();
         println!("The attribute value is {}", result.0);
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -137,7 +137,7 @@ mod tests {
         let result: &vt::String = value.as_ref();
         println!("The attribute value is {}", result.0.to_str().unwrap());
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -179,7 +179,7 @@ mod tests {
             result.0.get_asset_path().to_str().unwrap()
         );
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -228,7 +228,7 @@ mod tests {
         attr.set(&_value, TimeCode::default());
         attr.get(&mut _value, TimeCode::default());
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -259,7 +259,7 @@ mod tests {
         attr.set(&_value, TimeCode::default());
         attr.get(&mut _value, TimeCode::default());
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
@@ -290,7 +290,7 @@ mod tests {
         attr.set(&_value, TimeCode::default());
         attr.get(&mut _value, TimeCode::default());
 
-        stage.save();
+        stage.save()?;
 
         Ok(())
     }
