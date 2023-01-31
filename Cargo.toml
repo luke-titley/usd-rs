@@ -3,6 +3,7 @@
 members = [
     "usd-cpp",
     "usd-rs",
+    "usd-rs-tests",
     "usd-examples",
     "usd-basic-types"
 ]

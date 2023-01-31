@@ -3,12 +3,11 @@
 //------------------------------------------------------------------------------
 #[cfg(test)]
 mod tests {
-    use crate::pxr::sdf::path::*;
-    use std::ffi::CString;
+    use usd::pxr::sdf::Path;
 
     #[test]
     fn test_from_str() {
-        let path_str = CString::new("/root/world/stuff").unwrap();
-        let _path = Path::from(path_str.as_c_str());
+        use std::convert::TryFrom as _;
+        let _path = Path::try_from("/root/world/stuff").unwrap();
     }
 }

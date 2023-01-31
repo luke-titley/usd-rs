@@ -45,6 +45,8 @@ fn main() {
         println!("cargo:rustc-link-lib={}", usd_cpp::LIB);
         println!("cargo:rustc-link-search={}", usd_cpp::LIBS);
 
+        //panic!("cargo:rustc-link-libs={}", usd_cpp::LIBS);
+
         // Handle the embedded c++ code
         cpp_build::Config::new()
             .include(usd_cpp::INCLUDE)

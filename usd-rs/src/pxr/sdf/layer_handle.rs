@@ -1,12 +1,15 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+use crate::pxr;
 use cpp::*;
 
 cpp! {{
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    #pragma GCC diagnostic ignored "-Wdeprecated-copy"
     #include "pxr/usd/sdf/layer.h"
     #pragma GCC diagnostic pop
 }}
@@ -16,10 +19,12 @@ cpp_class!(pub unsafe struct LayerHandle as "pxr::SdfLayerHandle");
 impl LayerHandle {
     pub fn insert_sub_layer_path(
         &mut self,
-        path: &std::ffi::CStr,
+        path: &str,
         index: Option<usize>,
-    ) {
-        let path = path.as_ptr() as *const std::os::raw::c_char;
+    ) -> pxr::NoResult {
+        let path_str = std::ffi::CString::new(path)?;
+        let path = path_str.as_ptr() as *const std::os::raw::c_char;
+
         let index = if let Some(index) = index {
             index as i32
         } else {
@@ -33,6 +38,8 @@ impl LayerHandle {
                 (*self)->InsertSubLayerPath(std::string(path), index);
             })
         };
+
+        Ok(())
     }
 
     pub fn remove_sub_layer_path(&mut self, index: usize) {

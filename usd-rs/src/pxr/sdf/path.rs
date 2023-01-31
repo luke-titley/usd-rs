@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+use crate::pxr;
 use cpp::*;
-use std::ffi::CStr;
 
 cpp! {{
     #pragma GCC diagnostic push
@@ -15,24 +15,34 @@ cpp! {{
 cpp_class!(pub unsafe struct Path as "pxr::SdfPath");
 
 impl Path {
-    pub fn get_text(&self) -> &std::ffi::CStr {
-        unsafe {
+    pub fn get_text(&self) -> pxr::Result<&str> {
+        let text = unsafe {
             std::ffi::CStr::from_ptr(cpp!([self as "const pxr::SdfPath *"]
                     -> * const std::os::raw::c_char as "const char *" {
                 return self->GetText();
             }))
-        }
+        };
+
+        Ok(text.to_str()?)
     }
 }
 
-impl From<&CStr> for Path {
-    fn from(path: &CStr) -> Self {
-        let path_str = path.as_ptr() as *const std::os::raw::c_char;
+fn from_c_str(path: &std::ffi::CStr) -> Path {
+    let path_str = path.as_ptr() as *const std::os::raw::c_char;
 
-        unsafe {
-            cpp!([path_str as "const char *"] -> Path as "pxr::SdfPath" {
-                return pxr::SdfPath(std::string(path_str));
-            })
-        }
+    unsafe {
+        cpp!([path_str as "const char *"] -> Path as "pxr::SdfPath" {
+            return pxr::SdfPath(std::string(path_str));
+        })
+    }
+}
+
+impl std::convert::TryFrom<&str> for Path {
+    type Error = pxr::Error;
+
+    fn try_from(value: &str) -> std::result::Result<Self, Self::Error> {
+        let path_cstring = std::ffi::CString::new(value)?;
+
+        Ok(from_c_str(path_cstring.as_c_str()))
     }
 }

@@ -57,6 +57,7 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
+use crate::pxr;
 use crate::pxr::sdf;
 use crate::pxr::tf;
 
@@ -86,12 +87,12 @@ pub mod desc {
     use super::*;
 
     pub struct CreateNew<'a> {
-        pub identifier: &'a std::ffi::CStr,
+        pub identifier: &'a str,
         pub _load: Option<InitialLoadSet>,
     }
 
-    impl<'a> From<&'a std::ffi::CStr> for CreateNew<'a> {
-        fn from(identifier: &'a std::ffi::CStr) -> Self {
+    impl<'a> From<&'a str> for CreateNew<'a> {
+        fn from(identifier: &'a str) -> Self {
             Self {
                 identifier,
                 _load: None,
@@ -135,13 +136,13 @@ pub mod desc {
 
     //------------------------------------------------------------------------------
     pub struct Open<'a> {
-        pub file_path: &'a std::ffi::CStr,
+        pub file_path: &'a str,
         pub load: Option<InitialLoadSet>,
         // path_resolver_context : ar::ResolverContext
     }
 
-    impl<'a> From<&'a std::ffi::CStr> for Open<'a> {
-        fn from(file_path: &'a std::ffi::CStr) -> Self {
+    impl<'a> From<&'a str> for Open<'a> {
+        fn from(file_path: &'a str) -> Self {
             Self {
                 file_path,
                 load: None,
@@ -156,78 +157,96 @@ cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_new<'a>(desc: desc::CreateNew<'a>) -> Self {
-        let identifier_str =
-            desc.identifier.as_ptr() as *const std::os::raw::c_char;
+    pub fn create_new<'a>(desc: desc::CreateNew<'a>) -> pxr::Result<Self> {
+        let identifier_str = std::ffi::CString::new(desc.identifier)?;
 
-        unsafe {
-            cpp!([identifier_str as "const char *"]
+        let identifier_char =
+            identifier_str.as_ptr() as *const std::os::raw::c_char;
+
+        let result = unsafe {
+            cpp!([identifier_char as "const char *"]
                 -> Stage as "pxr::UsdStageRefPtr" {
-                return pxr::UsdStage::CreateNew(std::string(identifier_str));
+                return pxr::UsdStage::CreateNew(std::string(identifier_char));
             })
-        }
+        };
+
+        Ok(result)
     }
 
-    pub fn create_in_memory(_desc: desc::CreateInMemory) -> Self {
-        unsafe {
+    pub fn create_in_memory(_desc: desc::CreateInMemory) -> pxr::Result<Self> {
+        let result = unsafe {
             cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
             })
-        }
+        };
+
+        Ok(result)
     }
 
-    pub fn open<'a>(desc: desc::Open) -> Self {
+    pub fn open<'a>(desc: desc::Open) -> pxr::Result<Self> {
         match desc {
             desc::Open {
                 file_path,
                 load: None,
             } => {
-                let file_path =
-                    file_path.as_ptr() as *const std::os::raw::c_char;
+                let path_str = std::ffi::CString::new(file_path)?;
 
-                unsafe {
+                let file_path =
+                    path_str.as_ptr() as *const std::os::raw::c_char;
+
+                let result = unsafe {
                     cpp!([file_path as "const char *"] ->
                                 Stage as "pxr::UsdStageRefPtr" {
                         return pxr::UsdStage::Open(std::string(file_path));
                     })
-                }
+                };
+
+                Ok(result)
             }
             desc::Open {
                 file_path,
                 load: Some(load),
             } => {
-                let file_path =
-                    file_path.as_ptr() as *const std::os::raw::c_char;
+                let path_str = std::ffi::CString::new(file_path)?;
 
-                unsafe {
+                let file_path =
+                    path_str.as_ptr() as *const std::os::raw::c_char;
+
+                let result = unsafe {
                     cpp!([file_path as "const char *",
-                          load as "pxr::UsdStage::InitialLoadSet"] ->
+                        load as "pxr::UsdStage::InitialLoadSet"] ->
                                 Stage as "pxr::UsdStageRefPtr" {
                         return pxr::UsdStage::Open(std::string(file_path), load);
                     })
-                }
+                };
+
+                Ok(result)
             }
         }
     }
 
-    pub fn save(&self) {
+    pub fn save(&self) -> pxr::NoResult {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] {
                 (*self)->Save();
             })
         };
+
+        Ok(())
     }
 
-    pub fn save_session_layers(&self) {
+    pub fn save_session_layers(&self) -> pxr::NoResult {
         unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] {
                 (*self)->SaveSessionLayers();
             })
         };
+
+        Ok(())
     }
 
-    pub fn load(&self, desc: desc::Load) -> Prim {
-        match desc {
+    pub fn load(&self, desc: desc::Load) -> pxr::Result<Prim> {
+        Ok(match desc {
             desc::Load {
                 path: None,
                 policy: None,
@@ -266,10 +285,10 @@ impl Stage {
                     return (*self)->Load(*path, policy);
                 })
             },
-        }
+        })
     }
 
-    pub fn unload(&self, path: Option<&sdf::Path>) {
+    pub fn unload(&self, path: Option<&sdf::Path>) -> pxr::NoResult {
         match path {
             None => unsafe {
                 cpp!([self as "const pxr::UsdStageRefPtr *"] {
@@ -283,9 +302,11 @@ impl Stage {
                 })
             },
         }
+
+        Ok(())
     }
 
-    pub fn export(&self, file_path: &std::ffi::CStr) {
+    pub fn export(&self, file_path: &std::ffi::CStr) -> pxr::NoResult {
         let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
@@ -294,72 +315,86 @@ impl Stage {
                 (*self)->Export(std::string(file_path));
             })
         };
+
+        Ok(())
     }
 
-    pub fn get_prim_at_path(&self, path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn get_prim_at_path(&self, path: &sdf::Path) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->GetPrimAtPath(*path);
             })
-        }
+        })
     }
 
-    pub fn get_pseudo_root(&self) -> Prim {
-        unsafe {
+    pub fn get_pseudo_root(&self) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"]
                     -> Prim as "pxr::UsdPrim" {
                 return (*self)->GetPseudoRoot();
             })
-        }
+        })
     }
 
-    pub fn traverse(&self) -> PrimRange {
+    pub fn traverse(&self) -> pxr::Result<PrimRange> {
         let prm_range = unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *"] -> *const PrmRange as "const pxr::UsdPrimRange*" {
                 return new pxr::UsdPrimRange((*self)->Traverse());
             })
         };
 
-        PrimRange {
+        Ok(PrimRange {
             _prim_range: prm_range,
-        }
+        })
     }
 
-    pub fn override_prim(&self, path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn override_prim(&self, path: &sdf::Path) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->OverridePrim(*path);
             })
-        }
+        })
     }
 
-    pub fn define_prim(&self, path: &sdf::Path, type_name: &tf::Token) -> Prim {
-        unsafe {
+    pub fn define_prim(
+        &self,
+        path: &sdf::Path,
+        type_name: &tf::Token,
+    ) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *",
                   type_name as "const pxr::TfToken *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->DefinePrim(*path, *type_name);
             })
-        }
+        })
     }
 
-    pub fn create_class_prim(&self, root_prim_path: &sdf::Path) -> Prim {
-        unsafe {
+    pub fn create_class_prim(
+        &self,
+        root_prim_path: &sdf::Path,
+    ) -> pxr::Result<Prim> {
+        Ok(unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                 root_prim_path as "const pxr::SdfPath *"] -> Prim as "pxr::UsdPrim" {
                 return (*self)->CreateClassPrim(*root_prim_path);
             })
-        }
+        })
     }
 
-    pub fn remove_prim(&self, path: &sdf::Path) -> bool {
-        unsafe {
+    pub fn remove_prim(&self, path: &sdf::Path) -> pxr::NoResult {
+        let result = unsafe {
             cpp!([self as "const pxr::UsdStageRefPtr *",
                   path as "const pxr::SdfPath *"] -> bool as "bool" {
                 return (*self)->RemovePrim(*path);
             })
+        };
+        if result {
+            Ok(())
+        } else {
+            Err(pxr::Error::UnableToRemovePrim)
         }
     }
 

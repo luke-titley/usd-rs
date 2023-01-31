@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
-
+use crate::pxr;
 use cpp::*;
 
 cpp! {{
@@ -22,5 +22,20 @@ impl Value {
                 return pxr::VtValue();
             })
         }
+    }
+
+    pub fn try_as_ref(&self) -> pxr::Result<&str> {
+        let result_cstr =
+            unsafe {
+                std::ffi::CStr::from_ptr(
+                
+                    cpp!([self as "const pxr::VtValue *"] ->  * const std::os::raw::c_char as "const char *" {{
+                        return self->Get<std::string>().c_str();
+                    }})
+
+                )
+            };
+
+        Ok(result_cstr.to_str()?)
     }
 }

@@ -227,39 +227,6 @@ cpp! {{{{
     #pragma GCC diagnostic pop
 }}}}
 
-// The String type is written by hand because:
-// - The constructor for VtValue takes a pointer to "const char *", but internally
-//  stores a std::string.
-// - CStr::as_ptr has to be called to convert to a "const char *".
-// - CStr::from has to be called to convert from a "const char *".
-//
-// Why did we choose CStr to get/set string vt::Values ?
-//
-// The options available are:
-//  - &std::string::str
-//  - std::string::String
-//  - std::ffi::CString,
-//  - std::ffi::CStr
-//  - * const std::os::raw::c_char;
-//
-// The standard rust str and String types are for unicode strings, moving to and
-// from them requires a test for valid unicode. This goes against the low
-// overhead goal of this binding.
-//
-// Converting to and from * const std::os::raw::c_char has basically no cost.
-// But you need an unsafe block to do anything useful with pointers, and this
-// goes against the primary goal of this binding, which is to be a safe
-// api.
-//
-// CString/CStr provides a string type that matches c strings, complete with a
-// null terminator. So we can ensure converting them to 'const char *' will have
-// very little cost. CString is the owned representation (like std::string), while
-// CStr is the reference representation.
-//
-// There is a cost to using CStr. That is, the API user has to do the conversion
-// from &str to &CStr, but by pushing these upwards, there is more opportunity
-// to reduce the number of times the conversions need to be done.
-
 pub trait VtArray<T> {{
     fn new() -> Self;
     fn boxed() -> std::boxed::Box<Self>;
@@ -268,41 +235,16 @@ pub trait VtArray<T> {{
     fn push_back(& mut self, elem : &T);
 }}
 
-#[repr(transparent)]
-pub struct String(pub std::ffi::CStr);
-
-impl From<&std::ffi::CStr> for &String {{
-    fn from(other : &std::ffi::CStr) -> Self {{
-        unsafe {{ &*((other as *const std::ffi::CStr) as *const String) }}
-    }}
-}}
-
-impl From<&String> for Value {{
-    fn from(other: &String) -> Self {{
-        let c_char = other.0.as_ptr();
-        unsafe {{
-            cpp!([c_char as "const char *"] -> Value as "pxr::VtValue" {{
-                return pxr::VtValue(c_char);
+impl std::convert::TryFrom<&str> for Value {{
+    type Error = crate::pxr::Error;
+    fn try_from(other : &str) -> std::result::Result<Self, Self::Error> {{
+        let other_str = std::ffi::CString::new(other)?;
+        let other = other_str.as_ptr() as *const std::os::raw::c_char;
+        Ok(unsafe {{
+            cpp!([other as "const char *"] -> Value as "pxr::VtValue" {{
+                return pxr::VtValue(other);
             }})
-        }}
-    }}
-}}
-
-impl AsRef<String> for Value {{
-    fn as_ref(&self) -> &String {{
-        use std::os::raw::c_char;
-
-        <&String>::from(
-            unsafe {{
-                std::ffi::CStr::from_ptr(
-                
-                    cpp!([self as "const pxr::VtValue *"] ->  * const c_char as "const char *" {{
-                        return self->Get<std::string>().c_str();
-                    }})
-
-                )
-            }}
-        )
+        }})
     }}
 }}
 

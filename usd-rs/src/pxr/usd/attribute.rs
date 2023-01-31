@@ -8,6 +8,8 @@ cpp! {{
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
     #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #pragma GCC diagnostic ignored "-Wdeprecated-copy"
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     #include "pxr/usd/usd/attribute.h"
     #pragma GCC diagnostic pop
 }}

@@ -8,7 +8,6 @@ pub mod prim;
 pub mod prim_range;
 pub mod references;
 pub mod stage;
-mod test_stage;
 mod time_code;
 
 //------------------------------------------------------------------------------

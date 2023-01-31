@@ -6,55 +6,65 @@ use pxr::tf;
 use pxr::usd::*;
 use pxr::vt;
 
-use usd::c_str;
+use std::convert::TryFrom;
 
-fn open_kitchen_set() {
+fn open_kitchen_set() -> pxr::NoResult {
     let stage = pxr::usd::Stage::open(pxr::usd::stage::desc::Open {
-        file_path: c_str!("../assets/Kitchen_set/Kitchen_set.usd"),
+        file_path: "../assets/Kitchen_set/Kitchen_set.usd",
         load: None,
-    });
+    })?;
 
-    for prim in stage.traverse().iter() {
+    for prim in stage.traverse()?.iter() {
         println!("Prim path: {:?}", prim.get_path().get_text());
         println!("     type: {:?}", prim.get_type_name().get_text());
     }
+
+    Ok(())
 }
 
-fn add_references() {
-    let asset_path = c_str!("asset.usda");
-    let stage = pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-        identifier: asset_path,
-        _load: None,
-    });
+fn add_references() -> pxr::NoResult {
+    let asset_path = "asset.usda";
+
+    let stage =
+        pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
+            identifier: asset_path,
+            _load: None,
+        })?;
     stage.define_prim(
-        &pxr::sdf::Path::from(c_str!("/root")),
+        &pxr::sdf::Path::try_from("/root").unwrap(),
         &pxr::tf::Token::default(),
     );
     stage.save();
 
-    let stage = pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-        identifier: c_str!("scene.usda"),
-        _load: None,
-    });
+    let stage =
+        pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
+            identifier: "scene.usda",
+            _load: None,
+        })?;
 
     stage
         .get_root_layer()
-        .insert_sub_layer_path(asset_path, None);
+        .insert_sub_layer_path(asset_path, None)?;
+
     stage.save();
+
+    Ok(())
 }
 
-fn array_attributes() {
+fn array_attributes() -> pxr::NoResult {
     let stage = Stage::create_new(pxr::usd::stage::desc::CreateNew {
-        identifier: c_str!("set_array_int_attribute_prim.usda"),
+        identifier: "set_array_int_attribute_prim.usda",
         _load: None,
-    });
-    let path = c_str!("/root/world/test");
-    let prim = stage.define_prim(&sdf::Path::from(path), &tf::Token::default());
+    })?;
+    let prim = stage.define_prim(
+        &sdf::Path::try_from("/root/world/test").unwrap(),
+        &tf::Token::default(),
+    )?;
 
     let attr = prim.create_attribute(prim::desc::CreateAttribute {
-        name: tf::Token::from(c_str!("lukes_attr")),
+        name: tf::Token::try_from("lukes_attr")?,
         type_name: sdf::Schema::get_instance()
-            .find_type(&tf::Token::from(c_str!("int[]"))),
+            .find_type(&tf::Token::try_from("int[]")?),
     });
 
     use vt::VtArray as _;
@@ -67,9 +77,11 @@ fn array_attributes() {
     attr.set(&_value, TimeCode::default());
     attr.get(&mut _value, TimeCode::default());
 
-    stage.save();
+    stage.save()?;
+
+    Ok(())
 }
 
 fn main() {
-    array_attributes();
+    array_attributes().unwrap();
 }

@@ -12,4 +12,4 @@
 #![deny(warnings)]
 pub mod pxr;
 
-pub use c_str_macro::c_str;
+//pub use c_str_macro::c_str;
