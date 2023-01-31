@@ -131,8 +131,8 @@ mod tests {
         let mut value = vt::Value::default();
         attr.get(&mut value, TimeCode::default());
 
-        let result: &vt::String = value.as_ref();
-        println!("The attribute value is {}", result.0.to_str().unwrap());
+        let result: &str = value.try_as_ref()?;
+        println!("The attribute value is {}", result);
 
         stage.save()?;
 
