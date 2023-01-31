@@ -172,7 +172,7 @@ mod tests {
         let result: &vt::Asset = value.as_ref();
         println!(
             "The attribute value is '{}'",
-            result.0.get_asset_path().to_str().unwrap()
+            result.0.get_asset_path()?
         );
 
         stage.save()?;

@@ -27,25 +27,33 @@ pub struct AsstPth {
 
 //------------------------------------------------------------------------------
 impl AsstPth {
-    pub fn get_asset_path(&self) -> &CStr {
+    pub fn get_asset_path(&self) -> pxr::Result<&str> {
         use std::os::raw::c_char;
-        unsafe {
-            CStr::from_ptr(
-                cpp!([self as "const pxr::SdfAssetPath*"] ->  * const c_char as "const char *" {
-                    return self->GetAssetPath().c_str();
-                }),
-            )
-        }
+
+        let result =
+            unsafe {
+                CStr::from_ptr(
+                    cpp!([self as "const pxr::SdfAssetPath*"] ->  * const c_char as "const char *" {
+                        return self->GetAssetPath().c_str();
+                    }),
+                )
+            };
+
+        Ok(result.to_str()?)
     }
-    pub fn get_resolved_path(&self) -> &CStr {
+    pub fn get_resolved_path(&self) -> pxr::Result<&str>{
         use std::os::raw::c_char;
-        unsafe {
-            CStr::from_ptr(
-                cpp!([self as "const pxr::SdfAssetPath*"] ->  * const c_char as "const char *" {
-                    return self->GetResolvedPath().c_str();
-                }),
-            )
-        }
+
+        let result =
+            unsafe {
+                CStr::from_ptr(
+                    cpp!([self as "const pxr::SdfAssetPath*"] ->  * const c_char as "const char *" {
+                        return self->GetResolvedPath().c_str();
+                    }),
+                )
+            };
+
+        Ok(result.to_str()?)
     }
 }
 
