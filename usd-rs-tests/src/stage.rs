@@ -48,7 +48,7 @@ mod tests {
         stage.define_prim(
             &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
-        );
+        )?;
         stage.save()?;
 
         Ok(())
