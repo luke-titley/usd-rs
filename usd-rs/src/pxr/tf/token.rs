@@ -51,12 +51,11 @@ cpp_class!(pub unsafe struct Token as "pxr::TfToken");
 
 impl Token {
     pub fn get_text(&self) -> pxr::Result<&str> {
-        let text =
-            unsafe {
-                std::ffi::CStr::from_ptr(cpp!([self as "const pxr::TfToken *"]
-                        -> * const std::os::raw::c_char as "const char *" {
-                    return self->GetText();
-                }))
+        let text = unsafe {
+            std::ffi::CStr::from_ptr(cpp!([self as "const pxr::TfToken *"]
+                    -> * const std::os::raw::c_char as "const char *" {
+                return self->GetText();
+            }))
         };
 
         Ok(text.to_str()?)

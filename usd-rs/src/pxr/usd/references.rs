@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
-
+use crate::pxr;
 use crate::pxr::sdf;
 use cpp::*;
 
@@ -19,7 +19,7 @@ pub mod desc {
     use super::*;
 
     pub struct AddReference<'a> {
-        pub identifier: &'a std::ffi::CStr,
+        pub identifier: &'a str,
         pub prim_path: Option<&'a sdf::Path>,
     }
 }
@@ -28,40 +28,50 @@ pub mod desc {
 cpp_class!(pub unsafe struct References as "pxr::UsdReferences");
 
 impl References {
-    pub fn add_reference(&mut self, desc: desc::AddReference) -> bool {
-        match desc {
+    pub fn add_reference(&mut self, desc: desc::AddReference) -> pxr::NoResult {
+        let result = match desc {
             desc::AddReference {
                 identifier,
                 prim_path: None,
             } => {
+                let identifier_cstring = std::ffi::CString::new(identifier)?;
                 let identifier =
-                    identifier.as_ptr() as *const std::os::raw::c_char;
+                    identifier_cstring.as_ptr() as *const std::os::raw::c_char;
 
-                unsafe {
+                let result = unsafe {
                     cpp!([self as "pxr::UsdReferences*",
-                          identifier as "const char *"
+                        identifier as "const char *"
                     ] -> bool as "bool" {
                         return self->AddReference(std::string(identifier));
                     })
-                }
+                };
+                result
             }
             desc::AddReference {
                 identifier,
                 prim_path: Some(prim_path),
             } => {
+                let identifier_cstring = std::ffi::CString::new(identifier)?;
                 let identifier =
-                    identifier.as_ptr() as *const std::os::raw::c_char;
+                    identifier_cstring.as_ptr() as *const std::os::raw::c_char;
 
-                unsafe {
+                let result = unsafe {
                     cpp!([self as "pxr::UsdReferences*",
-                          identifier as "const char *",
-                          prim_path as "const pxr::SdfPath *"
+                        identifier as "const char *",
+                        prim_path as "const pxr::SdfPath *"
                     ] -> bool as "bool" {
                         return self->AddReference(std::string(identifier),
                                                   *prim_path);
                     })
-                }
+                };
+                result
             }
+        };
+
+        if result {
+            Ok(())
+        } else {
+            Err(pxr::Error::UnableToAddReference)
         }
     }
 

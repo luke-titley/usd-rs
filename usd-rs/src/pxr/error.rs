@@ -11,6 +11,7 @@ pub struct Error {
 #[derive(Debug)]
 pub enum Error {
     UnableToRemovePrim,
+    UnableToAddReference,
     MessageOnly(std::string::String),
     NullError(std::ffi::NulError),
     Utf8(std::str::Utf8Error),

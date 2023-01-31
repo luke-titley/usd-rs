@@ -105,7 +105,8 @@ fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::PathBuf) {
 pub const INCLUDE : &str = \"{0}/include\"; \n\
 pub const LIBS : &str = \"{0}/lib\"; \n\
 pub const LIB : &str = \"usd_ms\"; \n\
-", usd_root
+",
+        usd_root
     );
 }
 
