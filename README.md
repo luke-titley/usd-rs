@@ -74,4 +74,13 @@ cargo run --bin usd-basic-types > usd-rs/src/pxr/vt/basic_types.rs
 
 ## Why not use macros or build.rs?
 We rely on the cpp! macro from rust-cpp, we cannot use this macro inside of
-another macro.
+another macro. While developing usd-rs its important to be able to see the types
+inside of the module, it make it much easier.
+
+## Docker
+There is a pre-built docker image for those who have docker installed.
+This image is intended for the ci to test usd-rs. It contains the environment
+for building usd-rs in centos:7 which is the oldest supported linux distribution
+across the vfx industry.
+
+The image is called `luketitley/vfxrs_env_usd`.
