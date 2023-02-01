@@ -13,13 +13,17 @@ jobs:
   build-linux:
 
     runs-on: ubuntu-20.04
+    container:
+      image: luketitley/vfxrs_env_usd:latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Init submodules
       run: git submodule update --init --recursive
     - name: Run build
-      run: cargo build
+      run: env USD_ROOT=/usr/local/USD cargo build
+    - name: Run test
+      run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo test
 
   # MacOS Disabled for now, see issue #2
   build-macos:
