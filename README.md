@@ -84,4 +84,4 @@ This image is intended for the ci to test usd-rs. It contains the environment
 for building usd-rs in centos:7 which is the oldest supported linux distribution
 across the vfx industry.
 
-The image is called `luketitley/vfxrs_env_usd`.
+The image is called [luketitley/vfxrs_env_usd](https://hub.docker.com/repository/docker/luketitley/vfxrs_env_usd).
