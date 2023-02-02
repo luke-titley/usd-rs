@@ -21,7 +21,9 @@ jobs:
     - name: Init submodules
       run: git submodule update --init --recursive
     - name: Run build
-      run: env USD_ROOT=/usr/local/USD cargo build
+      run:
+      - rustup default stable
+      - env USD_ROOT=/usr/local/USD cargo build
     - name: Run test
       run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo test
 
