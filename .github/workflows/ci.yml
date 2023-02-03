@@ -26,6 +26,8 @@ jobs:
       - env USD_ROOT=/usr/local/USD cargo build
     - name: Run test
       run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo test
+    - name: Generate docs
+      run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo doc
 
   # MacOS Disabled for now, see issue #2
   build-macos:
