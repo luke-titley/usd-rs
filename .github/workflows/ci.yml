@@ -9,6 +9,17 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   build-linux:
 
@@ -26,6 +37,11 @@ jobs:
       run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo test
     - name: Generate docs
       run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo doc --no-deps && cp -r target/doc/* docs/
+    - name: Upload docs as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs
 
   # MacOS Disabled for now, see issue #2
   build-macos:
@@ -38,3 +54,27 @@ jobs:
       run: git submodule update --init --recursive
     - name: Run build
       run: cargo build
+
+  # Single deploy job since we're just deploying
+  deploy_docs:
+    needs: build-linux
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Download docs
+        uses: actions/download-artifact@v3
+        with:
+          name: docs
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
