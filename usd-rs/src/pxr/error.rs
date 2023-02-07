@@ -12,6 +12,7 @@ pub struct Error {
 pub enum Error {
     UnableToRemovePrim,
     UnableToAddReference,
+    UnableToDereferencePointer,
     MessageOnly(std::string::String),
     NullError(std::ffi::NulError),
     Utf8(std::str::Utf8Error),

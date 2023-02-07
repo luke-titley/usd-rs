@@ -1,4 +1,5 @@
 //------------------------------------------------------------------------------
+use crate::pxr;
 use crate::pxr::usd::TimeCode;
 use crate::pxr::vt;
 use crate::pxr::tf;
@@ -38,15 +39,15 @@ impl Attribute {
             })
         }
     }
-    
-        pub fn get_name(&self) -> &tf::Token {
+
+    pub fn get_name(&self) -> pxr::Result<&tf::Token> {
         unsafe {
-            cpp!([self as "const pxr::UsdAttribute *"]
-                        -> * const tf::Token as "const pxr::TfToken*" {
-                return &self->GetName();
-            })
-            .as_ref()
-            .unwrap()
+            let token_ptr =
+                cpp!([self as "const pxr::UsdAttribute *"]
+                            -> * const tf::Token as "const pxr::TfToken*" {
+                    return &self->GetName();
+                });
+            token_ptr.as_ref().ok_or(pxr::Error::UnableToDereferencePointer)
         }
     }
 
