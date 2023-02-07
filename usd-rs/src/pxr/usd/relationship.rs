@@ -19,18 +19,6 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-/* pub mod desc {
-    use super::*;
-    use crate::pxr::sdf;
-
-    pub struct CreateAttribute {
-        pub name: tf::Token,
-        pub type_name: sdf::ValueTypeName,
-        //variability: Option<sdf::Variability>, // TODO
-    }
-} */
-
-//------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct Relationship as "pxr::UsdRelationship");
 
 impl Relationship {
@@ -43,15 +31,13 @@ impl Relationship {
         }
     }
 
-    pub fn get_target(&self) -> sdf::Path {
+    pub fn get_targets(&self, targets: &mut sdf::PathVector) {
+        let targets = targets.as_mut();
         unsafe {
-            cpp!([self as "pxr::UsdRelationship*"]
-                        -> sdf::Path as "pxr::SdfPath" {
-                pxr::SdfPathVector targets;
-                self->GetTargets(&targets);
-                return targets[0];
+            cpp!([self as "pxr::UsdRelationship*",
+                  targets as "pxr::SdfPathVector*"] {
+                self->GetTargets(targets);
             })
         }
     }
-
 }

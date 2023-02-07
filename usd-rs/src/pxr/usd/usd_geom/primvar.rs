@@ -1,5 +1,5 @@
-use crate::pxr::usd::attribute::*;
 use crate::pxr::tf;
+use crate::pxr::usd::attribute::*;
 use cpp::*;
 
 cpp! {{
@@ -33,5 +33,4 @@ impl Primvar {
             })
         }
     }
-
 }

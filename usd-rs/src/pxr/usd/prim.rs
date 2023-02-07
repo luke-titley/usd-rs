@@ -54,7 +54,7 @@ impl Prim {
             })
         }
     }
-    
+
     pub fn get_relationship(&self, rel_name: &tf::Token) -> Relationship {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*",
@@ -64,7 +64,7 @@ impl Prim {
             })
         }
     }
-    
+
     pub fn has_attribute(&self, attr_name: &tf::Token) -> bool {
         unsafe {
             cpp!([self as "pxr::UsdPrim*",
@@ -108,9 +108,9 @@ impl Prim {
             })
         }
     }
-    
-    // this was causing segfault, hence the dirty implementation below. 
-/*     pub fn get_attributes(&self) -> Vec<Attribute> {
+
+    // this was causing segfault, hence the dirty implementation below.
+    /*     pub fn get_attributes(&self) -> Vec<Attribute> {
         unsafe {
             cpp!([self as "pxr::UsdPrim*"]
                         -> Vec<Attribute> as "std::vector<pxr::UsdAttribute>" {
@@ -121,14 +121,14 @@ impl Prim {
 
     pub fn get_attributes(&self) -> Vec<Attribute> {
         let mut out: Vec<Attribute> = Vec::new();
-        let n =  unsafe {
+        let n = unsafe {
             cpp!([self as "pxr::UsdPrim*"]
                         -> i32 as "int" {
                 return self->GetAttributes().size();
             })
         };
         for i in 0..n {
-            let attr =  unsafe {
+            let attr = unsafe {
                 cpp!([self as "pxr::UsdPrim*",
                     i as "int"]
                     -> Attribute as "pxr::UsdAttribute" {
@@ -136,7 +136,7 @@ impl Prim {
                 })
             };
             out.push(attr);
-        };
+        }
         out
     }
 

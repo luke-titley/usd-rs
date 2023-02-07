@@ -1,5 +1,5 @@
-use crate::pxr::usd::Prim;
 use crate::pxr::usd::attribute::*;
+use crate::pxr::usd::Prim;
 use cpp::*;
 
 cpp! {{
@@ -19,7 +19,7 @@ impl Mesh {
         unsafe {
             cpp!([prim as "pxr::UsdPrim*"]
                         -> Mesh as "pxr::UsdGeomMesh" {
-                return pxr::UsdGeomMesh::Get(prim->GetStage(), prim->GetPath());       
+                return pxr::UsdGeomMesh::Get(prim->GetStage(), prim->GetPath());
             })
         }
     }
@@ -32,5 +32,4 @@ impl Mesh {
             })
         }
     }
-
 }

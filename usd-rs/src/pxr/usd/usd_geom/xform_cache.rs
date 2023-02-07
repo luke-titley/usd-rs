@@ -1,6 +1,6 @@
 use crate::pxr::usd::Prim;
-use crate::pxr::vt;
 use crate::pxr::usd::TimeCode;
+use crate::pxr::vt;
 use cpp::*;
 
 cpp! {{
@@ -15,23 +15,23 @@ cpp! {{
 cpp_class!(pub unsafe struct XformCache as "pxr::UsdGeomXformCache");
 
 impl XformCache {
-    pub fn new( time: TimeCode) -> XformCache { //timecode ?
+    pub fn new(time: TimeCode) -> XformCache {
+        //timecode ?
         unsafe {
             cpp!([time as "pxr::UsdTimeCode"]
                         -> XformCache as "pxr::UsdGeomXformCache" {
-                return pxr::UsdGeomXformCache(time);       
+                return pxr::UsdGeomXformCache(time);
             })
         }
     }
 
-     pub fn get_local_to_world_transform(&self, prim: &Prim) -> vt::Matrix4d{
+    pub fn get_local_to_world_transform(&self, prim: &Prim) -> vt::Matrix4d {
         unsafe {
             cpp!([self as "pxr::UsdGeomXformCache*",
-                prim as "pxr::UsdPrim*"] 
-                        -> vt::Matrix4d as "pxr::GfMatrix4d"{           
+                prim as "pxr::UsdPrim*"]
+                        -> vt::Matrix4d as "pxr::GfMatrix4d"{
                 return self->GetLocalToWorldTransform(*prim);
             })
         }
     }
-
 }

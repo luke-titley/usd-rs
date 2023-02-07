@@ -14,12 +14,11 @@ cpp! {{
 cpp_class!(pub unsafe struct Shader as "pxr::UsdShadeShader");
 
 impl Shader {
-
     pub fn new(prim: &Prim) -> Shader {
         unsafe {
             cpp!([prim as "pxr::UsdPrim*"]
                         -> Shader as "pxr::UsdShadeShader" {
-                return pxr::UsdShadeShader::Get(prim->GetStage(), prim->GetPath());       
+                return pxr::UsdShadeShader::Get(prim->GetStage(), prim->GetPath());
             })
         }
     }
@@ -28,9 +27,8 @@ impl Shader {
         unsafe {
             cpp!([self as "pxr::UsdShadeShader*"]
                         -> Prim as "pxr::UsdPrim" {
-                return self->GetPrim();       
+                return self->GetPrim();
             })
         }
     }
-
 }

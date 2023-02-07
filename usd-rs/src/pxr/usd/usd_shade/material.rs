@@ -1,6 +1,6 @@
-use crate::pxr::usd::Prim;
 use crate::pxr::usd::attribute::*;
 use crate::pxr::usd::usd_shade::shader::*;
+use crate::pxr::usd::Prim;
 use cpp::*;
 
 cpp! {{
@@ -19,7 +19,7 @@ impl Material {
         unsafe {
             cpp!([prim as "pxr::UsdPrim*"]
                         -> Material as "pxr::UsdShadeMaterial" {
-                return pxr::UsdShadeMaterial::Get(prim->GetStage(), prim->GetPath());       
+                return pxr::UsdShadeMaterial::Get(prim->GetStage(), prim->GetPath());
             })
         }
     }
