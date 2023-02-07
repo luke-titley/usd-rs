@@ -8,6 +8,7 @@ use crate::pxr::sdf;
 use crate::pxr::tf;
 use crate::pxr::usd::attribute::*;
 use crate::pxr::usd::references::References;
+use crate::pxr::usd::relationship::Relationship;
 use cpp::*;
 
 cpp! {{
@@ -53,6 +54,36 @@ impl Prim {
             })
         }
     }
+    
+    pub fn get_relationship(&self, rel_name: &tf::Token) -> Relationship {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*",
+                rel_name as "pxr::TfToken*"]
+                        -> Relationship as "const pxr::UsdRelationship" {
+                return self->GetRelationship(*rel_name);
+            })
+        }
+    }
+    
+    pub fn has_attribute(&self, attr_name: &tf::Token) -> bool {
+        unsafe {
+            cpp!([self as "pxr::UsdPrim*",
+                attr_name as "pxr::TfToken*"]
+                        -> bool as "bool" {
+                return self->HasAttribute(*attr_name);
+            })
+        }
+    }
+
+    pub fn has_relationship(&self, rel_name: &tf::Token) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*",
+                rel_name as "pxr::TfToken*"]
+                        -> bool as "bool" {
+                return self->HasRelationship(*rel_name);
+            })
+        }
+    }
 
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
@@ -76,6 +107,37 @@ impl Prim {
                 return self->GetAttribute(*attr_name);
             })
         }
+    }
+    
+    // this was causing segfault, hence the dirty implementation below. 
+/*     pub fn get_attributes(&self) -> Vec<Attribute> {
+        unsafe {
+            cpp!([self as "pxr::UsdPrim*"]
+                        -> Vec<Attribute> as "std::vector<pxr::UsdAttribute>" {
+                return self->GetAttributes();
+            })
+        }
+    } */
+
+    pub fn get_attributes(&self) -> Vec<Attribute> {
+        let mut out: Vec<Attribute> = Vec::new();
+        let n =  unsafe {
+            cpp!([self as "pxr::UsdPrim*"]
+                        -> i32 as "int" {
+                return self->GetAttributes().size();
+            })
+        };
+        for i in 0..n {
+            let attr =  unsafe {
+                cpp!([self as "pxr::UsdPrim*",
+                    i as "int"]
+                    -> Attribute as "pxr::UsdAttribute" {
+                    return self->GetAttributes()[i];
+                })
+            };
+            out.push(attr);
+        };
+        out
     }
 
     pub fn get_name(&self) -> &tf::Token {
