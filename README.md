@@ -2,8 +2,11 @@
 
 Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
+[API Documentation](https://luke-titley.github.io/usd-rs/usd/index.html)
+
 CI Status: ![CI](https://github.com/luke-titley/usd-rs/actions/workflows/ci.yml/badge.svg)
 
+# USD version: 23.02
 
 # What works ?
 - You can create and open/save/export a stage.
