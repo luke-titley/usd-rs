@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 use crate::pxr::usd::TimeCode;
 use crate::pxr::vt;
+use crate::pxr::tf;
 
 use cpp::*;
 
@@ -34,6 +35,47 @@ impl Attribute {
                   value as "pxr::VtValue*",
                   time as "pxr::UsdTimeCode"] {
                 self->Get(value, time);
+            })
+        }
+    }
+    
+        pub fn get_name(&self) -> &tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::UsdAttribute *"]
+                        -> * const tf::Token as "const pxr::TfToken*" {
+                return &self->GetName();
+            })
+            .as_ref()
+            .unwrap()
+        }
+    }
+
+    pub fn get_type(&self) -> tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::UsdAttribute *"]
+                        -> tf::Token as "pxr::TfToken" {
+                pxr::SdfValueTypeName vtn = self->GetTypeName();
+                pxr::TfToken t = vtn.GetAsToken();
+                return t;
+            })
+        }
+    }
+
+    pub fn has_value(&self) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdAttribute *"]
+                        -> bool as "bool" {
+                return self->HasValue();
+            })
+        }
+    }
+
+    pub fn get_metadata(&self, key: &tf::Token, value: &mut vt::Value) {
+        unsafe {
+            cpp!([self as "const pxr::UsdAttribute *",
+                key as "pxr::TfToken",
+                value as "pxr::VtValue*"] {
+                self->GetMetadata(key, value);
             })
         }
     }
