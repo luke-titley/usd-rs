@@ -36,7 +36,7 @@ jobs:
     - name: Run test
       run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo test
     - name: Generate docs
-      run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo doc --no-deps && cp -r target/doc/* docs/
+      run: env USD_ROOT=/usr/local/USD LD_LIBRARY_PATH=/usr/local/USD/lib cargo doc --no-deps && cp -r target/doc docs/docs && mv docs/index.html docs/docs
     - name: Upload docs as artifact
       uses: actions/upload-artifact@v3
       with:
