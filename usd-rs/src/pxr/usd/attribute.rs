@@ -52,13 +52,11 @@ impl Attribute {
         }
     }
 
-    pub fn get_type(&self) -> tf::Token {
+    pub fn get_type_name(&self) -> pxr::sdf::ValueTypeName {
         unsafe {
             cpp!([self as "const pxr::UsdAttribute *"]
-                        -> tf::Token as "pxr::TfToken" {
-                pxr::SdfValueTypeName vtn = self->GetTypeName();
-                pxr::TfToken t = vtn.GetAsToken();
-                return t;
+                        -> pxr::sdf::ValueTypeName as "pxr::SdfValueTypeName" {
+                return self->GetTypeName();
             })
         }
     }

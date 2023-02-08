@@ -123,11 +123,10 @@ impl Prim {
 
     pub fn get_name(&self) -> pxr::Result<&tf::Token> {
         unsafe {
-            let token_ptr =
-                cpp!([self as "const pxr::UsdPrim*"]
-                            -> * const tf::Token as "const pxr::TfToken*" {
-                    return &self->GetName();
-                });
+            let token_ptr = cpp!([self as "const pxr::UsdPrim*"]
+                        -> * const tf::Token as "const pxr::TfToken*" {
+                return &self->GetName();
+            });
 
             token_ptr
                 .as_ref()
