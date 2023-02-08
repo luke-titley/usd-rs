@@ -21,4 +21,3 @@ pub use references::*;
 pub use relationship::*;
 pub use stage::{InitialLoadSet, Stage};
 pub use time_code::*;
-pub use usd_shade::material::Material;
