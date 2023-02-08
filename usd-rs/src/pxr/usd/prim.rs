@@ -4,10 +4,13 @@
 
 //------------------------------------------------------------------------------
 //use crate::pxr::sdf;
+use crate::pxr;
 use crate::pxr::sdf;
 use crate::pxr::tf;
 use crate::pxr::usd::attribute::*;
+use crate::pxr::usd::attribute_vector::*;
 use crate::pxr::usd::references::References;
+use crate::pxr::usd::relationship::Relationship;
 use cpp::*;
 
 cpp! {{
@@ -54,6 +57,36 @@ impl Prim {
         }
     }
 
+    pub fn get_relationship(&self, rel_name: &tf::Token) -> Relationship {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*",
+                rel_name as "pxr::TfToken*"]
+                        -> Relationship as "const pxr::UsdRelationship" {
+                return self->GetRelationship(*rel_name);
+            })
+        }
+    }
+
+    pub fn has_attribute(&self, attr_name: &tf::Token) -> bool {
+        unsafe {
+            cpp!([self as "pxr::UsdPrim*",
+                attr_name as "pxr::TfToken*"]
+                        -> bool as "bool" {
+                return self->HasAttribute(*attr_name);
+            })
+        }
+    }
+
+    pub fn has_relationship(&self, rel_name: &tf::Token) -> bool {
+        unsafe {
+            cpp!([self as "const pxr::UsdPrim*",
+                rel_name as "pxr::TfToken*"]
+                        -> bool as "bool" {
+                return self->HasRelationship(*rel_name);
+            })
+        }
+    }
+
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
         let type_name = &desc.type_name;
@@ -78,14 +111,26 @@ impl Prim {
         }
     }
 
-    pub fn get_name(&self) -> &tf::Token {
+    pub fn get_attributes(&self) -> AttributeVector {
+        let result = AttributeVector::new(); // This should be 'mut' but compiler incorrectly complains because it cant see the c++
         unsafe {
-            cpp!([self as "const pxr::UsdPrim*"]
+            cpp!([self as "pxr::UsdPrim*", result as "pxr::UsdAttributeVector*"] {
+                *result = self->GetAttributes();
+            })
+        };
+        result
+    }
+
+    pub fn get_name(&self) -> pxr::Result<&tf::Token> {
+        unsafe {
+            let token_ptr = cpp!([self as "const pxr::UsdPrim*"]
                         -> * const tf::Token as "const pxr::TfToken*" {
                 return &self->GetName();
-            })
-            .as_ref()
-            .unwrap()
+            });
+
+            token_ptr
+                .as_ref()
+                .ok_or(pxr::Error::UnableToDereferencePointer)
         }
     }
 

@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+use crate::pxr;
 use cpp::*;
 
 cpp! {{
@@ -13,3 +14,14 @@ cpp! {{
 
 //------------------------------------------------------------------------------
 cpp_class!(pub unsafe struct ValueTypeName as "pxr::SdfValueTypeName");
+
+impl ValueTypeName {
+    pub fn get_as_token(&self) -> pxr::tf::Token {
+        unsafe {
+            cpp!([self as "const pxr::SdfValueTypeName *"]
+                        -> pxr::tf::Token as "pxr::TfToken" {
+                return self->GetAsToken();
+            })
+        }
+    }
+}
