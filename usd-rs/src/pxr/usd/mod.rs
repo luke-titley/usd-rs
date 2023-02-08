@@ -11,8 +11,6 @@ pub mod references;
 pub mod relationship;
 pub mod stage;
 mod time_code;
-pub mod usd_geom;
-pub mod usd_shade;
 
 //------------------------------------------------------------------------------
 pub use attribute::*;
