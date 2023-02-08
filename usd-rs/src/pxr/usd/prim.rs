@@ -4,9 +4,11 @@
 
 //------------------------------------------------------------------------------
 //use crate::pxr::sdf;
+use crate::pxr;
 use crate::pxr::sdf;
 use crate::pxr::tf;
 use crate::pxr::usd::attribute::*;
+use crate::pxr::usd::attribute_vector::*;
 use crate::pxr::usd::references::References;
 use crate::pxr::usd::relationship::Relationship;
 use cpp::*;
@@ -109,45 +111,27 @@ impl Prim {
         }
     }
 
-    // this was causing segfault, hence the dirty implementation below.
-    /*     pub fn get_attributes(&self) -> Vec<Attribute> {
+    pub fn get_attributes(&self) -> AttributeVector {
+        let result = AttributeVector::new(); // This should be 'mut' but compiler incorrectly complains because it cant see the c++
         unsafe {
-            cpp!([self as "pxr::UsdPrim*"]
-                        -> Vec<Attribute> as "std::vector<pxr::UsdAttribute>" {
-                return self->GetAttributes();
-            })
-        }
-    } */
-
-    pub fn get_attributes(&self) -> Vec<Attribute> {
-        let mut out: Vec<Attribute> = Vec::new();
-        let n = unsafe {
-            cpp!([self as "pxr::UsdPrim*"]
-                        -> i32 as "int" {
-                return self->GetAttributes().size();
+            cpp!([self as "pxr::UsdPrim*", result as "pxr::UsdAttributeVector*"] {
+                *result = self->GetAttributes();
             })
         };
-        for i in 0..n {
-            let attr = unsafe {
-                cpp!([self as "pxr::UsdPrim*",
-                    i as "int"]
-                    -> Attribute as "pxr::UsdAttribute" {
-                    return self->GetAttributes()[i];
-                })
-            };
-            out.push(attr);
-        }
-        out
+        result
     }
 
-    pub fn get_name(&self) -> &tf::Token {
+    pub fn get_name(&self) -> pxr::Result<&tf::Token> {
         unsafe {
-            cpp!([self as "const pxr::UsdPrim*"]
-                        -> * const tf::Token as "const pxr::TfToken*" {
-                return &self->GetName();
-            })
-            .as_ref()
-            .unwrap()
+            let token_ptr =
+                cpp!([self as "const pxr::UsdPrim*"]
+                            -> * const tf::Token as "const pxr::TfToken*" {
+                    return &self->GetName();
+                });
+
+            token_ptr
+                .as_ref()
+                .ok_or(pxr::Error::UnableToDereferencePointer)
         }
     }
 
