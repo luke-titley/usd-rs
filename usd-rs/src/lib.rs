@@ -13,7 +13,7 @@
 //!
 //! # What is usd-rs ?
 //! usd-rs is a rust wrapper around the c++ implementation of USD. The goal is
-//! to mirror the c++ api as closely as possible while still maintaining a 
+//! to mirror the c++ api as closely as possible while still maintaining a
 //! certain degree of ergonmics.
 //!
 //! In order to be consistent with the namespaces and prefixes in the c++

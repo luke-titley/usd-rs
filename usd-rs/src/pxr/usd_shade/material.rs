@@ -1,6 +1,6 @@
 use crate::pxr::usd::attribute::*;
-use crate::pxr::usd::usd_shade::shader::*;
 use crate::pxr::usd::Prim;
+use crate::pxr::usd_shade::shader::*;
 use cpp::*;
 
 cpp! {{
