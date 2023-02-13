@@ -1,0 +1,80 @@
+use crate::pxr::tf;
+use crate::pxr::usd::attribute::*;
+use cpp::*;
+
+cpp! {{
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-parameter"
+    #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #include "pxr/usd/usdGeom/primvar.h"
+    #include "pxr/usd/usdGeom/primvarsAPI.h"
+    #include "pxr/usd/usdGeom/xformCache.h"
+    #pragma GCC diagnostic pop
+}}
+
+//------------------------------------------------------------------------------
+/// This is a reference to the underlying UsdPrimvar
+///
+#[repr(C, align(8))]
+pub struct PrimvarRef {
+    // A private member stops users from being able to construct it directly
+    _priv: u8,
+}
+
+// Handy alias to reduce copy/paste errors
+type RefType = PrimvarRef;
+
+//------------------------------------------------------------------------------
+impl PrimvarRef {
+    pub fn get_interpolation(&self) -> tf::Token {
+        unsafe {
+            cpp!([self as "pxr::UsdGeomPrimvar*"]
+                        -> tf::Token as "pxr::TfToken" {
+                return self->GetInterpolation();
+            })
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+#[repr(C, align(8))]
+pub struct Primvar {
+    reference: *mut RefType,
+}
+
+//------------------------------------------------------------------------------
+impl Primvar {
+    pub fn new(attr: &Attribute) -> Primvar {
+        unsafe {
+            cpp!([attr as "pxr::UsdAttribute*"]
+                        -> Primvar as "pxr::UsdGeomPrimvar*" {
+                return new pxr::UsdGeomPrimvar(*attr);
+            })
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+impl Drop for Primvar {
+    fn drop(&mut self) {
+        let reference = self.reference.clone();
+        unsafe {
+            cpp!([reference as "const pxr::UsdGeomPrimvar*"] {
+                delete reference;
+            })
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+impl AsRef<RefType> for Primvar {
+    fn as_ref(&self) -> &RefType {
+        unsafe { &*(self.reference) }
+    }
+}
+
+impl AsMut<RefType> for Primvar {
+    fn as_mut(&mut self) -> &mut RefType {
+        unsafe { &mut *self.reference }
+    }
+}
