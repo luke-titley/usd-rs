@@ -34,6 +34,40 @@ pub mod desc {
 }
 
 //------------------------------------------------------------------------------
+/// \class UsdPrim
+///
+/// UsdPrim is the sole persistent scenegraph object on a UsdStage, and
+/// is the embodiment of a "Prim" as described in the <em>Universal Scene
+/// Description Composition Compendium</em>
+///
+/// A UsdPrim is the principal container of other types of scene description.
+/// It provides API for accessing and creating all of the contained kinds
+/// of scene description, which include:
+/// \li UsdVariantSets - all VariantSets on the prim (GetVariantSets(), 
+/// GetVariantSet()).
+/// \li UsdReferences - all references on the prim (GetReferences())
+/// \li UsdInherits - all inherits on the prim (GetInherits())
+/// \li UsdSpecializes - all specializes on the prim (GetSpecializes())
+///
+/// As well as access to the API objects for properties contained within the
+/// prim - UsdPrim as well as all of the following classes are subclasses
+/// of UsdObject:
+/// \li UsdProperty - generic access to all attributes and relationships.
+/// A UsdProperty can be queried and cast to a UsdAttribute or UsdRelationship
+/// using UsdObject::Is<>() and UsdObject::As<>(). (GetPropertyNames(),
+/// GetProperties(), GetPropertiesInNamespace(), GetPropertyOrder(),
+/// SetPropertyOrder())
+/// \li UsdAttribute - access to default and timesampled attribute values, as
+/// well as value resolution information, and attribute-specific metadata
+/// (CreateAttribute(), GetAttribute(), GetAttributes(), HasAttribute())
+/// \li UsdRelationship - access to authoring and resolving relationships
+/// to other prims and properties (CreateRelationship(), GetRelationship(),
+/// GetRelationships(), HasRelationship())
+///
+/// UsdPrim also provides access to iteration through its prim children,
+/// optionally making use of the \ref primFlags.h "prim predicates facility"
+/// (GetChildren(), GetAllChildren(), GetFilteredChildren()).
+///
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
 impl Prim {
