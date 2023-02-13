@@ -43,7 +43,7 @@ pub mod desc {
 /// A UsdPrim is the principal container of other types of scene description.
 /// It provides API for accessing and creating all of the contained kinds
 /// of scene description, which include:
-/// \li UsdVariantSets - all VariantSets on the prim (GetVariantSets(), 
+/// \li UsdVariantSets - all VariantSets on the prim (GetVariantSets(),
 /// GetVariantSet()).
 /// \li UsdReferences - all references on the prim (GetReferences())
 /// \li UsdInherits - all inherits on the prim (GetInherits())
@@ -71,6 +71,13 @@ cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
 
 impl Prim {
+    /// Return this prim's composed type name. This value is cached and is
+    /// efficient to query.
+    /// Note that this is just the composed type name as authored and may not
+    /// represent the full type of the prim and its prim definition. If you
+    /// need to reason about the actual type of the prim, use GetPrimTypeInfo
+    /// instead as it accounts for recognized schemas, applied API schemas,
+    /// fallback types, etc.
     pub fn get_type_name(&self) -> &tf::Token {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*"]
@@ -82,6 +89,15 @@ impl Prim {
         }
     }
 
+    /// Return a UsdReferences object that allows one to add, remove, or
+    /// mutate references <em>at the currently set UsdEditTarget</em>.
+    ///
+    /// While the UsdReferences object has no methods for \em listing the
+    /// currently authored references on a prim, one can use a
+    /// UsdPrimCompositionQuery to query the reference arcs that are composed
+    /// by this prim.
+    ///
+    /// \sa UsdPrimCompositionQuery::GetDirectReferences
     pub fn get_references(&self) -> References {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*"]
@@ -91,6 +107,7 @@ impl Prim {
         }
     }
 
+    /// Like GetProperties(), but exclude all attributes from the result.
     pub fn get_relationship(&self, rel_name: &tf::Token) -> Relationship {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*",
@@ -101,6 +118,8 @@ impl Prim {
         }
     }
 
+    /// Return true if this prim has an attribute named \p attrName, false
+    /// otherwise.
     pub fn has_attribute(&self, attr_name: &tf::Token) -> bool {
         unsafe {
             cpp!([self as "pxr::UsdPrim*",
@@ -111,6 +130,8 @@ impl Prim {
         }
     }
 
+    /// Return true if this prim has a relationship named \p relName, false
+    /// otherwise.
     pub fn has_relationship(&self, rel_name: &tf::Token) -> bool {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*",
@@ -121,6 +142,45 @@ impl Prim {
         }
     }
 
+    /// Author scene description for the attribute named \a attrName at the
+    /// current EditTarget if none already exists.  Return a valid attribute if
+    /// scene description was successfully authored or if it already existed,
+    /// return invalid attribute otherwise.  Note that the supplied \a typeName
+    /// and \a custom arguments are only used in one specific case.  See below
+    /// for details.
+    ///
+    /// Suggested use:
+    /// \code
+    /// if (UsdAttribute myAttr = prim.CreateAttribute(...)) {
+    ///    // success.
+    /// }
+    /// \endcode
+    ///
+    /// To call this, GetPrim() must return a valid prim.
+    ///
+    /// - If a spec for this attribute already exists at the current edit
+    /// target, do nothing.
+    ///
+    /// - If a spec for \a attrName of a different spec type (e.g. a
+    /// relationship) exists at the current EditTarget, issue an error.
+    ///
+    /// - If \a name refers to a builtin attribute according to the prim's
+    /// definition, author an attribute spec with required metadata from the
+    /// definition.
+    ///
+    /// - If \a name refers to a builtin relationship, issue an error.
+    ///
+    /// - If there exists an absolute strongest authored attribute spec for
+    /// \a attrName, author an attribute spec at the current EditTarget by
+    /// copying required metadata from that strongest spec.
+    ///
+    /// - If there exists an absolute strongest authored relationship spec for
+    /// \a attrName, issue an error.
+    ///
+    /// - Otherwise author an attribute spec at the current EditTarget using
+    /// the provided \a typeName and \a custom for the required metadata fields.
+    /// Note that these supplied arguments are only ever used in this particular
+    /// circumstance, in all other cases they are ignored.
     pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
         let name = &desc.name;
         let type_name = &desc.type_name;
