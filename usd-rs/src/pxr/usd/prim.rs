@@ -67,7 +67,6 @@ pub mod desc {
 /// UsdPrim also provides access to iteration through its prim children,
 /// optionally making use of the \ref primFlags.h "prim predicates facility"
 /// (GetChildren(), GetAllChildren(), GetFilteredChildren()).
-///
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
 impl Prim {
