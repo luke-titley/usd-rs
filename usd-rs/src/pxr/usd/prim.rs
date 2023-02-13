@@ -69,6 +69,7 @@ pub mod desc {
 /// (GetChildren(), GetAllChildren(), GetFilteredChildren()).
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
+
 impl Prim {
     pub fn get_type_name(&self) -> &tf::Token {
         unsafe {
