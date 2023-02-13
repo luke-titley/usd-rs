@@ -69,7 +69,6 @@ pub mod desc {
 /// (GetChildren(), GetAllChildren(), GetFilteredChildren()).
 cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 
-
 impl Prim {
     /// Return this prim's composed type name. This value is cached and is
     /// efficient to query.
