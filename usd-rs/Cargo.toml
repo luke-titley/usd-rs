@@ -7,6 +7,7 @@ license = "Apache-2.0"
 description = "Rust bindings for USD"
 repository = "https://github.com/luke-titley/usd-rs"
 keywords = ["vfx", "graphics", "scene_description", "scene_graph", "alembic"]
+documentation = "https://luke-titley.github.io/usd-rs/usd"
 
 [package.metadata.docs.rs]
 rustc-args = ["--cfg", "docsrs"]
