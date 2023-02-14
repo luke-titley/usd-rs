@@ -8,8 +8,6 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 | 23.02       | [Docs](https://luke-titley.github.io/usd-rs/usd/index.html) | ![CI](https://github.com/luke-titley/usd-rs/actions/workflows/ci.yml/badge.svg) |
 
 
-# USD version: 23.02
-
 # What works ?
 - You can create and open/save/export a stage.
 - You can define a prim and get/set attributes on it.
