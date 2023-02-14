@@ -2,7 +2,8 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 mod error;
-pub mod result;
+mod result;
+
 pub mod sdf;
 pub mod tf;
 pub mod usd;
