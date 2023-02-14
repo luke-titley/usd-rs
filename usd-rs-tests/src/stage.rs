@@ -14,7 +14,7 @@ mod tests {
     #[test]
     fn test_new() -> pxr::NoResult {
         let stage =
-            Stage::create_new(stage::desc::CreateNew::from("test.usda"))?;
+            Stage::create_new(stage_desc::CreateNew::from("test.usda"))?;
         stage.save()?;
 
         Ok(())
@@ -23,7 +23,7 @@ mod tests {
     #[test]
     fn test_in_memory() -> pxr::NoResult {
         let stage =
-            Stage::create_in_memory(stage::desc::CreateInMemory::default())?;
+            Stage::create_in_memory(stage_desc::CreateInMemory::default())?;
         stage.save()?;
 
         Ok(())
@@ -32,19 +32,18 @@ mod tests {
     #[test]
     fn test_open() -> pxr::NoResult {
         let stage =
-            Stage::create_new(stage::desc::CreateNew::from("test_open.usda"))?;
+            Stage::create_new(stage_desc::CreateNew::from("test_open.usda"))?;
         stage.save()?;
 
-        Stage::open(stage::desc::Open::from("test_open.usda"))?;
+        Stage::open(stage_desc::Open::from("test_open.usda"))?;
 
         Ok(())
     }
 
     #[test]
     fn test_define_prim() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
-            "define_prim.usda",
-        ))?;
+        let stage =
+            Stage::create_new(stage_desc::CreateNew::from("define_prim.usda"))?;
         stage.define_prim(
             &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
@@ -56,7 +55,7 @@ mod tests {
 
     #[test]
     fn test_create_attribute() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "create_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -64,7 +63,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        prim.create_attribute(prim::desc::CreateAttribute {
+        prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("int")?),
@@ -77,7 +76,7 @@ mod tests {
 
     #[test]
     fn test_set_bool_attribute() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -85,7 +84,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("bool")?),
@@ -109,7 +108,7 @@ mod tests {
 
     #[test]
     fn test_set_string_attribute() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_string_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -117,7 +116,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("string")?),
@@ -141,7 +140,7 @@ mod tests {
 
     #[test]
     fn test_set_asset_path_attribute() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_asset_path_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -149,7 +148,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("asset")?),
@@ -197,7 +196,7 @@ mod tests {
 
     #[test]
     fn test_float_array_attribute_value() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_array_float_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -205,7 +204,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("float[]")?),
@@ -228,7 +227,7 @@ mod tests {
 
     #[test]
     fn test_bool_array_attribute_value() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_array_bool_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -236,7 +235,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("bool[]")?),
@@ -259,7 +258,7 @@ mod tests {
 
     #[test]
     fn test_int_array_attribute_value() -> pxr::NoResult {
-        let stage = Stage::create_new(stage::desc::CreateNew::from(
+        let stage = Stage::create_new(stage_desc::CreateNew::from(
             "set_array_int_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
@@ -267,7 +266,7 @@ mod tests {
             &tf::Token::default(),
         )?;
 
-        let attr = prim.create_attribute(prim::desc::CreateAttribute {
+        let attr = prim.create_attribute(prim_desc::CreateAttribute {
             name: tf::Token::try_from("lukes_attr")?,
             type_name: sdf::Schema::get_instance()
                 .find_type(&tf::Token::try_from("int[]")?),

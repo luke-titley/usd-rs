@@ -1,5 +1,5 @@
 use crate::pxr::tf;
-use crate::pxr::usd::attribute::*;
+use crate::pxr::usd::Attribute;
 use cpp::*;
 
 cpp! {{

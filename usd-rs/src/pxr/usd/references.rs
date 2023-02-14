@@ -15,7 +15,7 @@ cpp! {{
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-pub mod desc {
+pub mod references_desc {
     use super::*;
 
     pub struct AddReference<'a> {
@@ -28,9 +28,12 @@ pub mod desc {
 cpp_class!(pub unsafe struct References as "pxr::UsdReferences");
 
 impl References {
-    pub fn add_reference(&mut self, desc: desc::AddReference) -> pxr::NoResult {
+    pub fn add_reference(
+        &mut self,
+        desc: references_desc::AddReference,
+    ) -> pxr::NoResult {
         let result = match desc {
-            desc::AddReference {
+            references_desc::AddReference {
                 identifier,
                 prim_path: None,
             } => {
@@ -47,7 +50,7 @@ impl References {
                 };
                 result
             }
-            desc::AddReference {
+            references_desc::AddReference {
                 identifier,
                 prim_path: Some(prim_path),
             } => {
