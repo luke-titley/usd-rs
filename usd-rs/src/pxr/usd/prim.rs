@@ -34,6 +34,8 @@ pub mod desc {
 }
 
 //------------------------------------------------------------------------------
+cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
+
 /// \class UsdPrim
 ///
 /// UsdPrim is the sole persistent scenegraph object on a UsdStage, and
@@ -67,8 +69,6 @@ pub mod desc {
 /// UsdPrim also provides access to iteration through its prim children,
 /// optionally making use of the \ref primFlags.h "prim predicates facility"
 /// (GetChildren(), GetAllChildren(), GetFilteredChildren()).
-cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
-
 impl Prim {
     /// Return this prim's composed type name. This value is cached and is
     /// efficient to query.
