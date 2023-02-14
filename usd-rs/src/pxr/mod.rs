@@ -1,8 +1,13 @@
 //------------------------------------------------------------------------------
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
+
+//! The root module. In order to match the C++ naming convention, everything
+//! sits under a pxr root namespace.
+
 mod error;
-pub mod result;
+mod result;
+
 pub mod sdf;
 pub mod tf;
 pub mod usd;

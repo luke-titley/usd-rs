@@ -2,6 +2,8 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
+//! The main entry point for working with usd.
+
 mod attribute;
 mod attribute_vector;
 mod common;
