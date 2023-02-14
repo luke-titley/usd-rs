@@ -146,13 +146,6 @@ impl Prim {
     /// and custom arguments are only used in one specific case.  See below
     /// for details.
     ///
-    /// Suggested use:
-    /// ```
-    /// if let Some(myAttr) = prim.create_attribute(...) {
-    ///    // success.
-    /// }
-    /// ```
-    ///
     /// To call this, get_prim() must return a valid prim.
     ///
     /// - If a spec for this attribute already exists at the current edit
