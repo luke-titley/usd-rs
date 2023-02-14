@@ -6,6 +6,10 @@
 //! together form a basis for interchanging geometry between DCC tools in a
 //! graphics pipeline.
 
-pub mod mesh;
-pub mod primvar;
-pub mod xform_cache;
+mod mesh;
+mod primvar;
+mod xform_cache;
+
+pub use mesh::*;
+pub use primvar::*;
+pub use xform_cache::*;
