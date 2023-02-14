@@ -28,7 +28,7 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 - usd-examples will be examples.
 
 # Building
-Before you do anything in terms of development it's work noting that there is a [docker](#Docker) image.
+Before you do anything in terms of development it's worth noting that there is a [docker](#Docker) image.
 > git clone git@github.com:luke-titley/usd-rs.git && cd usd-rs
 > git submodule update --init --recursive
 > cargo build
