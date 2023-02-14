@@ -22,7 +22,7 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-pub mod desc {
+pub mod prim_desc {
     use super::*;
     use crate::pxr::sdf;
 
@@ -171,7 +171,10 @@ impl Prim {
     /// the provided typeName and custom for the required metadata fields.
     /// Note that these supplied arguments are only ever used in this particular
     /// circumstance, in all other cases they are ignored.
-    pub fn create_attribute(&self, desc: desc::CreateAttribute) -> Attribute {
+    pub fn create_attribute(
+        &self,
+        desc: prim_desc::CreateAttribute,
+    ) -> Attribute {
         let name = &desc.name;
         let type_name = &desc.type_name;
 

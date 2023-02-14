@@ -83,7 +83,7 @@ impl Default for InitialLoadSet {
 }
 
 //------------------------------------------------------------------------------
-pub mod desc {
+pub mod stage_desc {
     use super::*;
 
     pub struct CreateNew<'a> {
@@ -157,7 +157,9 @@ cpp_class!(pub unsafe struct Stage as "pxr::UsdStageRefPtr");
 
 //------------------------------------------------------------------------------
 impl Stage {
-    pub fn create_new<'a>(desc: desc::CreateNew<'a>) -> pxr::Result<Self> {
+    pub fn create_new<'a>(
+        desc: stage_desc::CreateNew<'a>,
+    ) -> pxr::Result<Self> {
         let identifier_str = std::ffi::CString::new(desc.identifier)?;
 
         let identifier_char =
@@ -173,7 +175,9 @@ impl Stage {
         Ok(result)
     }
 
-    pub fn create_in_memory(_desc: desc::CreateInMemory) -> pxr::Result<Self> {
+    pub fn create_in_memory(
+        _desc: stage_desc::CreateInMemory,
+    ) -> pxr::Result<Self> {
         let result = unsafe {
             cpp!([] -> Stage as "pxr::UsdStageRefPtr" {
                 return pxr::UsdStage::CreateInMemory();
@@ -183,9 +187,9 @@ impl Stage {
         Ok(result)
     }
 
-    pub fn open<'a>(desc: desc::Open) -> pxr::Result<Self> {
+    pub fn open<'a>(desc: stage_desc::Open) -> pxr::Result<Self> {
         match desc {
-            desc::Open {
+            stage_desc::Open {
                 file_path,
                 load: None,
             } => {
@@ -203,7 +207,7 @@ impl Stage {
 
                 Ok(result)
             }
-            desc::Open {
+            stage_desc::Open {
                 file_path,
                 load: Some(load),
             } => {
@@ -245,9 +249,9 @@ impl Stage {
         Ok(())
     }
 
-    pub fn load(&self, desc: desc::Load) -> pxr::Result<Prim> {
+    pub fn load(&self, desc: stage_desc::Load) -> pxr::Result<Prim> {
         Ok(match desc {
-            desc::Load {
+            stage_desc::Load {
                 path: None,
                 policy: None,
             } => unsafe {
@@ -256,7 +260,7 @@ impl Stage {
                     return (*self)->Load();
                 })
             },
-            desc::Load {
+            stage_desc::Load {
                 path: Some(path),
                 policy: None,
             } => unsafe {
@@ -265,7 +269,7 @@ impl Stage {
                     return (*self)->Load(*path);
                 })
             },
-            desc::Load {
+            stage_desc::Load {
                 path: None,
                 policy: Some(policy),
             } => unsafe {
@@ -275,7 +279,7 @@ impl Stage {
                                          policy);
                 })
             },
-            desc::Load {
+            stage_desc::Load {
                 path: Some(path),
                 policy: Some(policy),
             } => unsafe {

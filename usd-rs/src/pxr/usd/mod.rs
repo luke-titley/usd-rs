@@ -2,14 +2,14 @@
 // Luke Titley : from+usd_rs@luketitley.com
 //------------------------------------------------------------------------------
 
-pub mod attribute;
-pub mod attribute_vector;
+mod attribute;
+mod attribute_vector;
 mod common;
-pub mod prim;
-pub mod prim_range;
-pub mod references;
-pub mod relationship;
-pub mod stage;
+mod prim;
+mod prim_range;
+mod references;
+mod relationship;
+mod stage;
 mod time_code;
 
 //------------------------------------------------------------------------------
@@ -19,5 +19,5 @@ pub use prim::*;
 pub use prim_range::*;
 pub use references::*;
 pub use relationship::*;
-pub use stage::{InitialLoadSet, Stage};
+pub use stage::*;
 pub use time_code::*;

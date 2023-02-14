@@ -9,7 +9,7 @@ use pxr::vt;
 use std::convert::TryFrom;
 
 fn open_kitchen_set() -> pxr::NoResult {
-    let stage = pxr::usd::Stage::open(pxr::usd::stage::desc::Open {
+    let stage = pxr::usd::Stage::open(pxr::usd::stage_desc::Open {
         file_path: "../assets/Kitchen_set/Kitchen_set.usd",
         load: None,
     })?;
@@ -25,22 +25,20 @@ fn open_kitchen_set() -> pxr::NoResult {
 fn add_references() -> pxr::NoResult {
     let asset_path = "asset.usda";
 
-    let stage =
-        pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-            identifier: asset_path,
-            _load: None,
-        })?;
+    let stage = pxr::usd::Stage::create_new(pxr::usd::stage_desc::CreateNew {
+        identifier: asset_path,
+        _load: None,
+    })?;
     stage.define_prim(
         &pxr::sdf::Path::try_from("/root").unwrap(),
         &pxr::tf::Token::default(),
     );
     stage.save();
 
-    let stage =
-        pxr::usd::Stage::create_new(pxr::usd::stage::desc::CreateNew {
-            identifier: "scene.usda",
-            _load: None,
-        })?;
+    let stage = pxr::usd::Stage::create_new(pxr::usd::stage_desc::CreateNew {
+        identifier: "scene.usda",
+        _load: None,
+    })?;
 
     stage
         .get_root_layer()
@@ -52,7 +50,7 @@ fn add_references() -> pxr::NoResult {
 }
 
 fn array_attributes() -> pxr::NoResult {
-    let stage = Stage::create_new(pxr::usd::stage::desc::CreateNew {
+    let stage = Stage::create_new(pxr::usd::stage_desc::CreateNew {
         identifier: "set_array_int_attribute_prim.usda",
         _load: None,
     })?;
@@ -61,7 +59,7 @@ fn array_attributes() -> pxr::NoResult {
         &tf::Token::default(),
     )?;
 
-    let attr = prim.create_attribute(prim::desc::CreateAttribute {
+    let attr = prim.create_attribute(prim_desc::CreateAttribute {
         name: tf::Token::try_from("lukes_attr")?,
         type_name: sdf::Schema::get_instance()
             .find_type(&tf::Token::try_from("int[]")?),
