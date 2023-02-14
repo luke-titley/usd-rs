@@ -29,20 +29,19 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 
 # Building
 Before you do anything in terms of development it's work noting that there is a [docker](#Docker) image.
-- git clone git@github.com:luke-titley/usd-rs.git && cd usd-rs
-- git submodule update --init --recursive
-- cargo build
+> git clone git@github.com:luke-titley/usd-rs.git && cd usd-rs
+> git submodule update --init --recursive
+> cargo build
 
 ## Building against your own USD build
 Same as above only instead of cargo build do:
-- env USD_ROOT=<path to your usd install> cargo build
+> env USD_ROOT=<path to your usd install> cargo build
 
 # Running tests
 One you've got the project building you can run the tests with
 > cargo test
 or
 > env USD_ROOT=<path to your usd install> LD_LIBRARY_PATH=<path to your usd install>/lib cargo test
-
 
 # Requirements
 
