@@ -120,7 +120,7 @@ cpp_class!(
     /// simple compositions into richer aggregates using referencing and
     /// layering with sparse overrides.  Ultimately, every composition
     /// (i.e. "scene") is identifiable by its root layer,
-    /// i.e. the <tt>.usd</tt> file, and a scene is instantiated in an
+    /// i.e. the `.usd` file, and a scene is instantiated in an
     /// application on a UsdStage that presents a composed
     /// view of the scene's root layer.  Each simple composition referenced into
     /// a larger composition could be presented on its own UsdStage, at the same
