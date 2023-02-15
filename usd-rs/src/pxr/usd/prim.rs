@@ -54,15 +54,15 @@ cpp_class!(pub unsafe struct Prim as "pxr::UsdPrim");
 /// As well as access to the API objects for properties contained within the
 /// prim - UsdPrim as well as all of the following classes are subclasses
 /// of UsdObject:
-/// - UsdProperty - generic access to all attributes and relationships.
+/// - [Property] - generic access to all attributes and relationships.
 /// A UsdProperty can be queried and cast to a UsdAttribute or UsdRelationship
 /// using UsdObject::Is<>() and UsdObject::As<>(). (GetPropertyNames(),
 /// GetProperties(), GetPropertiesInNamespace(), GetPropertyOrder(),
 /// SetPropertyOrder())
-/// - UsdAttribute - access to default and timesampled attribute values, as
+/// - [Attribute] - access to default and timesampled attribute values, as
 /// well as value resolution information, and attribute-specific metadata
 /// (CreateAttribute(), GetAttribute(), GetAttributes(), HasAttribute())
-/// - UsdRelationship - access to authoring and resolving relationships
+/// - [Relationship] - access to authoring and resolving relationships
 /// to other prims and properties (CreateRelationship(), GetRelationship(),
 /// GetRelationships(), HasRelationship())
 ///
