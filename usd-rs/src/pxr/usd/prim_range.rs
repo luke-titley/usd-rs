@@ -54,7 +54,10 @@ pub struct PrimRangeIterator {
 }
 
 impl PrimRangeIterator {
-    pub(crate) fn new(begin: PrimRangeIteratorPos, end: PrimRangeIteratorPos) -> Self {
+    pub(crate) fn new(
+        begin: PrimRangeIteratorPos,
+        end: PrimRangeIteratorPos,
+    ) -> Self {
         Self { it: begin, end }
     }
 }
