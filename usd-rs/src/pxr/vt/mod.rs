@@ -3,9 +3,11 @@
 //------------------------------------------------------------------------------
 
 //! Defines classes that provide for type abstraction (VtValue) and enhanced
-//! array types (VtArray).  The Vt library also provides functions for
-//! manipulating value types.  This library operates on the level of language
-//! data types and there are differences in the C++ and Rust interfaces.
+//! array types (VtArray).
+//!
+//! The Vt library also provides functions for manipulating value types.
+//! This library operates on the level of language data types and there are
+//! differences in the C++ and Rust interfaces.
 //!
 //! # vt_value Type Erasure with VtValue
 //! The VtValue class wraps type objects (float, int, bool, GfVec3d, and so on)

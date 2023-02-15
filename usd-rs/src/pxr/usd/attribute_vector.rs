@@ -13,7 +13,7 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-/// This is a reference to the underlying UsdAttributeVector
+/// This is a reference to the underlying [AttributeVector]
 ///
 #[repr(C, align(8))]
 pub struct AttributeVectorRef {
@@ -58,6 +58,7 @@ impl std::ops::Index<usize> for AttributeVectorRef {
 }
 
 //------------------------------------------------------------------------------
+/// A contiguous block of [Attribute]s
 #[repr(C, align(8))]
 pub struct AttributeVector {
     reference: *mut RefType,
