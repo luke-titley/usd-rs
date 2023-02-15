@@ -16,8 +16,13 @@
 //! to mirror the c++ api as closely as possible while still maintaining a
 //! certain degree of ergonmics.
 //!
+//! Although usd-rs strives provide enough documentation to rust usage.
+//! The most complete set of docs for understanding USD and its concepts
+//! are still those for the
+//! [C++ Api](https://graphics.pixar.com/usd/release/api/index.html)
+//!
 //! In order to be consistent with the namespaces and prefixes in the c++
 //! library the root module is pxr, everything is a submodule of pxr.
-
+//!
 #![deny(warnings)]
 pub mod pxr;
