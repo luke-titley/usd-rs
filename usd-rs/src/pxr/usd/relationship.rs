@@ -31,7 +31,7 @@ cpp_class!(pub unsafe struct Relationship as "pxr::UsdRelationship");
 /// should be scenegraph paths in the composed namespace of the [Stage] into
 /// which you are authoring.  If your edits are targeted to a different
 /// layer, across various composition arcs (because you specified a non-default
-/// \ref UsdEditTarget), the target's path will be automatically translated
+/// EditTarget, the target's path will be automatically translated
 /// into the proper namespace.
 ///
 /// A single UsdRelationship can target multiple other objects, which can be
