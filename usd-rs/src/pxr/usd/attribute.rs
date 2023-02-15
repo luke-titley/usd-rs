@@ -17,10 +17,12 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct Attribute as "pxr::UsdAttribute");
+cpp_class!(
+    /// Scenegraph object for authoring and retrieving numeric, string, and
+    /// array valued data, sampled over time.
+    pub unsafe struct Attribute as "pxr::UsdAttribute"
+);
 
-/// Scenegraph object for authoring and retrieving numeric, string, and array
-/// valued data, sampled over time.
 impl Attribute {
     /// Set the value of this attribute in the current UsdEditTarget to
     /// __value at UsdTimeCode__ time, which defaults to __default__.

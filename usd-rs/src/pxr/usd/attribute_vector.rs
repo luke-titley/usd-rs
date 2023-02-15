@@ -14,7 +14,6 @@ cpp! {{
 
 //------------------------------------------------------------------------------
 /// This is a reference to the underlying [AttributeVector]
-///
 #[repr(C, align(8))]
 pub struct AttributeVectorRef {
     // A private member stops users from being able to construct it directly
@@ -97,5 +96,21 @@ impl AsRef<RefType> for AttributeVector {
 impl AsMut<RefType> for AttributeVector {
     fn as_mut(&mut self) -> &mut RefType {
         unsafe { &mut *self.reference }
+    }
+}
+
+//------------------------------------------------------------------------------
+impl std::ops::Deref for AttributeVector {
+    type Target = RefType;
+
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
+
+//------------------------------------------------------------------------------
+impl std::ops::DerefMut for AttributeVector {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.as_mut()
     }
 }

@@ -14,10 +14,11 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
+/// Descriptors for construction of new data on a reference
 pub mod references_desc {
     use super::*;
 
+    /// Parameters for adding a new reference
     pub struct AddReference<'a> {
         pub identifier: &'a str,
         pub prim_path: Option<&'a sdf::Path>,
@@ -25,9 +26,22 @@ pub mod references_desc {
 }
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct References as "pxr::UsdReferences");
+cpp_class!(
+    /// UsdReferences provides an interface to authoring and introspecting
+    /// references in Usd.
+    ///
+    /// References are the primary operator for "encapsulated aggregation" of
+    /// scene description.  __aggregation__ means that references let us
+    /// build up rich scenes by composing scene description recorded in a (most
+    /// often) different layer.  A scene can reference the same layer many times at
+    /// different locations in a scene's namespace.  Referenced scene description
+    /// can be overridden in the referencing (or stronger) layers, allowing each
+    /// instance of the reference to be directly customized/overridden.
+    pub unsafe struct References as "pxr::UsdReferences"
+);
 
 impl References {
+    /// Adds a reference to the reference listOp at the current EditTarget.
     pub fn add_reference(
         &mut self,
         desc: references_desc::AddReference,
@@ -78,6 +92,10 @@ impl References {
         }
     }
 
+    /// Removes the authored reference listOp edits at the current EditTarget.
+    /// The same caveats for remove() apply to clear().  In fact, clear() may
+    /// actually increase the number of composed references, if the listOp
+    /// being cleared contained the "remove" operator.
     pub fn clear_references(&mut self) -> bool {
         unsafe {
             cpp!([self as "pxr::UsdReferences*"] -> bool as "bool" {

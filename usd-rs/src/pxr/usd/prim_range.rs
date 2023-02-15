@@ -16,7 +16,7 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct PrimRangeIteratorPos as
+cpp_class!(pub(crate) unsafe struct PrimRangeIteratorPos as
             "pxr::UsdPrimRange::iterator");
 
 impl PrimRangeIteratorPos {
@@ -54,7 +54,10 @@ pub struct PrimRangeIterator {
 }
 
 impl PrimRangeIterator {
-    pub fn new(begin: PrimRangeIteratorPos, end: PrimRangeIteratorPos) -> Self {
+    pub(crate) fn new(
+        begin: PrimRangeIteratorPos,
+        end: PrimRangeIteratorPos,
+    ) -> Self {
         Self { it: begin, end }
     }
 }
@@ -76,13 +79,22 @@ impl std::iter::Iterator for PrimRangeIterator {
 pub(crate) struct PrmRange {}
 
 //------------------------------------------------------------------------------
-/// This allows for iterating over a collection of prims
+/// An forward-iterable range that traverses a subtree of prims rooted at a
+/// given prim in depth-first order.
+///
+/// In addition to depth-first order, UsdPrimRange provides the optional ability
+/// to traverse in depth-first pre- and post-order wher prims appear twice in
+/// the range; first before all descendants and then again immediately after all
+/// descendants.  This is useful for maintaining state associated with subtrees,
+/// in a stack-like fashion.
 #[repr(C, align(8))]
 pub struct PrimRange {
     pub(crate) _prim_range: *const PrmRange,
 }
 
 impl PrimRange {
+    /// Returns an iterator for traversing a [PrimRange].
+    /// See [super::Stage::traverse]
     pub fn iter(&self) -> PrimRangeIterator {
         let prim_range = self._prim_range;
         let begin = unsafe {
