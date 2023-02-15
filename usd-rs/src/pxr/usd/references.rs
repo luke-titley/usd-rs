@@ -26,18 +26,20 @@ pub mod references_desc {
 }
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct References as "pxr::UsdReferences");
+cpp_class!(
+    /// UsdReferences provides an interface to authoring and introspecting
+    /// references in Usd.
+    ///
+    /// References are the primary operator for "encapsulated aggregation" of
+    /// scene description.  __aggregation__ means that references let us
+    /// build up rich scenes by composing scene description recorded in a (most
+    /// often) different layer.  A scene can reference the same layer many times at
+    /// different locations in a scene's namespace.  Referenced scene description
+    /// can be overridden in the referencing (or stronger) layers, allowing each
+    /// instance of the reference to be directly customized/overridden.
+    pub unsafe struct References as "pxr::UsdReferences"
+);
 
-/// UsdReferences provides an interface to authoring and introspecting
-/// references in Usd.
-///
-/// References are the primary operator for "encapsulated aggregation" of
-/// scene description.  __aggregation__ means that references let us
-/// build up rich scenes by composing scene description recorded in a (most
-/// often) different layer.  A scene can reference the same layer many times at
-/// different locations in a scene's namespace.  Referenced scene description
-/// can be overridden in the referencing (or stronger) layers, allowing each
-/// instance of the reference to be directly customized/overridden.
 impl References {
     /// Adds a reference to the reference listOp at the current EditTarget.
     pub fn add_reference(
