@@ -86,7 +86,7 @@ impl Attribute {
     /// SdfPath in namespace.
     ///
     /// This is equivalent to, but generally cheaper than,
-    /// GetPath().GetNameToken()
+    /// get_path().get_name_token()
     pub fn get_name(&self) -> pxr::Result<&tf::Token> {
         unsafe {
             let token_ptr = cpp!([self as "const pxr::UsdAttribute *"]
