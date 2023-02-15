@@ -22,10 +22,12 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
+/// Descriptors for creation on prim
 pub mod prim_desc {
     use super::*;
     use crate::pxr::sdf;
 
+    /// The parameters for creating a new attribute on a prim
     pub struct CreateAttribute {
         pub name: tf::Token,
         pub type_name: sdf::ValueTypeName,
@@ -188,6 +190,20 @@ impl Prim {
         }
     }
 
+    /// Return a usd.Attribute with the name `attr_name`. The attribute
+    /// returned may or may not __actually__ exist so it must be checked for
+    /// validity.
+    ///
+    /// Suggested use:
+    ///
+    /// ```no_run
+    /// if let Some(myAttr) = prim.get_attribute("myAttr") {
+    ///    // myAttr is safe to use.
+    ///    // Edits to the owning stage requires subsequent validation.
+    /// } else {
+    ///    // myAttr was not defined/authored
+    /// }
+    /// ```
     pub fn get_attribute(&self, attr_name: &tf::Token) -> Attribute {
         unsafe {
             cpp!([self as "pxr::UsdPrim*",
@@ -198,6 +214,7 @@ impl Prim {
         }
     }
 
+    /// Like get_properties(), but exclude all relationships from the result.
     pub fn get_attributes(&self) -> AttributeVector {
         let result = AttributeVector::new(); // This should be 'mut' but compiler incorrectly complains because it cant see the c++
         unsafe {
@@ -208,6 +225,11 @@ impl Prim {
         result
     }
 
+    /// Return the full name of this object, i.e. the last component of its
+    /// SdfPath in namespace.
+    ///
+    /// This is equivalent to, but generally cheaper than,
+    /// get_path().get_name_token()
     pub fn get_name(&self) -> pxr::Result<&tf::Token> {
         unsafe {
             let token_ptr = cpp!([self as "const pxr::UsdPrim*"]
@@ -221,6 +243,9 @@ impl Prim {
         }
     }
 
+    /// Return the complete scene path to this object on its usd.Stage,
+    /// which may be a (usd.Prim) or may not (all other subclasses) return a
+    /// cached result
     pub fn get_path(&self) -> sdf::Path {
         unsafe {
             cpp!([self as "const pxr::UsdPrim*"]
