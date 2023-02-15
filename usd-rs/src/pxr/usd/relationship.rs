@@ -24,18 +24,19 @@ cpp_class!(pub unsafe struct Relationship as "pxr::UsdRelationship");
 /// Creates dependencies between scenegraph objects by
 /// allowing a prim to `target` other prims, attributes, or relationships.
 ///
-/// #Relationship Characteristics
+/// # Relationship Characteristics
 ///
 /// A [Relationship] is a pointer to other objects, which are named by their
 /// scenegraph paths.  When authoring relationships, the `target` parameters
-/// should be scenegraph paths in the composed namespace of the [Stage] into
-/// which you are authoring.  If your edits are targeted to a different
+/// should be scenegraph paths in the composed namespace of the
+/// [super::Stage] into which you are authoring.  If your edits are targeted to
+/// a different
 /// layer, across various composition arcs (because you specified a non-default
 /// EditTarget, the target's path will be automatically translated
 /// into the proper namespace.
 ///
 /// A single UsdRelationship can target multiple other objects, which can be
-/// of [Prim], [Attribute], or [Relationship] type.  [Relationship]
+/// of [super::Prim], [super::Attribute], or [Relationship] type.  [Relationship]
 /// participates in "list editing", which means that stronger layers in a
 /// composed scene can add, remove, or reorder targets authored on the
 /// relationship in weaker layers __without__ stomping the weaker opinions,
@@ -48,10 +49,11 @@ cpp_class!(pub unsafe struct Relationship as "pxr::UsdRelationship");
 /// that all the data required to render the model containing the targeting
 /// prim is composed and available.
 ///
-/// Like [Attribute], [Relationship] objects are meant to be ephemeral,
+/// Like [super::Attribute], [super::Relationship] objects are meant to
+/// be ephemeral,
 /// live on the stack, and be cheap to refetch from their owning UsdPrim.
 ///
-/// Unlike [Attribute] s, which can either be uniform over all time
+/// Unlike [super::Attribute] s, which can either be uniform over all time
 /// or vary in value over time, [Relationship] is __always uniform__.
 impl Relationship {
     /// Returns true if any target path opinions have been authored.
