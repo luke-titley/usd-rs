@@ -16,7 +16,7 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct PrimRangeIteratorPos as
+cpp_class!(pub(crate) unsafe struct PrimRangeIteratorPos as
             "pxr::UsdPrimRange::iterator");
 
 impl PrimRangeIteratorPos {
@@ -54,7 +54,7 @@ pub struct PrimRangeIterator {
 }
 
 impl PrimRangeIterator {
-    pub fn new(begin: PrimRangeIteratorPos, end: PrimRangeIteratorPos) -> Self {
+    pub(crate) fn new(begin: PrimRangeIteratorPos, end: PrimRangeIteratorPos) -> Self {
         Self { it: begin, end }
     }
 }
