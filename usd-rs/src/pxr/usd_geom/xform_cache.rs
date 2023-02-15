@@ -78,3 +78,19 @@ impl AsMut<RefType> for XformCache {
         unsafe { &mut *self.reference }
     }
 }
+
+//------------------------------------------------------------------------------
+impl std::ops::Deref for XformCache {
+    type Target = RefType;
+
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
+
+//------------------------------------------------------------------------------
+impl std::ops::DerefMut for XformCache {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.as_mut()
+    }
+}
