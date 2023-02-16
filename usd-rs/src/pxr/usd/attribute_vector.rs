@@ -72,6 +72,10 @@ impl AttributeVector {
             })
         }
     }
+
+    pub fn iter(&self) -> AttributeVectorIter {
+        AttributeVectorIter::new(self)
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -112,5 +116,42 @@ impl std::ops::Deref for AttributeVector {
 impl std::ops::DerefMut for AttributeVector {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut()
+    }
+}
+
+/// Iterates over an [AttributeVector]
+///
+/// ```ignore
+/// for i in attribute_vector.iter() {
+///     println!("{}", i.get_name()?.get_text()?);
+/// }
+/// ```
+pub struct AttributeVectorIter<'a> {
+    vector: &'a AttributeVector,
+    len: usize,
+    i: usize,
+}
+
+impl<'a> AttributeVectorIter<'a> {
+    pub(crate) fn new(vector: &'a AttributeVector) -> Self {
+        Self {
+            vector,
+            len: vector.len(),
+            i: 0_usize,
+        }
+    }
+}
+
+impl<'a> std::iter::Iterator for AttributeVectorIter<'a> {
+    type Item = &'a Attribute;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.i >= self.len {
+            None
+        } else {
+            let index = self.i;
+            self.i += 1;
+            Some(&self.vector[index])
+        }
     }
 }
