@@ -14,9 +14,19 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
-cpp_class!(pub unsafe struct LayerHandle as "pxr::SdfLayerHandle");
+cpp_class!(
+/// A scene description container that can combine with other such containers
+/// to form simple component assets, and successively larger aggregates.  The
+/// contents of an SdfLayer adhere to the SdfData data model.  A layer can be
+/// ephemeral, or be an asset accessed and serialized through the ArAsset and
+/// ArResolver interfaces.
+    pub unsafe struct LayerHandle as "pxr::SdfLayerHandle"
+);
 
 impl LayerHandle {
+    /// Inserts new sublayer path at the given index.
+    ///
+    /// The default index of -1 means to insert at the end.
     pub fn insert_sub_layer_path(
         &mut self,
         path: &str,
@@ -42,6 +52,7 @@ impl LayerHandle {
         Ok(())
     }
 
+    /// Removes sublayer path at the given index.
     pub fn remove_sub_layer_path(&mut self, index: usize) {
         let index = index as i32;
 
@@ -53,6 +64,10 @@ impl LayerHandle {
         };
     }
 
+    /// Returns `true` if successful, `false` if an error occurred.
+    /// Returns `false` if the layer has no remembered file name or the
+    /// layer type cannot be saved. The layer will not be overwritten if the
+    /// file exists and the layer is not dirty unless __force__ is true.
     pub fn save(&self, force: Option<bool>) -> bool {
         match force {
             Some(force) => unsafe {

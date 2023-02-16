@@ -1,4 +1,8 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.sourceDirectory": "${workspaceFolder}/target/debug/build/usd-cpp-51b8926fe5241702/out/install/src/boost_1_70_0/tools/boost_install/test/atomic"
+    "cmake.sourceDirectory": "${workspaceFolder}/target/debug/build/usd-cpp-51b8926fe5241702/out/install/src/boost_1_70_0/tools/boost_install/test/atomic",
+    "files.associations": {
+        "rope": "cpp",
+        "variant": "cpp"
+    }
 }

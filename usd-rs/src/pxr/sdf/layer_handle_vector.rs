@@ -12,7 +12,10 @@ cpp! {{
     #pragma GCC diagnostic pop
 }}
 
-cpp_class!(pub unsafe struct LayerHandleVector as "pxr::SdfLayerHandleVector");
+cpp_class!(
+    /// A contiguous block of [LayerHandle] s.
+    pub unsafe struct LayerHandleVector as "pxr::SdfLayerHandleVector"
+);
 
 impl LayerHandleVector {
     pub fn size(&self) -> usize {
