@@ -62,6 +62,16 @@ impl AssetPathRef {
     }
 }
 
+impl std::fmt::Display for AssetPathRef {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Ok(text) = self.get_asset_path() {
+            write!(f, "{}", text)
+        } else {
+            write!(f, "<invalid path>")
+        }
+    }
+}
+
 //------------------------------------------------------------------------------
 // AssetPathDescriptor
 //------------------------------------------------------------------------------

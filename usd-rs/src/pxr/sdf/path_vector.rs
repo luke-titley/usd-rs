@@ -41,6 +41,10 @@ impl PathVectorRef {
             })
         }
     }
+
+    pub fn iter(&self) -> PathVectorIter {
+        PathVectorIter::new(self)
+    }
 }
 
 impl std::ops::Index<usize> for PathVectorRef {
@@ -112,5 +116,42 @@ impl std::ops::Deref for PathVector {
 impl std::ops::DerefMut for PathVector {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut()
+    }
+}
+
+/// Iterates over an [PathVector]
+///
+/// ```ignore
+/// for i in paths.iter() {
+///     println!("{}", i.get_name()?.get_text()?);
+/// }
+/// ```
+pub struct PathVectorIter<'a> {
+    vector: &'a PathVectorRef,
+    len: usize,
+    i: usize,
+}
+
+impl<'a> PathVectorIter<'a> {
+    pub(crate) fn new(vector: &'a PathVectorRef) -> Self {
+        Self {
+            vector,
+            len: vector.len(),
+            i: 0_usize,
+        }
+    }
+}
+
+impl<'a> std::iter::Iterator for PathVectorIter<'a> {
+    type Item = &'a Path;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.i >= self.len {
+            None
+        } else {
+            let index = self.i;
+            self.i += 1;
+            Some(&self.vector[index])
+        }
     }
 }

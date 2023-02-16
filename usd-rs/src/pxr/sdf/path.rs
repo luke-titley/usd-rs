@@ -46,3 +46,13 @@ impl std::convert::TryFrom<&str> for Path {
         Ok(from_c_str(path_cstring.as_c_str()))
     }
 }
+
+impl std::fmt::Display for Path {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Ok(text) = self.get_text() {
+            write!(f, "{}", text)
+        } else {
+            write!(f, "<invalid path>")
+        }
+    }
+}
