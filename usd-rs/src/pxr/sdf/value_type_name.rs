@@ -13,9 +13,13 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct ValueTypeName as "pxr::SdfValueTypeName");
+cpp_class!(
+    pub unsafe struct ValueTypeName as "pxr::SdfValueTypeName"
+);
 
 impl ValueTypeName {
+    /// Returns the type name as a token.  This should not be used for
+    /// comparison purposes.
     pub fn get_as_token(&self) -> pxr::tf::Token {
         unsafe {
             cpp!([self as "const pxr::SdfValueTypeName *"]

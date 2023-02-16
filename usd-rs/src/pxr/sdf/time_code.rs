@@ -15,7 +15,13 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct TimeCode as "pxr::SdfTimeCode");
+cpp_class!(
+    /// Value type that represents a time code. It's equivalent to a double type
+    /// value but is used to indicate that this value should be resolved by any
+    /// time based value resolution.
+    ///
+    pub unsafe struct TimeCode as "pxr::SdfTimeCode"
+);
 
 impl From<f64> for TimeCode {
     fn from(t: f64) -> Self {
