@@ -14,9 +14,9 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-/// This is a reference to an asset path.
+/// This is a reference to an AssetPath.
 ///
-/// &AssetPathRef is to AssetPath, as &str is to String.
+/// &AssetPathRef is to [AssetPath], as &str is to String.
 ///
 #[repr(C, align(8))]
 pub struct AssetPathRef {
@@ -27,6 +27,7 @@ pub struct AssetPathRef {
 
 //------------------------------------------------------------------------------
 impl AssetPathRef {
+    /// Return the asset path as a &str
     pub fn get_asset_path(&self) -> pxr::Result<&str> {
         use std::os::raw::c_char;
 
@@ -40,6 +41,12 @@ impl AssetPathRef {
 
         Ok(result.to_str()?)
     }
+
+    /// Return the resolved asset path(as a &str) if any.
+    ///
+    /// Note that [AssetPath] carries a resolved path only if its creator
+    /// passed one to the constructor.  [AssetPath] never performs resolution
+    /// itself.
     pub fn get_resolved_path(&self) -> pxr::Result<&str> {
         use std::os::raw::c_char;
 
@@ -59,11 +66,18 @@ impl AssetPathRef {
 // AssetPathDescriptor
 //------------------------------------------------------------------------------
 pub struct AssetPathDescriptor<'a> {
+    /// The path to hold
     pub path: &'a str,
+    /// The resolved path, this is optional
     pub resolved_path: Option<&'a str>,
 }
 
 //------------------------------------------------------------------------------
+/// Contains an asset path and an optional resolved path.  Asset paths may
+/// contain non-control UTF-8 encoded characters.  Specifically, U+0000..U+001F
+/// (C0 controls), U+007F (delete), and U+0080..U+009F (C1 controls) are
+/// disallowed.  Attempts to construct asset paths with such characters will
+/// issue a TfError and produce the default-constructed empty asset path.
 #[repr(C, align(8))]
 pub struct AssetPath {
     _asset_path: *const AssetPathRef,
@@ -71,6 +85,13 @@ pub struct AssetPath {
 
 //------------------------------------------------------------------------------
 impl AssetPath {
+    /// Construct an asset path with `path` and an associated `resolvedPath`.
+    ///
+    /// If either the passed `path` or `resolvedPath` are not valid UTF-8 or
+    /// either contain C0 or C1 control characters, raise a TfError and return
+    /// the default-constructed empty asset path.
+    ///
+    /// The parameters are in [AssetPathDescriptor].
     pub fn new(desc: AssetPathDescriptor) -> pxr::Result<Self> {
         Ok(match desc {
             AssetPathDescriptor {
