@@ -13,7 +13,12 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct Value as "pxr::VtValue");
+cpp_class!(
+    /// Provides a container which may hold any type, and provides introspection
+    /// and iteration over array types.  See \a VtIsArray for more info.
+    ///
+    pub unsafe struct Value as "pxr::VtValue"
+);
 
 impl Value {
     pub fn new() -> Self {
@@ -24,6 +29,8 @@ impl Value {
         }
     }
 
+    /// Returns a &str so long as the Value contains a Unicode
+    /// string.
     pub fn try_as_ref(&self) -> pxr::Result<&str> {
         let result_cstr = unsafe {
             std::ffi::CStr::from_ptr(
