@@ -16,17 +16,17 @@ cpp! {{
 //------------------------------------------------------------------------------
 /// This is a reference to an asset path.
 ///
-/// &AsstPth is to AssetPath, as &str is to String.
+/// &AssetPathRef is to AssetPath, as &str is to String.
 ///
 #[repr(C, align(8))]
-pub struct AsstPth {
+pub struct AssetPathRef {
     // A private member stops users from being able to construct it without
     // Schema get_instance
     _priv: u8,
 }
 
 //------------------------------------------------------------------------------
-impl AsstPth {
+impl AssetPathRef {
     pub fn get_asset_path(&self) -> pxr::Result<&str> {
         use std::os::raw::c_char;
 
@@ -66,7 +66,7 @@ pub struct AssetPathDescriptor<'a> {
 //------------------------------------------------------------------------------
 #[repr(C, align(8))]
 pub struct AssetPath {
-    _asset_path: *const AsstPth,
+    _asset_path: *const AssetPathRef,
 }
 
 //------------------------------------------------------------------------------
@@ -115,15 +115,15 @@ impl Drop for AssetPath {
 }
 
 //------------------------------------------------------------------------------
-impl AsRef<AsstPth> for AssetPath {
-    fn as_ref(&self) -> &AsstPth {
+impl AsRef<AssetPathRef> for AssetPath {
+    fn as_ref(&self) -> &AssetPathRef {
         unsafe { &*(self._asset_path) }
     }
 }
 
 //------------------------------------------------------------------------------
 impl std::ops::Deref for AssetPath {
-    type Target = AsstPth;
+    type Target = AssetPathRef;
 
     fn deref(&self) -> &Self::Target {
         self.as_ref()

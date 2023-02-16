@@ -1020,19 +1020,19 @@ impl std::ops::IndexMut<usize> for ArrayToken {
 }
 
 #[repr(transparent)]
-pub struct Asset(pub crate::pxr::sdf::AsstPth);
+pub struct Asset(pub crate::pxr::sdf::AssetPathRef);
 
-impl From<&crate::pxr::sdf::AsstPth> for &Asset {
-    fn from(other: &crate::pxr::sdf::AsstPth) -> Self {
+impl From<&crate::pxr::sdf::AssetPathRef> for &Asset {
+    fn from(other: &crate::pxr::sdf::AssetPathRef) -> Self {
         unsafe {
-            &*((other as *const crate::pxr::sdf::AsstPth) as *const Asset)
+            &*((other as *const crate::pxr::sdf::AssetPathRef) as *const Asset)
         }
     }
 }
 
 cpp_class!(pub unsafe struct ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>");
 
-impl VtArray<crate::pxr::sdf::AsstPth> for ArrayAsset {
+impl VtArray<crate::pxr::sdf::AssetPathRef> for ArrayAsset {
     fn new() -> Self {
         unsafe {
             cpp!([] -> ArrayAsset as "pxr::VtArray<pxr::SdfAssetPath>" {
@@ -1063,7 +1063,7 @@ impl VtArray<crate::pxr::sdf::AsstPth> for ArrayAsset {
         }
     }
 
-    fn push_back(&mut self, elem: &crate::pxr::sdf::AsstPth) {
+    fn push_back(&mut self, elem: &crate::pxr::sdf::AssetPathRef) {
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
                   elem as "const pxr::SdfAssetPath *"] {
@@ -1074,7 +1074,7 @@ impl VtArray<crate::pxr::sdf::AsstPth> for ArrayAsset {
 }
 
 impl std::ops::Index<usize> for ArrayAsset {
-    type Output = crate::pxr::sdf::AsstPth;
+    type Output = crate::pxr::sdf::AssetPathRef;
     fn index(&self, index: usize) -> &Self::Output {
         // Bounds check
         if index >= self.size() {
@@ -1084,7 +1084,7 @@ impl std::ops::Index<usize> for ArrayAsset {
         unsafe {
             cpp!([self as "const pxr::VtArray<pxr::SdfAssetPath> *",
                   index as "size_t"]
-                -> * const crate::pxr::sdf::AsstPth as "const pxr::SdfAssetPath *" {
+                -> * const crate::pxr::sdf::AssetPathRef as "const pxr::SdfAssetPath *" {
                 return &self->operator[](index);
             })
             .as_ref()
@@ -1103,7 +1103,7 @@ impl std::ops::IndexMut<usize> for ArrayAsset {
         unsafe {
             cpp!([self as "pxr::VtArray<pxr::SdfAssetPath> *",
                   index as "size_t"]
-                -> * mut crate::pxr::sdf::AsstPth as "pxr::SdfAssetPath *" {
+                -> * mut crate::pxr::sdf::AssetPathRef as "pxr::SdfAssetPath *" {
                 return &self->operator[](index);
             })
             .as_mut()
