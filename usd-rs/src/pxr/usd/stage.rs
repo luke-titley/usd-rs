@@ -327,8 +327,9 @@ impl Stage {
     /// Writes out the composite scene as a single flattened layer into
     /// `filename`.
     ///
-    pub fn export(&self, file_path: &std::ffi::CStr) -> pxr::NoResult {
-        let file_path = file_path.as_ptr() as *const std::os::raw::c_char;
+    pub fn export(&self, file_path: &str) -> pxr::NoResult {
+        let file_path_str = std::ffi::CString::new(file_path)?;
+        let file_path = file_path_str.as_ptr() as *const std::os::raw::c_char;
 
         unsafe {
             cpp!([file_path as "const char *",
