@@ -120,3 +120,12 @@ impl AsRef<AsstPth> for AssetPath {
         unsafe { &*(self._asset_path) }
     }
 }
+
+//------------------------------------------------------------------------------
+impl std::ops::Deref for AssetPath {
+    type Target = AsstPth;
+
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
