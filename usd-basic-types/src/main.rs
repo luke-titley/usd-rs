@@ -41,44 +41,53 @@
 
 //use half::f16;
 
+/// Most types are specific, but some types
+/// quat4 and vec4 are ambigious.
+///
+/// This enum tells us this.
+enum Specificity {
+    Ambigious,
+    Specific,
+}
+
 /// The basic types supported by USD.
 /// At the moment rust-cpp doesnt allow us to embed the cpp! macro inside of
 /// other macros. So we have to perform the code generation of the AsRef and
 /// From trait implementations as a manual step. This isn't such a big deal
 /// as basic types are rarely added or removed.
 #[rustfmt::skip]
-const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 30] = [
-    ("Bool", "bool", "bool", None),
-    ("UChar", "u8", "uint8_t", None),
-    ("Int", "i32", "int32_t", None),
-    ("UInt", "u32", "uint32_t", None),
-    ("Int64", "i64", "int64_t", None),
-    ("UInt64", "u64", "uint64_t", None),
-    ("Half", "f16", "pxr::GfHalf", Some("pxr/base/gf/half.h")),
-    ("Float", "f32", "float", None),
-    ("Double", "f64", "double", None),
-    ("TimeCode", "crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/usd/sdf/timeCode.h")),
+const BASIC_TYPES: [(&str, &str, &str, Option<&str>, Specificity); 30] = [
+    ("Bool", "bool", "bool", None, Specificity::Specific),
+    ("UChar", "u8", "uint8_t", None, Specificity::Specific),
+    ("Int", "i32", "int32_t", None, Specificity::Specific),
+    ("UInt", "u32", "uint32_t", None, Specificity::Specific),
+    ("Int64", "i64", "int64_t", None, Specificity::Specific),
+    ("UInt64", "u64", "uint64_t", None, Specificity::Specific),
+    ("Half", "f16", "pxr::GfHalf", Some("pxr/base/gf/half.h"), Specificity::Specific),
+    ("Float", "f32", "float", None, Specificity::Specific),
+    ("Double", "f64", "double", None, Specificity::Specific),
+    ("TimeCode", "crate::pxr::sdf::TimeCode", "pxr::SdfTimeCode", Some("pxr/usd/sdf/timeCode.h"), Specificity::Specific),
     // string, std::string // Implemented manually, below.
-    ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h")),
-    ("Asset", "crate::pxr::sdf::AssetPathRef", "pxr::SdfAssetPath", Some("pxr/usd/sdf/assetPath.h")),
-    ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h")),
-    ("Matrix3d", "[f64;3*3]", "pxr::GfMatrix3d", Some("pxr/base/gf/matrix3d.h")),
-    ("Matrix4d", "[f64;4*4]", "pxr::GfMatrix4d", Some("pxr/base/gf/matrix4d.h")),
-    ("Quatd", "[f64;4]", "pxr::GfQuatd", Some("pxr/base/gf/quatd.h")),
-    ("Quatf", "[f32;4]","pxr::GfQuatf", Some("pxr/base/gf/quatf.h")),
-    ("Quath", "[f16;4]", "pxr::GfQuath", Some("pxr/base/gf/quath.h")),
-    ("Vec2d", "[f64;2]", "pxr::GfVec2d", Some("pxr/base/gf/vec2d.h")),
-    ("Vec2f", "[f32;2]", "pxr::GfVec2f", Some("pxr/base/gf/vec2f.h")),
-    ("Vec2h", "[f16;2]", "pxr::GfVec2h", Some("pxr/base/gf/vec2h.h")),
-    ("Vec2i", "[i32;2]", "pxr::GfVec2i", Some("pxr/base/gf/vec2i.h")),
-    ("Vec3d", "[f64;3]", "pxr::GfVec3d", Some("pxr/base/gf/vec3d.h")),
-    ("Vec3f", "[f32;3]", "pxr::GfVec3f", Some("pxr/base/gf/vec3f.h")),
-    ("Vec3h", "[f16;3]", "pxr::GfVec3h", Some("pxr/base/gf/vec3h.h")),
-    ("Vec3i", "[i32;3]", "pxr::GfVec3i", Some("pxr/base/gf/vec3i.h")),
-    ("Vec4d", "[f64;4]", "pxr::GfVec4d", Some("pxr/base/gf/vec4d.h")),
-    ("Vec4f", "[f32;4]", "pxr::GfVec4f", Some("pxr/base/gf/vec4f.h")),
-    ("Vec4h", "[f16;4]", "pxr::GfVec4h", Some("pxr/base/gf/vec4h.h")),
-    ("Vec4i", "[i32;4]", "pxr::GfVec4i", Some("pxr/base/gf/vec4i.h")),
+    ("Token", "crate::pxr::tf::Token", "pxr::TfToken", Some("pxr/base/tf/token.h"), Specificity::Specific),
+    ("Asset", "crate::pxr::sdf::AssetPathRef", "pxr::SdfAssetPath", Some("pxr/usd/sdf/assetPath.h"), Specificity::Specific),
+    ("Matrix2d", "[f64;2*3]", "pxr::GfMatrix2d", Some("pxr/base/gf/matrix2d.h"), Specificity::Specific),
+    ("Matrix3d", "[f64;3*3]", "pxr::GfMatrix3d", Some("pxr/base/gf/matrix3d.h"), Specificity::Specific),
+    ("Matrix4d", "[f64;4*4]", "pxr::GfMatrix4d", Some("pxr/base/gf/matrix4d.h"), Specificity::Specific),
+    ("Quatd", "[f64;4]", "pxr::GfQuatd", Some("pxr/base/gf/quatd.h"), Specificity::Ambigious),
+    ("Quatf", "[f32;4]","pxr::GfQuatf", Some("pxr/base/gf/quatf.h"), Specificity::Ambigious),
+    ("Quath", "[f16;4]", "pxr::GfQuath", Some("pxr/base/gf/quath.h"), Specificity::Ambigious),
+    ("Vec2d", "[f64;2]", "pxr::GfVec2d", Some("pxr/base/gf/vec2d.h"), Specificity::Specific),
+    ("Vec2f", "[f32;2]", "pxr::GfVec2f", Some("pxr/base/gf/vec2f.h"), Specificity::Specific),
+    ("Vec2h", "[f16;2]", "pxr::GfVec2h", Some("pxr/base/gf/vec2h.h"), Specificity::Specific),
+    ("Vec2i", "[i32;2]", "pxr::GfVec2i", Some("pxr/base/gf/vec2i.h"), Specificity::Specific),
+    ("Vec3d", "[f64;3]", "pxr::GfVec3d", Some("pxr/base/gf/vec3d.h"), Specificity::Specific),
+    ("Vec3f", "[f32;3]", "pxr::GfVec3f", Some("pxr/base/gf/vec3f.h"), Specificity::Specific),
+    ("Vec3h", "[f16;3]", "pxr::GfVec3h", Some("pxr/base/gf/vec3h.h"), Specificity::Specific),
+    ("Vec3i", "[i32;3]", "pxr::GfVec3i", Some("pxr/base/gf/vec3i.h"), Specificity::Specific),
+    ("Vec4d", "[f64;4]", "pxr::GfVec4d", Some("pxr/base/gf/vec4d.h"), Specificity::Specific),
+    ("Vec4f", "[f32;4]", "pxr::GfVec4f", Some("pxr/base/gf/vec4f.h"), Specificity::Ambigious),
+    ("Vec4h", "[f16;4]", "pxr::GfVec4h", Some("pxr/base/gf/vec4h.h"), Specificity::Ambigious),
+    ("Vec4i", "[i32;4]", "pxr::GfVec4i", Some("pxr/base/gf/vec4i.h"), Specificity::Ambigious),
 ];
 
 /// Generate the code needed to get/set the basic types, using a vt::Value.
@@ -87,13 +96,13 @@ const BASIC_TYPES: [(&str, &str, &str, Option<&str>); 30] = [
 fn generate_basic_types() {
     let headers: std::string::String = BASIC_TYPES
         .iter()
-        .filter(|(_, _, _, x)| x.is_some())
-        .map(|(_, _, _, x)| format!("    #include \"{}\"\n", x.unwrap()))
+        .filter(|(_, _, _, x,_)| x.is_some())
+        .map(|(_, _, _, x,_)| format!("    #include \"{}\"\n", x.unwrap()))
         .collect();
 
     let names: std::string::String = BASIC_TYPES
         .iter()
-        .map(|(name, typ, cpp_type, _)| {
+        .map(|(name, typ, cpp_type, _, _)| {
             format!(
                 "#[repr(transparent)]
 pub struct {name}(pub {typ});
@@ -253,7 +262,7 @@ impl std::convert::TryFrom<&str> for Value {{
         names = &names,
     );
 
-    for (name, _, c, _) in BASIC_TYPES.iter() {
+    for (name, _, c, _, _) in BASIC_TYPES.iter() {
         println!(
             r#"
 // Scalar
