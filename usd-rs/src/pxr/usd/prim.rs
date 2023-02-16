@@ -199,7 +199,7 @@ impl Prim {
     /// Suggested use:
     ///
     /// ```ignore
-    /// if let Some(myAttr) = prim.get_attribute("myAttr") {
+    /// if let Some(myAttr) = prim.get_attribute(Token::try_from("myAttr")?) {
     ///    // myAttr is safe to use.
     ///    // Edits to the owning stage requires subsequent validation.
     /// } else {
