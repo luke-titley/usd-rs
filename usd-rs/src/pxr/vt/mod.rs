@@ -21,11 +21,9 @@
 //! The VtArray interface on the Rust side is implemented as a set of typed
 //! array classes (for example, ArrayBool, ArrayString, ArrayVec4d).
 
-mod array;
 mod basic_types;
 mod value;
 
 //------------------------------------------------------------------------------
-pub use array::*;
 pub use basic_types::*;
 pub use value::*;
