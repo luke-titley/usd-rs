@@ -58,6 +58,12 @@ impl std::ops::Index<usize> for AttributeVectorRef {
 
 //------------------------------------------------------------------------------
 /// A contiguous block of [Attribute]s
+///
+/// ```ignore
+/// for attr in prim.get_attributes.iter() {
+///     println!("{}", attr.get_name()?)
+/// }
+/// ```
 #[repr(C, align(8))]
 pub struct AttributeVector {
     reference: *mut RefType,
