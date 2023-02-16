@@ -386,7 +386,7 @@ impl Stage {
     ///
     /// ```ignore
     /// for prim in stage.traverse()? {
-    ///     println!("{}", prim.get_name()?.get_text()?);
+    ///     println!("{}", prim.get_name()?);
     /// }
     /// ```
     pub fn traverse(&self) -> pxr::Result<PrimRange> {
