@@ -25,3 +25,13 @@ impl ValueTypeName {
         }
     }
 }
+
+impl std::fmt::Display for ValueTypeName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Ok(text) = self.get_as_token().get_text() {
+            write!(f, "{}", text)
+        } else {
+            write!(f, "<invalid value type name>")
+        }
+    }
+}
