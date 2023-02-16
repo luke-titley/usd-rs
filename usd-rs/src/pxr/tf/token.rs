@@ -93,3 +93,13 @@ impl std::convert::TryFrom<&str> for Token {
         Ok(from_c_str(value_cstring.as_c_str()))
     }
 }
+
+impl std::fmt::Display for Token {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Ok(text) = self.get_text() {
+            write!(f, "{}", text)
+        } else {
+            write!(f, "<invalid token>")
+        }
+    }
+}
