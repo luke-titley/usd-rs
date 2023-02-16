@@ -15,8 +15,8 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-// We dont care how big the Schema struct is, because we only ever use it as
-// a reference. It's a singleton so the memory is all internal to usd.
+/// Provides information about the various scene description fields.
+///
 #[repr(C, align(8))]
 pub struct Schema {
     // A private member stops users from being able to construct it without
@@ -25,6 +25,7 @@ pub struct Schema {
 }
 
 impl Schema {
+    /// Schema is a singleton. This retrieves it.
     pub fn get_instance() -> &'static Schema {
         unsafe {
             cpp!([] -> & Schema as "const pxr::SdfSchema*" {
@@ -33,6 +34,7 @@ impl Schema {
         }
     }
 
+    /// Return the type name object for the given type name token.
     pub fn find_type(&self, type_name: &tf::Token) -> ValueTypeName {
         unsafe {
             cpp!([self as "const pxr::SdfSchema*", type_name as "pxr::TfToken*"]
