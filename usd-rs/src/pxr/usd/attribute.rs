@@ -37,7 +37,7 @@ impl Attribute {
     /// return false and generate an error if type if value does not match
     /// this attribute's defined scene description type __exactly__,
     /// or if there is no existing definition for the attribute.
-    pub fn set(&self, value: &vt::Value, time: TimeCode) {
+    pub fn set_value(&self, value: &vt::Value, time: TimeCode) {
         unsafe {
             cpp!([self as "const pxr::UsdAttribute *",
                   value as "const pxr::VtValue*",
@@ -74,7 +74,7 @@ impl Attribute {
     /// For more details, see Usd_ValueResolution , and also
     /// Usd_AssetPathValuedAttributes for information on how to
     /// retrieve resolved asset paths from sdf.AssetPath valued attributes.
-    pub fn get(&self, value: &mut vt::Value, time: TimeCode) {
+    pub fn get_value(&self, value: &mut vt::Value, time: TimeCode) {
         unsafe {
             cpp!([self as "const pxr::UsdAttribute *",
                   value as "pxr::VtValue*",
@@ -82,6 +82,22 @@ impl Attribute {
                 self->Get(value, time);
             })
         }
+    }
+
+    /// This is the generic form of [Attribute::set_value]
+    pub fn set<V: std::convert::TryInto<vt::Value>>(
+        &self,
+        value: V,
+        time: TimeCode,
+    ) -> pxr::NoResult {
+        if let Ok(vt_value) = value.try_into() {
+            self.set_value(&vt_value, time);
+        } else {
+            println!("Unable to convert type into vt::Value")
+        }
+        // TODO LT: Handle the error properly
+
+        Ok(())
     }
 
     /// Return the full name of this object, i.e. the last component of its

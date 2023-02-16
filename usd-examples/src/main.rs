@@ -72,8 +72,8 @@ fn array_attributes() -> pxr::NoResult {
     array.push_back(&3);
     let mut _value = vt::Value::from(&array);
 
-    attr.set(&_value, TimeCode::default());
-    attr.get(&mut _value, TimeCode::default());
+    attr.set(&array, TimeCode::default());
+    attr.get_value(&mut _value, TimeCode::default());
 
     stage.save()?;
 

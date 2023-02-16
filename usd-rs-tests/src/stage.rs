@@ -90,13 +90,11 @@ mod tests {
                 .find_type(&tf::Token::try_from("bool")?),
         });
 
-        attr.set(
-            &vt::Value::from(<&vt::Bool>::from(&true)),
-            TimeCode::default(),
-        );
+        let value = <&vt::Bool>::from(&true);
+        attr.set(value, TimeCode::default());
 
         let mut value = vt::Value::default();
-        attr.get(&mut value, TimeCode::default());
+        attr.get_value(&mut value, TimeCode::default());
 
         let result: &vt::Bool = value.as_ref();
         println!("The attribute value is {}", result.0);
@@ -122,13 +120,12 @@ mod tests {
                 .find_type(&tf::Token::try_from("string")?),
         });
 
-        attr.set(
-            &vt::Value::try_from("this is a string")?,
-            TimeCode::default(),
-        );
+        attr.set("this is a string", TimeCode::default());
+
+        attr.set("this is a string", TimeCode::default());
 
         let mut value = vt::Value::default();
-        attr.get(&mut value, TimeCode::default());
+        attr.get_value(&mut value, TimeCode::default());
 
         let result: &str = value.try_as_ref()?;
         println!("The attribute value is {}", result);
@@ -154,19 +151,18 @@ mod tests {
                 .find_type(&tf::Token::try_from("asset")?),
         });
 
-        attr.set(
-            &vt::Value::from(<&vt::Asset>::from(
-                sdf::AssetPath::new(sdf::AssetPathDescriptor {
-                    path: "/root/show/asset.abc",
-                    resolved_path: None,
-                })?
-                .as_ref(),
-            )),
-            TimeCode::default(),
+        let asset = <&vt::Asset>::from(
+            sdf::AssetPath::new(sdf::AssetPathDescriptor {
+                path: "/root/show/asset.abc",
+                resolved_path: None,
+            })?
+            .as_ref(),
         );
 
+        attr.set(asset, TimeCode::default());
+
         let mut value = vt::Value::default();
-        attr.get(&mut value, TimeCode::default());
+        attr.get_value(&mut value, TimeCode::default());
 
         let result: &vt::Asset = value.as_ref();
         println!("The attribute value is '{}'", result.0.get_asset_path()?);
@@ -200,7 +196,7 @@ mod tests {
             "set_array_float_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
@@ -217,8 +213,8 @@ mod tests {
         array.push_back(&3.0);
         let mut _value = vt::Value::from(&array);
 
-        attr.set(&_value, TimeCode::default());
-        attr.get(&mut _value, TimeCode::default());
+        attr.set(&array, TimeCode::default());
+        attr.get_value(&mut _value, TimeCode::default());
 
         stage.save()?;
 
@@ -231,7 +227,7 @@ mod tests {
             "set_array_bool_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
@@ -246,10 +242,11 @@ mod tests {
         array.push_back(&true);
         array.push_back(&false);
         array.push_back(&true);
-        let mut _value = vt::Value::from(&array);
 
-        attr.set(&_value, TimeCode::default());
-        attr.get(&mut _value, TimeCode::default());
+        attr.set(&array, TimeCode::default());
+
+        let mut _value = vt::Value::from(&array);
+        attr.get_value(&mut _value, TimeCode::default());
 
         stage.save()?;
 
@@ -262,7 +259,7 @@ mod tests {
             "set_array_int_attribute_prim.usda",
         ))?;
         let prim = stage.define_prim(
-            &sdf::Path::try_from("/root/world/test").unwrap(),
+            &sdf::Path::try_from("/root/world/test")?,
             &tf::Token::default(),
         )?;
 
@@ -279,8 +276,8 @@ mod tests {
         array.push_back(&3);
         let mut _value = vt::Value::from(&array);
 
-        attr.set(&_value, TimeCode::default());
-        attr.get(&mut _value, TimeCode::default());
+        attr.set(&array, TimeCode::default());
+        attr.get_value(&mut _value, TimeCode::default());
 
         stage.save()?;
 
