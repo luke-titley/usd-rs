@@ -26,6 +26,10 @@ type RefType = PrimvarRef;
 
 //------------------------------------------------------------------------------
 impl PrimvarRef {
+    /// Return the Primvar's interpolation.
+    ///
+    /// Interpolation determines how the Primvar interpolates over
+    /// a geometric primitive.
     pub fn get_interpolation(&self) -> tf::Token {
         unsafe {
             cpp!([self as "pxr::UsdGeomPrimvar*"]
@@ -37,6 +41,14 @@ impl PrimvarRef {
 }
 
 //------------------------------------------------------------------------------
+/// Schema wrapper for usd.Attribute for authoring and introspecting attributes
+/// that are primvars.
+///
+/// Primvar provides API for authoring and retrieving the
+/// additional data required to encode an attribute as a "Primvar",
+/// which is a convenient contraction of RenderMan's "Primitive Variable"
+/// concept, which is represented in Alembic as
+/// "arbitrary geometry parameters" (arbGeomParams).
 #[repr(C, align(8))]
 pub struct Primvar {
     reference: *mut RefType,

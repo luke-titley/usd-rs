@@ -25,7 +25,16 @@ type RefType = XformCacheRef;
 
 //------------------------------------------------------------------------------
 impl XformCacheRef {
-    pub fn get_local_to_world_transform(&self, prim: &Prim) -> vt::Matrix4d {
+    /// Compute the transformation matrix for the given \p prim, including the
+    /// transform authored on the Prim itself, if present.
+    ///
+    /// # Note
+    /// This method may mutate internal cache state and is not thread
+    /// safe.
+    pub fn get_local_to_world_transform(
+        &mut self,
+        prim: &Prim,
+    ) -> vt::Matrix4d {
         unsafe {
             cpp!([self as "pxr::UsdGeomXformCache*",
                 prim as "pxr::UsdPrim*"]
@@ -37,6 +46,19 @@ impl XformCacheRef {
 }
 
 //------------------------------------------------------------------------------
+/// A caching mechanism for transform matrices. For best performance, this
+/// object should be reused for multiple CTM queries.
+///
+/// Instances of this type can be copied, though using Swap() may result in
+/// better performance.
+///
+/// It is valid to cache prims from multiple stages in a single XformCache.
+///
+/// # WARNING
+/// This class does not automatically invalidate cached values based
+/// on changes to the stage from which values were cached. Additionally, a
+/// separate instance of this class should be used per-thread, calling the Get*
+/// methods from multiple threads is not safe, as they mutate internal state.
 #[repr(C, align(8))]
 pub struct XformCache {
     reference: *mut RefType,

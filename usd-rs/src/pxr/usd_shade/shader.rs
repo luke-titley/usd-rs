@@ -11,7 +11,17 @@ cpp! {{
 }}
 
 //------------------------------------------------------------------------------
-cpp_class!(pub unsafe struct Shader as "pxr::UsdShadeShader");
+cpp_class!(
+/// Base class for all USD shaders. Shaders are the building blocks
+/// of shading networks. While UsdShadeShader objects are not target specific,
+/// each renderer or application target may derive its own renderer-specific
+/// shader object types from this base, if needed.
+///
+/// Objects of this class generally represent a single shading object, whether
+/// it exists in the target renderer or not. For example, a texture, a fractal,
+/// or a mix node.
+    pub unsafe struct Shader as "pxr::UsdShadeShader"
+);
 
 impl Shader {
     pub fn new(prim: &Prim) -> Shader {
@@ -23,6 +33,7 @@ impl Shader {
         }
     }
 
+    /// Return this schema object's held prim.
     pub fn get_prim(&self) -> Prim {
         unsafe {
             cpp!([self as "pxr::UsdShadeShader*"]
