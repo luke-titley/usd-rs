@@ -1,3 +1,12 @@
 [submodule "usd-cpp/thirdparty/USD"]
 	path = usd-cpp/thirdparty/USD
 	url = https://github.com/PixarAnimationStudios/USD.git
+[submodule "usd-cpp/thirdparty/boost"]
+	path = usd-cpp/thirdparty/boost
+	url = https://github.com/boostorg/boost.git
+[submodule "usd-cpp/thirdparty/oneTBB"]
+	path = usd-cpp/thirdparty/oneTBB
+	url = https://github.com/oneapi-src/oneTBB.git
+[submodule "usd-cpp/thirdparty/CMake"]
+	path = usd-cpp/thirdparty/CMake
+	url = https://github.com/Kitware/CMake.git
