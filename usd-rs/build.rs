@@ -42,14 +42,16 @@ fn main() {
     } else {
         // Explicitly link to the usd cpp library. This should propagate upwards
         // to other libraries
-        println!("cargo:rustc-link-lib={}", usd_cpp::LIB);
-        println!("cargo:rustc-link-search={}", usd_cpp::LIBS);
+        for lib in usd_cpp::LIBS {
+            println!("cargo:rustc-link-lib={}", lib);
+        }
+        println!("cargo:rustc-link-search={}", usd_cpp::LIB_DIR);
 
-        //panic!("cargo:rustc-link-libs={}", usd_cpp::LIBS);
+        //panic!("cargo:rustc-link-libs={}", usd_cpp::LIB_DIR);
 
         // Handle the embedded c++ code
         cpp_build::Config::new()
-            .include(usd_cpp::INCLUDE)
+            .include(usd_cpp::INCLUDE_DIR)
             .flag("-std=c++14")
             .build("src/lib.rs");
     }

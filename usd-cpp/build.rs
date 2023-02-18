@@ -69,9 +69,9 @@ fn write_lib_info(out_dir: &std::path::PathBuf, info: [std::path::PathBuf; 3]) {
     write!(
         std::fs::File::create(locations_path).unwrap(),
         "\
-pub const INCLUDE : &str = \"{}\"; \n\
-pub const LIBS : &str = \"{}\"; \n\
-pub const LIB : &str = \"{}\"; \n\
+pub const INCLUDE_DIR : &str = \"{}\"; \n\
+pub const LIB_DIR : &str = \"{}\"; \n\
+pub const LIBS : &[&str] = &[\"{}\"]; \n\
 ",
         info[0].to_str().unwrap(),
         info[1].to_str().unwrap(),
@@ -87,9 +87,9 @@ fn write_stub_lib_info(out_dir: &std::path::PathBuf) {
     write!(
         std::fs::File::create(locations_path).unwrap(),
         "\
-pub const INCLUDE : &str = \"\"; \n\
-pub const LIBS : &str = \"\"; \n\
-pub const LIB : &str = \"\"; \n\
+pub const INCLUDE_DIR : &str = \"\"; \n\
+pub const LIB_DIR : &str = \"\"; \n\
+pub const LIBS : &[&str] = [\"\"]; \n\
 "
     );
 }
@@ -102,11 +102,12 @@ fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::PathBuf) {
     write!(
         std::fs::File::create(locations_path).unwrap(),
         "\
-pub const INCLUDE : &str = \"{0}/include\"; \n\
-pub const LIBS : &str = \"{0}/lib\"; \n\
-pub const LIB : &str = \"usd_ms\"; \n\
+pub const INCLUDE_DIR : &str = \"{0}/include\"; \n\
+pub const LIB_DIR : &str = \"{0}/lib\"; \n\
+pub const LIBS : &[&str] = &{1}; \n\
 ",
-        usd_root
+        usd_root,
+        stringify!(["usd_usd", "usd_sdf", "usd_vt", "usd_gf", "usd_tf"])
     );
 }
 
