@@ -29,20 +29,13 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
 
     assert!(success.success(), "Unable to build tbb");
 
+    // Move the static library
     let mut tbb_built_lib = tbb_root.clone();
     tbb_built_lib.push("build");
     tbb_built_lib.push("lib_release");
     tbb_built_lib.push("libtbb.a");
     std::fs::rename(tbb_built_lib, tbb_lib)
         .expect("Unable to move tbb lib out");
-
-    println!("cargo:warning=Install tbb to {}", get_outdir().display())
-
-    //println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
-    //println!(
-    //    "cargo:rustc-link-search=native={}",
-    //    lib_dir.to_str().unwrap()
-    //);
 }
 
 fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
