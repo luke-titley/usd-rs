@@ -8,8 +8,8 @@ fn get_outdir() -> std::path::PathBuf {
 }
 
 fn build_tbb(thirdparty: &std::path::PathBuf) {
-    let mut tbb_lib = get_outdir().clone();
-    tbb_lib.push("libtbb.a");
+    let mut lib_dir = get_outdir().clone();
+    lib_dir.push("lib");
 
     // thirdparty
     let mut tbb_root = thirdparty.clone();
@@ -27,15 +27,16 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
         .status()
         .expect("Failed to run make for tbb");
 
+    println!("cargo:rerun-if-changed={}", tbb_root.display());
+
     assert!(success.success(), "Unable to build tbb");
 
     // Move the static library
-    let mut tbb_built_lib = tbb_root.clone();
-    tbb_built_lib.push("build");
-    tbb_built_lib.push("lib_release");
-    tbb_built_lib.push("libtbb.a");
-    std::fs::rename(tbb_built_lib, tbb_lib)
-        .expect("Unable to move tbb lib out");
+    let mut tbb_lib_dir = tbb_root.clone();
+    tbb_lib_dir.push("build");
+    tbb_lib_dir.push("lib_release");
+    std::fs::rename(tbb_lib_dir, lib_dir)
+        .expect("Unable to move tbb libs out");
 }
 
 fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
