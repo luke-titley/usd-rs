@@ -6,16 +6,9 @@ edition = "2018"
 license = "Apache-2.0"
 description = "Downloads and builds the cpp shared libraries for USD, see usd-rs"
 repository = "https://github.com/luke-titley/usd-rs"
-exclude = [
-    "*testenv*",
-    "*.exr",
-    "*.usdc",
-    "*.usd",
-    #"*.usda",
-    #"thirdparty/USD/extras",
-]
+exclude = []
 
-[lib]
-crate-type = ["rlib", "dylib"]
+[build-dependencies]
+cmake = "0.1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
