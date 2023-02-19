@@ -18,7 +18,7 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
     tbb_src.push("src");
 
     let success = Command::new("make")
-        .arg("release")
+        .arg("tbb")
         .arg("extra_inc=big_iron.inc")
         .arg("-j12")
         .arg(format!("tbb_root={}", tbb_root.display()))
