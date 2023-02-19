@@ -1,18 +1,18 @@
 use std::io::prelude::*;
 use std::process::Command;
 
-fn build_tbb(thirdparty: &PathBuf) -> PathBuf {
+fn build_tbb(thirdparty: &std::path::PathBuf) -> std::path::PathBuf {
     // thirdparty
     let mut tbb_src = thirdparty.clone();
     tbb_src.push("oneTBB");
 
-    println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
-    println!(
-        "cargo:rustc-link-search=native={}",
-        lib_dir.to_str().unwrap()
-    );
+    //println!("cargo:rustc-link-lib={}", lib.to_str().unwrap());
+    //println!(
+    //    "cargo:rustc-link-search=native={}",
+    //    lib_dir.to_str().unwrap()
+    //);
 
-    [include_dir, lib_dir, lib]
+    tbb_src
 }
 
 fn build_cpp(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
@@ -26,8 +26,8 @@ fn build_cpp(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     // Empty stub paths for the moment
     let include_dir = std::path::PathBuf::new();
-    lib_dir = std::path::PathBuf::new();
-    lib = std::path::PathBuf::new();
+    let lib_dir = std::path::PathBuf::new();
+    let lib = std::path::PathBuf::new();
 
     [include_dir, lib_dir, lib]
 }
