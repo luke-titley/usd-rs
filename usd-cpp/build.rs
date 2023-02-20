@@ -8,10 +8,14 @@ fn get_outdir() -> std::path::PathBuf {
 }
 
 fn build_tbb(thirdparty: &std::path::PathBuf) {
-    let mut tbb_lib = get_outdir().clone();
+    let mut out_lib = get_outdir().clone();
+    out_lib.push("lib");
+    std::fs::create_dir_all(&out_lib);
+
+    let mut tbb_lib = out_lib.clone();
     tbb_lib.push("libtbb.a");
 
-    // thirdparty
+    // tbb root
     let mut tbb_root = thirdparty.clone();
     tbb_root.push("oneTBB");
     let mut tbb_src = tbb_root.clone();
@@ -27,7 +31,7 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
         .status()
         .expect("Failed to run make for tbb");
 
-    println!("cargo:rerun-if-changed={}", tbb_root.display());
+    //println!("cargo:rerun-if-changed={}", tbb_root.display());
 
     assert!(success.success(), "Unable to build tbb");
 
@@ -40,6 +44,86 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
         .expect("Unable to move tbb lib out");
 }
 
+fn build_boost(thirdparty: &std::path::PathBuf) {
+    let mut out_include = get_outdir().clone();
+    out_include.push("include");
+    out_include.push("boost");
+
+    std::fs::create_dir_all(&out_include);
+
+    // boost root
+    let mut boost_root = thirdparty.clone();
+    boost_root.push("boost");
+
+    // Include these boost libraries
+    let libraries = [
+        "any",
+        "assign",
+        "bind",
+        "container",
+        "crc",
+        "detail",
+        "function",
+        "functional",
+        "iterator",
+        "mpl",
+        "multi_index",
+        "optional",
+        "preprocessor",
+        "ptr_container",
+        "python",
+        "random",
+        "range",
+        "smart_ptr",
+        "type_traits",
+        "utility",
+        "variant",
+        "vmd",
+    ];
+
+    //"cstdint",
+    //"noncopyable",
+    //"none",
+    //"numeric",
+    //"operators",
+    //"version",
+
+    // Loop over the libries we want to copy over
+    let mut boost_lib = boost_root.clone();
+    boost_lib.push("libs");
+
+    let mut libs_to_copy = Vec::new();
+    for name in libraries.iter() {
+        let mut path = boost_lib.clone();
+        path.push(name);
+        path.push("include");
+        path.push("boost");
+
+        println!("cargo:warning=Path {}", path.display());
+
+        // Loop over all the folders in that directory
+        for item in std::fs::read_dir(path).unwrap() {
+            let item_path = item.unwrap().path();
+
+            //println!("cargo:warning=    Path {}", item_path.display());
+
+            libs_to_copy.push(item_path);
+        }
+    }
+
+    let options = fs_extra::dir::CopyOptions {
+        overwrite: false,
+        skip_exist: true,
+        buffer_size: 1024,
+        copy_inside: true,
+        content_only: false,
+        depth: 128,
+    };
+    fs_extra::copy_items(&libs_to_copy, out_include, &options);
+}
+
+fn build_usd(thirdparty: &std::path::PathBuf) {}
+
 fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // thirdparty
     let mut thirdparty = std::path::PathBuf::from(
@@ -47,7 +131,9 @@ fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     );
     thirdparty.push("thirdparty");
 
-    build_tbb(&thirdparty);
+    //build_tbb(&thirdparty);
+    build_boost(&thirdparty);
+    //build_usd(&thirdparty);
 
     // Empty stub paths for the moment
     let include_dir = std::path::PathBuf::new();
@@ -72,7 +158,8 @@ pub const LIB : &str = \"{}\"; \n\
         info[0].to_str().unwrap(),
         info[1].to_str().unwrap(),
         info[2].to_str().unwrap(),
-    ).unwrap();
+    )
+    .unwrap();
 }
 
 fn write_stub_lib_info(out_dir: &std::path::PathBuf) {
@@ -87,7 +174,8 @@ pub const INCLUDE : &str = \"\"; \n\
 pub const LIBS : &str = \"\"; \n\
 pub const LIB : &str = \"\"; \n\
 "
-    ).unwrap();
+    )
+    .unwrap();
 }
 
 fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::PathBuf) {
@@ -103,7 +191,8 @@ pub const LIBS : &str = \"{0}/lib\"; \n\
 pub const LIB : &str = \"usd_ms\"; \n\
 ",
         usd_root
-    ).unwrap();
+    )
+    .unwrap();
 }
 
 fn main() {
