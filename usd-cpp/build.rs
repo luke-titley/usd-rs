@@ -10,7 +10,12 @@ fn get_outdir() -> std::path::PathBuf {
 fn build_tbb(thirdparty: &std::path::PathBuf) {
     let mut out_lib = get_outdir().clone();
     out_lib.push("lib");
+
+    let mut out_include = get_outdir().clone();
+    out_include.push("include");
+
     std::fs::create_dir_all(&out_lib);
+    std::fs::create_dir_all(&out_include);
 
     let mut tbb_lib = out_lib.clone();
     tbb_lib.push("libtbb.a");
@@ -42,9 +47,38 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
     tbb_built_lib.push("libtbb.a");
     std::fs::rename(tbb_built_lib, tbb_lib)
         .expect("Unable to move tbb lib out");
+
+    // Include these boost libraries
+    let libraries = ["tbb", "serial"];
+
+    // Loop over the libries we want to copy over
+    let mut tbb_include = tbb_root.clone();
+    tbb_include.push("include");
+
+    let mut libs_to_copy = Vec::new();
+    for name in libraries.iter() {
+        let mut path = tbb_include.clone();
+        path.push(name);
+
+        println!("cargo:warning=Path {}", path.display());
+
+        libs_to_copy.push(path);
+    }
+
+    let options = fs_extra::dir::CopyOptions {
+        overwrite: false,
+        skip_exist: true,
+        buffer_size: 1024,
+        copy_inside: true,
+        content_only: false,
+        depth: 128,
+    };
+    fs_extra::copy_items(&libs_to_copy, out_include, &options);
+
+    // Copy the cmake module
 }
 
-fn build_boost(thirdparty: &std::path::PathBuf) {
+fn build_boost_old(thirdparty: &std::path::PathBuf) {
     let mut out_include = get_outdir().clone();
     out_include.push("include");
     out_include.push("boost");
@@ -122,7 +156,48 @@ fn build_boost(thirdparty: &std::path::PathBuf) {
     fs_extra::copy_items(&libs_to_copy, out_include, &options);
 }
 
-fn build_usd(thirdparty: &std::path::PathBuf) {}
+fn build_boost(thirdparty: &std::path::PathBuf) {
+    let mut outdir = get_outdir().clone();
+
+    // boost root
+    let mut boost_root = thirdparty.clone();
+    boost_root.push("boost");
+
+    cmake::Config::new(boost_root)
+        .build();
+}
+
+fn build_usd(thirdparty: &std::path::PathBuf) {
+    let mut outdir = get_outdir();
+
+    let mut usd_root = thirdparty.clone();
+    usd_root.push("USD");
+
+    /*
+        cmake                                       \
+        -DTBB_ROOT_DIR=/path/to/tbb                 \
+        -DBOOST_ROOT=/path/to/boost                 \
+        -DPXR_ENABLE_PTEX_SUPPORT=FALSE
+        -DPXR_BUILD_IMAGING=FALSE
+        -DPXR_ENABLE_PYTHON_SUPPORT=FALSE
+        -DPXR_ENABLE_GL_SUPPORT=FALSE
+        -DPXR_ENABLE_METAL_SUPPORT=FALSE
+        -DPXR_BUILD_TESTS=FALSE
+        -DCMAKE_INSTALL_PREFIX
+        /path/to/USD/source
+
+    cmake --build . --target install -- -j <NUM_CORES>
+        */
+
+    cmake::Config::new(usd_root)
+        .define("TBB_ROOT_DIR", outdir.display().to_string())
+        .define("BOOST_ROOT", outdir.display().to_string())
+        .define("PXR_ENABLE_PTEX_SUPPORT", "FALSE")
+        .define("PXR_BUILD_IMAGING", "FALSE")
+        .define("PXR_ENABLE_PYTHON_SUPPORT", "FALSE")
+        .define("PXR_BUILD_TESTS", "FALSE")
+        .build();
+}
 
 fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // thirdparty
@@ -131,9 +206,9 @@ fn build_cpp(_out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     );
     thirdparty.push("thirdparty");
 
-    //build_tbb(&thirdparty);
+    build_tbb(&thirdparty);
     build_boost(&thirdparty);
-    //build_usd(&thirdparty);
+    build_usd(&thirdparty);
 
     // Empty stub paths for the moment
     let include_dir = std::path::PathBuf::new();
