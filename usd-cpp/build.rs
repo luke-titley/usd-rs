@@ -28,7 +28,7 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
 
     let success = Command::new("make")
         .arg("tbb")
-        .arg("extra_inc=big_iron.inc")
+        //.arg("extra_inc=big_iron.inc")
         .arg("-j12")
         .arg(format!("tbb_root={}", tbb_root.display()))
         .arg(format!("tbb_build_prefix=lib"))
@@ -44,7 +44,7 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
     let mut tbb_built_lib = tbb_root.clone();
     tbb_built_lib.push("build");
     tbb_built_lib.push("lib_release");
-    tbb_built_lib.push("libtbb.a");
+    tbb_built_lib.push("libtbb.so");
     std::fs::rename(tbb_built_lib, tbb_lib)
         .expect("Unable to move tbb lib out");
 
