@@ -3,7 +3,7 @@ use std::process::Command;
 
 fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     // The script directory
-    let mut script_dir = std::path::PathBuf::from(std::env::current_dir().unwrap());
+    let mut script_dir = std::env::current_dir().unwrap();
     script_dir.push("thirdparty");
     script_dir.push("USD");
     script_dir.push("build_scripts");
@@ -11,7 +11,7 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
 
     // The result directory
     let mut cpp_out_dir = std::path::PathBuf::new();
-    cpp_out_dir.push(&out_dir);
+    cpp_out_dir.push(out_dir);
     cpp_out_dir.push("install");
 
     // The lib directory
@@ -61,13 +61,17 @@ fn build_cpp_usd(out_dir: &std::path::PathBuf) -> [std::path::PathBuf; 3] {
     [include_dir, lib_dir, lib]
 }
 
-fn write_lib_info(out_dir: &std::path::PathBuf, info: [std::path::PathBuf; 3]) {
+fn write_locations(out_dir: &std::path::Path, content: String) {
     // Make sure the source directory exists
-    let mut locations_path = out_dir.clone();
+    let mut locations_path = out_dir.to_path_buf();
     locations_path.push("locations.rs");
+    let mut file = std::fs::File::create(locations_path).unwrap();
 
-    write!(
-        std::fs::File::create(locations_path).unwrap(),
+    file.write_all(content.as_bytes()).expect("cargo OUT_DIR should be writable");
+}
+
+fn write_lib_info(out_dir: &std::path::Path, info: [std::path::PathBuf; 3]) {
+    let content = format!(
         "\
 pub const INCLUDE : &str = \"{}\"; \n\
 pub const LIBS : &str = \"{}\"; \n\
@@ -77,30 +81,23 @@ pub const LIB : &str = \"{}\"; \n\
         info[1].to_str().unwrap(),
         info[2].to_str().unwrap(),
     );
+
+    write_locations(out_dir, content);
 }
 
-fn write_stub_lib_info(out_dir: &std::path::PathBuf) {
-    // Make sure the source directory exists
-    let mut locations_path = out_dir.clone();
-    locations_path.push("locations.rs");
-
-    write!(
-        std::fs::File::create(locations_path).unwrap(),
+fn write_stub_lib_info(out_dir: &std::path::Path) {
+    let content =
         "\
 pub const INCLUDE : &str = \"\"; \n\
 pub const LIBS : &str = \"\"; \n\
 pub const LIB : &str = \"\"; \n\
-"
-    );
+".to_string();
+
+    write_locations(out_dir, content);
 }
 
-fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::PathBuf) {
-    // Make sure the source directory exists
-    let mut locations_path = out_dir.clone();
-    locations_path.push("locations.rs");
-
-    write!(
-        std::fs::File::create(locations_path).unwrap(),
+fn write_lib_info_from_env(usd_root: &str, out_dir: &std::path::Path) {
+    let content = format!(
         "\
 pub const INCLUDE : &str = \"{0}/include\"; \n\
 pub const LIBS : &str = \"{0}/lib\"; \n\
@@ -108,6 +105,8 @@ pub const LIB : &str = \"usd_ms\"; \n\
 ",
         usd_root
     );
+
+    write_locations(out_dir, content);
 }
 
 fn main() {
@@ -122,7 +121,7 @@ fn main() {
         thirdparty_usd.to_str().unwrap()
     );
 
-    if let Ok(_) = std::env::var("DOCS_RS") {
+    if std::env::var("DOCS_RS").is_ok() {
         write_stub_lib_info(&out_dir);
     } else if let Ok(usd_root) = std::env::var("USD_ROOT") {
         write_lib_info_from_env(&usd_root, &out_dir);
