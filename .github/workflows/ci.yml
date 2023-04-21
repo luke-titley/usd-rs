@@ -55,6 +55,7 @@ jobs:
 
   # Single deploy job since we're just deploying
   deploy_docs:
+    if: github.ref_name == 'develop'
     needs: build-linux
     environment:
       name: github-pages
