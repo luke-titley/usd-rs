@@ -8,6 +8,7 @@ use pxr::vt;
 
 use std::convert::TryFrom;
 
+#[allow(dead_code)]
 fn open_kitchen_set() -> pxr::NoResult {
     let stage = pxr::usd::Stage::open(pxr::usd::stage_desc::Open {
         file_path: "../assets/Kitchen_set/Kitchen_set.usd",
@@ -22,6 +23,7 @@ fn open_kitchen_set() -> pxr::NoResult {
     Ok(())
 }
 
+#[allow(dead_code)]
 fn add_references() -> pxr::NoResult {
     let asset_path = "asset.usda";
 
@@ -32,8 +34,8 @@ fn add_references() -> pxr::NoResult {
     stage.define_prim(
         &pxr::sdf::Path::try_from("/root").unwrap(),
         &pxr::tf::Token::default(),
-    );
-    stage.save();
+    )?;
+    stage.save()?;
 
     let stage = pxr::usd::Stage::create_new(pxr::usd::stage_desc::CreateNew {
         identifier: "scene.usda",
@@ -44,7 +46,7 @@ fn add_references() -> pxr::NoResult {
         .get_root_layer()
         .insert_sub_layer_path(asset_path, None)?;
 
-    stage.save();
+    stage.save()?;
 
     Ok(())
 }
