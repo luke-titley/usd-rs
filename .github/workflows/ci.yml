@@ -28,7 +28,7 @@ jobs:
       image: luketitley/vfxrs_env_usd:latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Init submodules
       run: git submodule update --init --recursive
     - name: Run build
@@ -47,7 +47,7 @@ jobs:
     runs-on: macos-11
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Init submodules
       run: git submodule update --init --recursive
     - name: Run build
