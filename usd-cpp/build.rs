@@ -7,7 +7,7 @@ fn get_outdir() -> std::path::PathBuf {
     )
 }
 
-fn build_tbb(thirdparty: &std::path::PathBuf) {
+fn build_tbb_old(thirdparty: &std::path::PathBuf) {
     let mut out_lib = get_outdir().clone();
     out_lib.push("lib");
 
@@ -76,6 +76,23 @@ fn build_tbb(thirdparty: &std::path::PathBuf) {
     fs_extra::copy_items(&libs_to_copy, out_include, &options);
 
     // Copy the cmake module
+}
+
+fn build_tbb(thirdparty: &std::path::PathBuf) {
+    let mut outdir = get_outdir();
+
+    let mut tbb_root = thirdparty.clone();
+    tbb_root.push("oneTBB");
+
+    cmake::Config::new(tbb_root).build();
+
+    let mut lib_folder = outdir.clone();
+    lib_folder.push("build");
+    lib_folder.push("tbb_cmake_build");
+    lib_folder.push("lib_debug"); // copy across release build when appropriate
+
+    let mut lib_path = lib_folder.clone();
+    lib_path.push("libtbb.a");
 }
 
 fn build_boost_old(thirdparty: &std::path::PathBuf) {
