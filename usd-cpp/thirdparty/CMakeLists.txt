@@ -13,3 +13,21 @@ find_package( TBB )
 #### Building boost
 add_subdirectory(boost)
 
+#### Building USD
+
+#[===[
+cmake::Config::new(usd_root)
+        .define("TBB_ROOT_DIR", outdir.display().to_string())
+        .define("BOOST_ROOT", outdir.display().to_string())
+        .define("PXR_ENABLE_PTEX_SUPPORT", "FALSE")
+        .define("PXR_BUILD_IMAGING", "FALSE")
+        .define("PXR_ENABLE_PYTHON_SUPPORT", "FALSE")
+        .define("PXR_BUILD_TESTS", "FALSE")
+]===]
+
+set( PXR_ENABLE_PTEX_SUPPORT FALSE )
+set( PXR_BUILD_IMAGING FALSE )
+set( PXR_ENABLE_PYTHON_SUPPORT FALSE )
+set( PXR_BUILD_TESTS FALSE )
+add_subdirectory(USD)
+
