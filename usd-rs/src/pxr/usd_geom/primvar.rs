@@ -38,6 +38,14 @@ impl PrimvarRef {
             })
         }
     }
+
+    pub fn set_interpolation(&self, interpolation: &tf::Token) -> bool {
+        unsafe {
+            cpp!([self as "pxr::UsdGeomPrimvar*", interpolation as "const pxr::TfToken *"] -> bool as "bool" {
+                return self->SetInterpolation(*interpolation);
+            })
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
