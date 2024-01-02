@@ -50,6 +50,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        python-version: 3.11
     - name: Init submodules
       run: git submodule update --init --recursive
     - name: Run build
