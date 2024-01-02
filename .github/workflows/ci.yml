@@ -43,7 +43,9 @@ jobs:
         name: docs
         path: docs
 
+  # MacOS Disabled for now, see issue #24
   build-macos:
+    if: ${{ false }}
     runs-on: macos-11
 
     steps:
