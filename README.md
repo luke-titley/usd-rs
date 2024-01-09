@@ -95,7 +95,7 @@ The intention is that later on the higher performance sdf and hydra apis are als
 
 |   Object      |     Usable      |
 |---------------|-----------------|
-|  Attribute    |     - [x]       |
+|  Attribute    |     :heavy_check_mark:       |
 |  Prim         |     - [x]       |
 |  References   |     - [x]       |
 |  Relationship |     - [x]       |
