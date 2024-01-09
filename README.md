@@ -15,7 +15,7 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 - You can create references under prims or as layers.
 - You can traverse the prims in a stage.
 
-More more complete list can be found [below](#Progress)
+A more complete list can be found in the [checklist](checklist.md)
 
 # The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
@@ -82,23 +82,3 @@ for building usd-rs in centos:7 which is the oldest supported linux distribution
 across the vfx industry.
 
 The image is called [luketitley/vfxrs_env_usd](https://hub.docker.com/repository/docker/luketitley/vfxrs_env_usd).
-
-# Progress
-
-This project is currently focused on exposing the top level USD api and the schemas on top of
-those as much as possible. Everything related to UsdStage, UsdPrim and where necessary the
-lower level types should be exposed, such as VtValue.
-
-The intention is that later on the higher performance sdf and hydra apis are also exposed.
-
-## Usd
-
-|   Object      |     Usable       |
-|---------------|------------------|
-|  Attribute    |:heavy_check_mark:|
-|  Prim         |:heavy_check_mark:|
-|  References   |:heavy_check_mark:|
-|  Relationship |:heavy_check_mark:|
-|  Stage        |:heavy_check_mark:|
-
-
