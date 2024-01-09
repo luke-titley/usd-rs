@@ -93,12 +93,12 @@ The intention is that later on the higher performance sdf and hydra apis are als
 
 ## Usd
 
-|   Object      |     Usable      |
-|---------------|-----------------|
-|  Attribute    |     :heavy_check_mark:       |
-|  Prim         |     - [x]       |
-|  References   |     - [x]       |
-|  Relationship |     - [x]       |
-|  Stage        |     - [x]       |
+|   Object      |     Usable       |
+|---------------|------------------|
+|  Attribute    |:heavy_check_mark:|
+|  Prim         |:heavy_check_mark:|
+|  References   |:heavy_check_mark:|
+|  Relationship |:heavy_check_mark:|
+|  Stage        |:heavy_check_mark:|
 
 
