@@ -85,9 +85,9 @@ The image is called [luketitley/vfxrs_env_usd](https://hub.docker.com/repository
 
 # Progress
 
-This project is currently focused on exposing the top level USD api as much as possible.
-Everything related to UsdStage, UsdPrim and where necessary the lower level types are should be
-exposed, such as VtValue.
+This project is currently focused on exposing the top level USD api and the schemas on top of
+those as much as possible. Everything related to UsdStage, UsdPrim and where necessary the
+lower level types should be exposed, such as VtValue.
 
 The intention is that later on the higher performance sdf and hydra apis are also exposed.
 
