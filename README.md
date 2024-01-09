@@ -15,12 +15,7 @@ Rust bindings for [USD](https://github.com/PixarAnimationStudios/USD).
 - You can create references under prims or as layers.
 - You can traverse the prims in a stage.
 
-# Work to do
-- [ ] Relationships
-- [ ] Schemas
-- [ ] Edit Targets
-- [ ] Variant Sets
-- [ ] Get/Set default root prim
+A more complete list can be found in the [checklist](checklist.md)
 
 # The parts
 - usd-cpp is a crate to build the cpp shared library and its dependencies (tbb, boost ..).
