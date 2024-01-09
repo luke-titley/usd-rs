@@ -95,10 +95,10 @@ The intention is that later on the higher performance sdf and hydra apis are als
 
 |   Object      |     Usable      |
 |---------------|-----------------|
-|  Attribute    |      [x]        |
-|  Prim         |      [x]        |
-|  References   |      [x]        |
-|  Relationship |      [x]        |
-|  Stage        |      [x]        |
+|  Attribute    |     - [x]       |
+|  Prim         |     - [x]       |
+|  References   |     - [x]       |
+|  Relationship |     - [x]       |
+|  Stage        |     - [x]       |
 
 
